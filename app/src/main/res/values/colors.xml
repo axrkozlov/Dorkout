@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#404054</color>
+    <color name="colorPrimaryDark">#303044</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="background">#D0C1D5</color>
+
+    <color name="color_training_item">#F7EAD8</color>
+
+    <color name="status_digit">#E5DE6E</color>
+
+    <color name="status_light_red">#FF4444</color>
+    <color name="status_light_yellow">#E5DE6E</color>
+    <color name="status_light_green">#7ED321</color>
+    <color name="status_light_off">#D8D8D8</color>
+    <color name="status_light_borders">#979797</color>
+    <color name="status_training_run">#7ED321</color>
+    <color name="status_training_pause">#FFAC11</color>
+    <color name="status_exercise_done">#7ED321</color>
+    <color name="status_exercise_active">#7ED321</color>
+    <color name="status_exercise_inactive">#505074</color>
+
+    <color name="result_digit">#E5DE6E</color>
+    <color name="result_background">#303044</color>
+    <color name="result_borders">#979797</color>
+    <color name="result_label">#EEEEEE</color>
+
+    <color name="info_digit">#212121</color>
+    <color name="info_background">#D8D8D8</color>
+    <color name="info_borders">#979797</color>
+    <color name="info_label">#727272</color>
+
+
+    <color name="training_item">#DEF1D5</color>
+
+    <color name="exercise_item">#EFDFC4</color>
+    <color name="exercise_active_item">#F7EAD8</color>
+    <color name="exercise_button_background">#978F87</color>
+    <color name="exercise_button_text">#2D2D56</color>
+
+
+    <color name="primary_text">#312131</color>
+    <color name="secondary_text">#727272</color>
+    <color name="secondary_white_text">#EEEEEE</color>
+
+
+    <color name="transparent">#00000000</color>
+    <!-- card colors -->
+    <color name="card_background">#ffffff</color>
+    <color name="card_shadow_1">#d4d4d4</color>
+    <color name="card_shadow_2">#dddddd</color>
+    <color name="card_detailing">#eee</color>
+
+
+</resources>

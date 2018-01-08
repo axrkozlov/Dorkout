@@ -1,0 +1,49 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+    </style>
+
+    <style name="card_info_label">
+        <item name="android:textSize">@dimen/info_label</item>
+        <item name="android:textColor">@color/info_label</item>
+        <item name="android:textStyle">italic</item>
+
+    </style>
+
+    <style name="card_info_text" parent="@style/TextAppearance.AppCompat.Large">
+        <item name="android:textColor">@color/primary_text</item>
+    </style>
+
+    <style name="result_label">
+        <item name="android:textSize">@dimen/result_label</item>
+        <item name="android:textColor">@color/result_label</item>
+        <item name="android:textStyle">italic</item>
+
+    </style>
+
+    <style name="result_text">
+        <item name="android:textSize">@dimen/result_text</item>
+        <item name="android:textColor">@color/result_digit</item>
+    </style>
+
+    <style name="result_text_ms">
+        <item name="android:textSize">@dimen/result_text_ms</item>
+        <item name="android:textColor">@color/result_digit</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+</resources>

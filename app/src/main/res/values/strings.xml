@@ -1,0 +1,88 @@
+<resources>
+    <string name="app_name" translatable="false">DorkOut</string>
+    <string name="content_authority" translatable="false">com.portfex.amazingday</string>
+    <string name="title_activity_exercises">Exercises</string>
+
+    <string name="training_id_tag" translatable="false">exercise_id</string>
+
+    <string name="lb_total_time">time</string>
+    <string name="lb_rest_time">rest</string>
+
+    <string name="lb_training_desc_total_time">Total time:</string>
+    <string name="lb_training_desc_days">Days:</string>
+    <string name="lb_training_desc_start_time">Start time:</string>
+
+
+    <string name="lb_last_result">Last result</string>
+    <string name="lb_norm_reps">Reps</string>
+    <string name="lb_norm_time">Norm time</string>
+    <string name="lb_sets">Sets</string>
+    <string name="lb_weight">Weight</string>
+    <string name="lb_rest">Rest</string>
+
+    <string name="lb_result_reps">Reps</string>
+    <string name="lb_result_time">Result time</string>
+    <string name="lb_set">Set</string>
+    <string name="lb_kg">kg</string>
+    <string name="lb_x">x</string>
+    <string name="lb_reps">r</string>
+
+
+    <string name="bt_restart">RESTART</string>
+    <string name="bt_start">START</string>
+    <string name="bt_pause">PAUSE</string>
+    <string name="bt_done">DONE</string>
+
+    <string name="menu_add">Add</string>
+    <string name="menu_edit">Edit</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_about">About</string>
+    <string name="menu_donate">Donate</string>
+
+
+    <string name="total_time">1:15:18</string>
+    <string name="rest_time">5:16</string>
+
+
+    <string name="training_title">Mourning Training</string>
+    <string name="training_desc">Horizontal bar, jump, run</string>
+    <string name="training_desc_total_time">1:20</string>
+    <string name="training_desc_days">Mon Wed</string>
+    <string name="training_null_start_time">--:--</string>
+
+
+    <string name="exercise_number">2</string>
+    <string name="exercise_title">Barbell</string>
+    <string name="exercise_desc">Up and high, weight: 11kg. sets 3, reps 115 </string>
+
+
+    <string name="norm_time">1:24</string>
+    <string name="norm_reps">31</string>
+    <string name="sets">3</string>
+    <string name="weight">50</string>
+    <string name="rest">3:30</string>
+    <string name="result_time">1:24:29</string>
+    <string name="result_time_ms">59</string>
+    <string name="set">23</string>
+    <string name="result_reps">222</string>
+
+
+    <string name="last_result_time">1:24:86</string>
+    <string name="last_result_reps">40</string>
+
+    <string name="lb_training_create_days">Training Days</string>
+    <string name="lb_training_create_start_time">Start at</string>
+    <string name="lb_training_create_button">Create</string>
+    <string name="lb_training_update_button">Update</string>
+    <string name="lb_training_duplicate_button">Duplicate</string>
+
+    <string name="lb_training_delete_button">Remove</string>
+
+    <string name="training_create_name">Name of Workout</string>
+    <string name="training_create_desc">Any description</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>
