@@ -2,6 +2,7 @@ package com.axfex.dorkout.addeditworkout;
 
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.data.source.WorkoutsRepository;
@@ -23,8 +24,11 @@ public class AddEditWorkoutViewModel extends ViewModel {
             @Override
             public void run() {
                 workoutsRepository.createWorkout(workout);
+                Log.e("AddworkoutVM", workout.getName());
             }
         };
+        Thread custListLoadThread = new Thread(runnable );
+        custListLoadThread.start();
     }
 
 }

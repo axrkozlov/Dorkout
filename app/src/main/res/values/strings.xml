@@ -3,14 +3,14 @@
     <string name="content_authority" translatable="false">com.portfex.amazingday</string>
     <string name="title_activity_exercises">Exercises</string>
 
-    <string name="training_id_tag" translatable="false">exercise_id</string>
+    <string name="workout_id_tag" translatable="false">exercise_id</string>
 
     <string name="lb_total_time">time</string>
     <string name="lb_rest_time">rest</string>
 
-    <string name="lb_training_desc_total_time">Total time:</string>
-    <string name="lb_training_desc_days">Days:</string>
-    <string name="lb_training_desc_start_time">Start time:</string>
+    <string name="lb_workout_desc_total_time">Total time:</string>
+    <string name="lb_workout_desc_days">Days:</string>
+    <string name="lb_workout_desc_start_time">Start time:</string>
 
 
     <string name="lb_last_result">Last result</string>
@@ -44,11 +44,11 @@
     <string name="rest_time">5:16</string>
 
 
-    <string name="training_title">Mourning Training</string>
-    <string name="training_desc">Horizontal bar, jump, run</string>
-    <string name="training_desc_total_time">1:20</string>
-    <string name="training_desc_days">Mon Wed</string>
-    <string name="training_null_start_time">--:--</string>
+    <string name="workout_title">Mourning workout</string>
+    <string name="workout_desc">Horizontal bar, jump, run</string>
+    <string name="workout_desc_total_time">1:20</string>
+    <string name="workout_desc_days">Mon Wed</string>
+    <string name="workout_null_start_time">--:--</string>
 
 
     <string name="exercise_number">2</string>
@@ -70,16 +70,16 @@
     <string name="last_result_time">1:24:86</string>
     <string name="last_result_reps">40</string>
 
-    <string name="lb_training_create_days">Training Days</string>
-    <string name="lb_training_create_start_time">Start at</string>
-    <string name="lb_training_create_button">Create</string>
-    <string name="lb_training_update_button">Update</string>
-    <string name="lb_training_duplicate_button">Duplicate</string>
+    <string name="lb_workout_create_days">workout Days</string>
+    <string name="lb_workout_create_start_time">Start at</string>
+    <string name="lb_workout_create_button">Create</string>
+    <string name="lb_workout_update_button">Update</string>
+    <string name="lb_workout_duplicate_button">Duplicate</string>
 
-    <string name="lb_training_delete_button">Remove</string>
+    <string name="lb_workout_delete_button">Remove</string>
 
-    <string name="training_create_name">Name of Workout</string>
-    <string name="training_create_desc">Any description</string>
+    <string name="workout_create_name">Name of Workout</string>
+    <string name="workout_create_desc">Any description</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

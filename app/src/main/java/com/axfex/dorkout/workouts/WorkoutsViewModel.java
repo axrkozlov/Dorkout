@@ -16,9 +16,10 @@ import javax.inject.Inject;
 
 public class WorkoutsViewModel extends ViewModel {
 
+
     private WorkoutsRepository workoutsRepository;
 
-    //@Inject
+
     public WorkoutsViewModel(WorkoutsRepository workoutsRepository) {
         this.workoutsRepository = workoutsRepository;
     }
@@ -27,14 +28,14 @@ public class WorkoutsViewModel extends ViewModel {
         return workoutsRepository.getWorkouts();
     }
 
-    public void deleteWorkout(final Workout workout){
-        Runnable runnable=new Runnable() {
-            @Override
-            public void run() {
-                workoutsRepository.deleteWorkout(workout);
-            }
-        };
-    }
+//    public void deleteWorkout(final Workout workout){
+//        Runnable runnable=new Runnable() {
+//            @Override
+//            public void run() {
+//                workoutsRepository.deleteWorkout(workout);
+//            }
+//        };
+//    }
 
 
 }

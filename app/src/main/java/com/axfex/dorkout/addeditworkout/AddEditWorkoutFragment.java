@@ -1,13 +1,25 @@
 package com.axfex.dorkout.addeditworkout;
 
 
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.axfex.dorkout.R;
+import com.axfex.dorkout.WorkoutApplication;
+import com.axfex.dorkout.data.Workout;
+import com.axfex.dorkout.util.ViewModelFactory;
+import com.axfex.dorkout.workouts.WorkoutsActivity;
+
+import javax.inject.Inject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,19 +27,11 @@ import com.axfex.dorkout.R;
  * create an instance of this fragment.
  */
 public class AddEditWorkoutFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private EditText mEditName;
+    @Inject
+    ViewModelFactory viewModelFactory;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-
-    public AddEditWorkoutFragment() {
-        // Required empty public constructor
-    }
+    AddEditWorkoutViewModel addEditWorkoutViewModel;
 
 
     public static AddEditWorkoutFragment newInstance() {
@@ -39,17 +43,38 @@ public class AddEditWorkoutFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        ((WorkoutApplication) getActivity().getApplication())
+                .getAppComponent()
+                .inject(this);
+    }
 
-//        ((RoomDemoApplication) getActivity().getApplication())
-//                .getApplicationComponent()
-//                .inject(this);
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        addEditWorkoutViewModel= ViewModelProviders.of(this,viewModelFactory).get(AddEditWorkoutViewModel.class);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_edit_workout, container, false);
-    }
+        View v =inflater.inflate(R.layout.fragment_add_edit_workout, container, false);
+        mEditName=v.findViewById(R.id.workout_create_name);
+        Button done=v.findViewById(R.id.bt_workout_create);
+        done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Workout workout=new Workout(mEditName.getText().toString());
+                addEditWorkoutViewModel.addWorkout(workout);
+                startWorkoutsActivity();
+            }
+        });
 
+
+        return v;
+    }
+    private void startWorkoutsActivity() {
+        startActivity(new Intent(getActivity(), WorkoutsActivity.class));
+    }
 }

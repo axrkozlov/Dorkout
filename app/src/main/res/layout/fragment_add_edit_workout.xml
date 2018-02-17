@@ -1,4 +1,5 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,10 +9,10 @@
     >
 
     <EditText
-        android:id="@+id/training_create_name"
+        android:id="@+id/workout_create_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/training_create_name"
+        android:hint="@string/workout_create_name"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,24 +20,24 @@
 
 
     <EditText
-        android:id="@+id/training_create_desc"
+        android:id="@+id/workout_create_desc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/training_create_desc"
+        android:hint="@string/workout_create_desc"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/training_create_name" />
+        app:layout_constraintTop_toBottomOf="@+id/workout_create_name" />
 
     <TextView
-        android:id="@+id/lb_training_create_days"
+        android:id="@+id/lb_workout_create_days"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/lb_training_create_days"
+        android:text="@string/lb_workout_create_days"
         android:textAppearance="@style/card_info_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/training_create_desc" />
+        app:layout_constraintTop_toBottomOf="@+id/workout_create_desc" />
 
     <ToggleButton
         android:id="@+id/tb_day1"
@@ -48,7 +49,7 @@
         android:textColorLink="@color/colorAccent"
         android:textOff="S"
         android:textOn="S"
-        app:layout_constraintBottom_toBottomOf="@+id/bt_training_create_start_time"
+        app:layout_constraintBottom_toBottomOf="@+id/bt_workout_create_start_time"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ToggleButton
@@ -60,7 +61,7 @@
         android:minWidth="0dp"
         android:textOff="M"
         android:textOn="M"
-        app:layout_constraintBottom_toBottomOf="@+id/bt_training_create_start_time"
+        app:layout_constraintBottom_toBottomOf="@+id/bt_workout_create_start_time"
         app:layout_constraintStart_toEndOf="@+id/tb_day1" />
 
     <ToggleButton
@@ -72,7 +73,7 @@
         android:minWidth="0dp"
         android:textOff="T"
         android:textOn="T"
-        app:layout_constraintBottom_toBottomOf="@+id/bt_training_create_start_time"
+        app:layout_constraintBottom_toBottomOf="@+id/bt_workout_create_start_time"
         app:layout_constraintStart_toEndOf="@+id/tb_day2" />
 
     <ToggleButton
@@ -84,7 +85,7 @@
         android:minWidth="0dp"
         android:textOff="W"
         android:textOn="W"
-        app:layout_constraintBottom_toBottomOf="@+id/bt_training_create_start_time"
+        app:layout_constraintBottom_toBottomOf="@+id/bt_workout_create_start_time"
         app:layout_constraintStart_toEndOf="@+id/tb_day3" />
 
     <ToggleButton
@@ -96,7 +97,7 @@
         android:minWidth="0dp"
         android:textOff="T"
         android:textOn="T"
-        app:layout_constraintBottom_toBottomOf="@+id/bt_training_create_start_time"
+        app:layout_constraintBottom_toBottomOf="@+id/bt_workout_create_start_time"
         app:layout_constraintStart_toEndOf="@+id/tb_day4" />
 
     <ToggleButton
@@ -108,7 +109,7 @@
         android:minWidth="0dp"
         android:textOff="F"
         android:textOn="F"
-        app:layout_constraintBottom_toBottomOf="@+id/bt_training_create_start_time"
+        app:layout_constraintBottom_toBottomOf="@+id/bt_workout_create_start_time"
         app:layout_constraintStart_toEndOf="@+id/tb_day5" />
 
     <ToggleButton
@@ -120,96 +121,96 @@
         android:minWidth="0dp"
         android:textOff="S"
         android:textOn="S"
-        app:layout_constraintBottom_toBottomOf="@+id/bt_training_create_start_time"
+        app:layout_constraintBottom_toBottomOf="@+id/bt_workout_create_start_time"
         app:layout_constraintStart_toEndOf="@+id/tb_day6" />
 
     <TextView
-        android:id="@+id/lb_training_create_start_time"
+        android:id="@+id/lb_workout_create_start_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/lb_training_create_start_time"
+        android:text="@string/lb_workout_create_start_time"
         android:textAppearance="@style/card_info_label"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/training_create_desc" />
+        app:layout_constraintTop_toBottomOf="@+id/workout_create_desc" />
 
     <Button
-        android:id="@+id/bt_training_create_start_time"
+        android:id="@+id/bt_workout_create_start_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/transparent"
         android:minHeight="0dp"
         android:minWidth="0dp"
-        android:text="@string/training_null_start_time"
+        android:text="@string/workout_null_start_time"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lb_training_create_start_time" />
+        app:layout_constraintTop_toBottomOf="@+id/lb_workout_create_start_time" />
 
     <!--<TextView-->
-    <!--android:id="@+id/training_create_start_time"-->
+    <!--android:id="@+id/workout_create_start_time"-->
     <!--android:layout_width="wrap_content"-->
     <!--android:layout_height="wrap_content"-->
     <!--android:text="&#45;&#45;:&#45;&#45;"-->
     <!--android:textAppearance="@style/TextAppearance.AppCompat.Display1"-->
     <!--app:layout_constraintEnd_toEndOf="parent"-->
-    <!--app:layout_constraintTop_toBottomOf="@+id/lb_training_create_start_time" />-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/lb_workout_create_start_time" />-->
 
 
     <Button
-        android:id="@+id/bt_training_create"
+        android:id="@+id/bt_workout_create"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:background="@color/colorPrimary"
-        android:text="@string/lb_training_create_button"
+        android:text="@string/lb_workout_create_button"
         android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Inverse"
-        app:layout_constraintTop_toBottomOf="@+id/bt_training_create_start_time" />
+        app:layout_constraintTop_toBottomOf="@+id/bt_workout_create_start_time" />
 
 
     <Button
-        android:id="@+id/bt_training_delete"
+        android:id="@+id/bt_workout_delete"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginRight="4dp"
         android:layout_marginEnd="4dp"
         android:background="@color/colorAccent"
-        android:onClick="addTraining"
-        android:text="@string/lb_training_delete_button"
+        android:onClick="addworkout"
+        android:text="@string/lb_workout_delete_button"
         android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Inverse"
-        app:layout_constraintEnd_toStartOf="@+id/bt_training_duplicate"
+        app:layout_constraintEnd_toStartOf="@+id/bt_workout_duplicate"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bt_training_create"
+        app:layout_constraintTop_toBottomOf="@+id/bt_workout_create"
         android:visibility="gone"/>
 
     <Button
-        android:id="@+id/bt_training_duplicate"
+        android:id="@+id/bt_workout_duplicate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginStart="4dp"
         android:layout_marginLeft="4dp"
         android:background="@color/colorPrimary"
-        android:onClick="addTraining"
-        android:text="@string/lb_training_duplicate_button"
+        android:onClick="addworkout"
+        android:text="@string/lb_workout_duplicate_button"
         android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Inverse"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/bt_training_delete"
-        app:layout_constraintTop_toBottomOf="@+id/bt_training_create"
+        app:layout_constraintStart_toEndOf="@+id/bt_workout_delete"
+        app:layout_constraintTop_toBottomOf="@+id/bt_workout_create"
         android:visibility="gone"
         />
 
     <Button
-        android:id="@+id/bt_training_update"
+        android:id="@+id/bt_workout_update"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="@color/colorPrimary"
-        android:onClick="addTraining"
-        android:text="@string/lb_training_update_button"
+        android:onClick="addworkout"
+        android:text="@string/lb_workout_update_button"
         android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Inverse"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bt_training_delete"
+        app:layout_constraintTop_toBottomOf="@+id/bt_workout_delete"
         android:visibility="gone"/>
 
 </android.support.constraint.ConstraintLayout>

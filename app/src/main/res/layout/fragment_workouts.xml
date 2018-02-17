@@ -9,7 +9,7 @@ tools:context="com.axfex.dorkout.workouts.WorkoutsFragment"
 android:background="#666666">
 
 <android.support.design.widget.FloatingActionButton
-    android:id="@+id/fab_add_training"
+    android:id="@+id/fab_add_workout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom|end"

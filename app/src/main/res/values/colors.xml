@@ -5,7 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="background">#D0C1D5</color>
 
-    <color name="color_training_item">#F7EAD8</color>
+    <color name="color_workout_item">#F7EAD8</color>
 
     <color name="status_digit">#E5DE6E</color>
 
@@ -14,8 +14,8 @@
     <color name="status_light_green">#7ED321</color>
     <color name="status_light_off">#D8D8D8</color>
     <color name="status_light_borders">#979797</color>
-    <color name="status_training_run">#7ED321</color>
-    <color name="status_training_pause">#FFAC11</color>
+    <color name="status_workout_run">#7ED321</color>
+    <color name="status_workout_pause">#FFAC11</color>
     <color name="status_exercise_done">#7ED321</color>
     <color name="status_exercise_active">#7ED321</color>
     <color name="status_exercise_inactive">#505074</color>
@@ -31,7 +31,7 @@
     <color name="info_label">#727272</color>
 
 
-    <color name="training_item">#DEF1D5</color>
+    <color name="workout_item">#DEF1D5</color>
 
     <color name="exercise_item">#EFDFC4</color>
     <color name="exercise_active_item">#F7EAD8</color>

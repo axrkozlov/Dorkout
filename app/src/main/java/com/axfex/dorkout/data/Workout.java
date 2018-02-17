@@ -31,6 +31,11 @@ public class Workout {
 
     private Boolean isStarted = false;
 
+    public Workout(String name) {
+        this.name = name;
+    }
+
+
     public Long getId() {
         return id;
     }
