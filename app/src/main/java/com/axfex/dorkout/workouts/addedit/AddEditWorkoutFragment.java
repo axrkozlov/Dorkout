@@ -1,4 +1,4 @@
-package com.axfex.dorkout.addeditworkout;
+package com.axfex.dorkout.workouts.addedit;
 
 
 import android.arch.lifecycle.ViewModelProviders;
@@ -11,21 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
 import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.util.ViewModelFactory;
-import com.axfex.dorkout.workouts.WorkoutsActivity;
+import com.axfex.dorkout.workouts.list.WorkoutsActivity;
 
 import javax.inject.Inject;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AddEditWorkoutFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AddEditWorkoutFragment extends Fragment {
     private EditText mEditName;
     @Inject
@@ -58,10 +52,9 @@ public class AddEditWorkoutFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View v =inflater.inflate(R.layout.fragment_add_edit_workout, container, false);
-        mEditName=v.findViewById(R.id.workout_create_name);
-        Button done=v.findViewById(R.id.bt_workout_create);
+        mEditName=v.findViewById(R.id.exercise_create_name);
+        Button done=v.findViewById(R.id.bt_exercise_create);
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,10 +64,11 @@ public class AddEditWorkoutFragment extends Fragment {
             }
         });
 
-
         return v;
     }
+
     private void startWorkoutsActivity() {
         startActivity(new Intent(getActivity(), WorkoutsActivity.class));
     }
+
 }

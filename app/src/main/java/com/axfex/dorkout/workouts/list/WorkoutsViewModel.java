@@ -1,4 +1,4 @@
-package com.axfex.dorkout.workouts;
+package com.axfex.dorkout.workouts.list;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
@@ -7,8 +7,6 @@ import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.data.source.WorkoutsRepository;
 
 import java.util.List;
-
-import javax.inject.Inject;
 
 /**
  * Created by alexanderkozlov on 1/7/18.

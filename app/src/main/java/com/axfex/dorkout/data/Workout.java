@@ -1,9 +1,7 @@
 package com.axfex.dorkout.data;
 
-import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
-import android.support.annotation.NonNull;
 
 /**
  * Created by alexanderkozlov on 1/2/18.
@@ -11,36 +9,28 @@ import android.support.annotation.NonNull;
 @Entity
 public class Workout {
     @PrimaryKey(autoGenerate = true)
-    private Long id;
-    @ColumnInfo(name = "name")
+    private int id;
     private String name;
-    @ColumnInfo(name = "description")
     private String description;
-    @ColumnInfo(name = "startTime")
     private Long startTime;
-    @ColumnInfo(name = "totalTime")
     private Long totalTime;
-    @ColumnInfo(name = "lastDate")
     private Long lastDate;
-    @ColumnInfo(name = "weekDaysComposed")
     private Integer weekDaysComposed;
-
     private Integer exercisesCount;
 
-    private Boolean isChecked = false;
+    private transient Boolean isChecked = false;
 
-    private Boolean isStarted = false;
+    private transient Boolean isStarted = false;
 
     public Workout(String name) {
         this.name = name;
     }
 
-
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -112,7 +102,11 @@ public class Workout {
         return isStarted;
     }
 
-    public void setStarted(Boolean started) {
-        isStarted = started;
+    public void start() {
+        isStarted = true;
     }
+    public void stop() {
+        isStarted = false;
+    }
+
 }

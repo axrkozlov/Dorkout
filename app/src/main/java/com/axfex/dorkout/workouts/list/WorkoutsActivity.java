@@ -1,4 +1,4 @@
-package com.axfex.dorkout.workouts;
+package com.axfex.dorkout.workouts.list;
 
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;

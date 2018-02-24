@@ -17,16 +17,21 @@ import dagger.Provides;
 @Module
 public class AppModule {
 
-    private final Application application;
+    private final WorkoutApplication application;
 
     public AppModule(@NonNull WorkoutApplication application) {
         this.application = application;
     }
 
+    @Provides
+    @Singleton
+    Application provideApplication(){
+        return application;
+    }
 
     @Provides
     @Singleton
-    Context provideApplication(){
+    WorkoutApplication provideWorkoutApplication(){
         return application;
     }
 

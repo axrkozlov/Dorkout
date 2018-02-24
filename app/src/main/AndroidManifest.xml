@@ -10,15 +10,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".workouts.WorkoutsActivity">
+        <activity android:name=".workouts.list.WorkoutsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".addeditworkout.AddEditWorkoutActivity" />
-
+        <activity android:name=".workouts.addedit.AddEditWorkoutActivity" />
+        <activity
+            android:name=".exercises.list.ExercisesActivity"
+            android:label="@string/title_activity_exercises"
+            android:parentActivityName=".workouts.list.WorkoutsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.axfex.dorkout.workouts.list.WorkoutsActivity" />
+        </activity>
+        <activity
+            android:name=".exercises.addedit.AddEditExerciseActivity"
+            android:label="@string/title_activity_add_edit_exercise"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

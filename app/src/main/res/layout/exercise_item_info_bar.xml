@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="0dp">
+
+    <ImageView
+        android:id="@+id/card_sets"
+        android:layout_width="0dp"
+        app:layout_constraintHorizontal_weight="2"
+        android:layout_height="@dimen/info_high"
+        app:layout_constraintEnd_toStartOf="@+id/card_rest"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/card_info" />
+
+    <TextView
+        android:id="@+id/lb_info_sets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="@string/lb_sets"
+        android:textAppearance="@style/card_info_label"
+        app:layout_constraintEnd_toEndOf="@+id/card_sets"
+        app:layout_constraintTop_toTopOf="@+id/card_sets" />
+
+    <TextView
+        android:id="@+id/sets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sets"
+        android:textAppearance="@style/card_info_text"
+        app:layout_constraintBottom_toBottomOf="@+id/card_sets"
+        app:layout_constraintEnd_toStartOf="@+id/lb_info_sets_u" />
+
+    <TextView
+        android:id="@+id/lb_info_sets_u"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="6dp"
+        android:layout_marginRight="6dp"
+        android:text="@string/lb_x"
+        android:textAppearance="@style/card_info_label"
+        app:layout_constraintBaseline_toBaselineOf="@+id/sets"
+        app:layout_constraintEnd_toEndOf="@+id/card_sets" />
+
+    <ImageView
+        android:id="@+id/card_rest"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_width="0dp"
+        app:layout_constraintHorizontal_weight="3"
+        android:layout_height="@dimen/info_high"
+        app:layout_constraintEnd_toStartOf="@+id/card_weight"
+        app:layout_constraintStart_toEndOf="@id/card_sets"
+        app:srcCompat="@drawable/card_info" />
+
+    <TextView
+        android:id="@+id/lb_info_rest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="@string/lb_rest"
+        android:textAppearance="@style/card_info_label"
+        app:layout_constraintEnd_toEndOf="@+id/card_rest"
+        app:layout_constraintTop_toTopOf="@+id/card_rest" />
+
+    <TextView
+        android:id="@+id/rest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:text="@string/rest"
+        android:textAppearance="@style/card_info_text"
+        app:layout_constraintBottom_toBottomOf="@+id/card_rest"
+        app:layout_constraintEnd_toEndOf="@+id/card_rest" />
+
+    <ImageView
+        android:id="@+id/card_weight"
+        android:layout_width="0dp"
+        app:layout_constraintHorizontal_weight="3"
+        android:layout_height="@dimen/info_high"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintEnd_toStartOf="@+id/card_norm_reps"
+        app:layout_constraintStart_toEndOf="@id/card_rest"
+        app:srcCompat="@drawable/card_info" />
+
+    <TextView
+        android:id="@+id/lb_info_weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="@string/lb_weight"
+        android:textAppearance="@style/card_info_label"
+        app:layout_constraintEnd_toEndOf="@+id/card_weight"
+        app:layout_constraintTop_toTopOf="@+id/card_weight" />
+
+    <TextView
+        android:id="@+id/weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/weight"
+        android:textAppearance="@style/card_info_text"
+        app:layout_constraintBottom_toBottomOf="@+id/card_weight"
+        app:layout_constraintEnd_toStartOf="@+id/lb_info_weight_u" />
+
+    <TextView
+        android:id="@+id/lb_info_weight_u"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="6dp"
+        android:layout_marginRight="6dp"
+        android:text="@string/lb_kg"
+        android:textAppearance="@style/card_info_label"
+        app:layout_constraintBaseline_toBaselineOf="@+id/weight"
+        app:layout_constraintEnd_toEndOf="@+id/card_weight" />
+
+    <ImageView
+        android:id="@+id/card_norm_reps"
+        android:layout_width="0dp"
+        app:layout_constraintHorizontal_weight="3"
+        android:layout_height="@dimen/info_high"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintEnd_toStartOf="@+id/card_norm_time"
+        app:layout_constraintStart_toEndOf="@id/card_weight"
+        app:srcCompat="@drawable/card_info" />
+
+    <TextView
+        android:id="@+id/lb_info_norm_reps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="@string/lb_norm_reps"
+        android:textAppearance="@style/card_info_label"
+        app:layout_constraintEnd_toEndOf="@+id/card_norm_reps"
+        app:layout_constraintTop_toTopOf="@+id/card_norm_reps" />
+
+    <TextView
+        android:id="@+id/norm_reps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/norm_reps"
+        android:textAppearance="@style/card_info_text"
+        app:layout_constraintBottom_toBottomOf="@+id/card_norm_time"
+        app:layout_constraintEnd_toStartOf="@+id/lb_info_reps" />
+
+    <TextView
+        android:id="@+id/lb_info_reps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="@string/lb_reps"
+        android:textAppearance="@style/card_info_label"
+        app:layout_constraintBaseline_toBaselineOf="@+id/norm_reps"
+        app:layout_constraintEnd_toEndOf="@+id/card_norm_reps" />
+
+    <ImageView
+        android:id="@+id/card_norm_time"
+        android:layout_width="0dp"
+        app:layout_constraintHorizontal_weight="4"
+        android:layout_height="@dimen/info_high"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/card_norm_reps"
+        app:srcCompat="@drawable/card_info" />
+
+    <TextView
+        android:id="@+id/lb_info_norm_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="@string/lb_norm_time"
+        android:textAppearance="@style/card_info_label"
+        app:layout_constraintEnd_toEndOf="@+id/card_norm_time"
+        app:layout_constraintTop_toTopOf="@+id/card_norm_time" />
+
+    <TextView
+        android:id="@+id/standard_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="@string/norm_time"
+        android:textAppearance="@style/card_info_text"
+        app:layout_constraintBottom_toBottomOf="@+id/card_norm_time"
+        app:layout_constraintEnd_toEndOf="@+id/card_norm_time" />
+
+
+</android.support.constraint.ConstraintLayout>

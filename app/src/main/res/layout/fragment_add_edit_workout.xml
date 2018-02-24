@@ -9,7 +9,7 @@
     >
 
     <EditText
-        android:id="@+id/workout_create_name"
+        android:id="@+id/exercise_create_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/workout_create_name"
@@ -28,7 +28,7 @@
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/workout_create_name" />
+        app:layout_constraintTop_toBottomOf="@+id/exercise_create_name" />
 
     <TextView
         android:id="@+id/lb_workout_create_days"
@@ -156,7 +156,7 @@
 
 
     <Button
-        android:id="@+id/bt_workout_create"
+        android:id="@+id/bt_exercise_create"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -168,19 +168,18 @@
 
 
     <Button
-        android:id="@+id/bt_workout_delete"
+        android:id="@+id/bt_exercise_delete"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginRight="4dp"
         android:layout_marginEnd="4dp"
         android:background="@color/colorAccent"
-        android:onClick="addworkout"
         android:text="@string/lb_workout_delete_button"
         android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Inverse"
         app:layout_constraintEnd_toStartOf="@+id/bt_workout_duplicate"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bt_workout_create"
+        app:layout_constraintTop_toBottomOf="@+id/bt_exercise_create"
         android:visibility="gone"/>
 
     <Button
@@ -191,12 +190,11 @@
         android:layout_marginStart="4dp"
         android:layout_marginLeft="4dp"
         android:background="@color/colorPrimary"
-        android:onClick="addworkout"
         android:text="@string/lb_workout_duplicate_button"
         android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Inverse"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/bt_workout_delete"
-        app:layout_constraintTop_toBottomOf="@+id/bt_workout_create"
+        app:layout_constraintStart_toEndOf="@+id/bt_exercise_delete"
+        app:layout_constraintTop_toBottomOf="@+id/bt_exercise_create"
         android:visibility="gone"
         />
 
@@ -206,11 +204,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="@color/colorPrimary"
-        android:onClick="addworkout"
         android:text="@string/lb_workout_update_button"
         android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Inverse"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bt_workout_delete"
+        app:layout_constraintTop_toBottomOf="@+id/bt_exercise_delete"
         android:visibility="gone"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -3,11 +3,12 @@ package com.axfex.dorkout.util;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
-import com.axfex.dorkout.addeditworkout.AddEditWorkoutViewModel;
+import com.axfex.dorkout.exercises.addedit.AddEditExerciseViewModel;
+import com.axfex.dorkout.exercises.list.ExercisesViewModel;
+import com.axfex.dorkout.workouts.addedit.AddEditWorkoutViewModel;
 import com.axfex.dorkout.data.source.WorkoutsRepository;
-import com.axfex.dorkout.workouts.WorkoutsViewModel;
+import com.axfex.dorkout.workouts.list.WorkoutsViewModel;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -32,8 +33,17 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
 
             return (T) new WorkoutsViewModel(workoutsRepository);
         }
-        else if (modelClass.isAssignableFrom(AddEditWorkoutViewModel.class))
+        else
+        if (modelClass.isAssignableFrom(AddEditWorkoutViewModel.class))
             return (T) new AddEditWorkoutViewModel(workoutsRepository);
+
+        else
+        if (modelClass.isAssignableFrom(ExercisesViewModel.class))
+            return (T) new ExercisesViewModel(workoutsRepository);
+
+        else
+        if (modelClass.isAssignableFrom(AddEditExerciseViewModel.class))
+            return (T) new AddEditExerciseViewModel(workoutsRepository);
 
         else {
             throw new IllegalArgumentException("ViewModel Not Found");

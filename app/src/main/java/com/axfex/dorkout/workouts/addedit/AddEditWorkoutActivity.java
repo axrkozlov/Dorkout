@@ -1,4 +1,4 @@
-package com.axfex.dorkout.addeditworkout;
+package com.axfex.dorkout.workouts.addedit;
 
 
 import android.support.v4.app.FragmentManager;
@@ -8,7 +8,7 @@ import com.axfex.dorkout.R;
 import com.axfex.dorkout.util.BaseActivity;
 
 public class AddEditWorkoutActivity extends BaseActivity {
-    private static final String ADD_EDIT_FRAG = "ADD_EDIT_FRAG";
+    private static final String ADD_EDIT_FRAG = "ADD_EDIT_WORKOUT_FRAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +23,7 @@ public class AddEditWorkoutActivity extends BaseActivity {
         }
         addFragmentToActivity(fragmentManager,
                 addEditWorkoutFragment,
-                R.id.root_activity_add_edit,
+                R.id.root_activity_add_edit_workout,
                 ADD_EDIT_FRAG);
     }
 }
