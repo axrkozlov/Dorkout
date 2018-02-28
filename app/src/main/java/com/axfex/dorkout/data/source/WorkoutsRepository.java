@@ -28,7 +28,7 @@ public class WorkoutsRepository  {
         return workoutsDao.getWorkouts();
     }
 
-    public LiveData<Workout> getWorkout(@NonNull Long id) {
+    public LiveData<Workout> getWorkout(@NonNull int id) {
         return workoutsDao.getWorkout(id);
     }
 
@@ -36,10 +36,13 @@ public class WorkoutsRepository  {
         return workoutsDao.insertWorkout(workout);
     }
 
+    public int updateWorkout(@NonNull Workout workout) {
+        return workoutsDao.updateWorkout(workout);
+    }
+
     public void deleteWorkout(@NonNull Workout... workout) {
         workoutsDao.deleteWorkout(workout);
     }
-
 
     public LiveData<List<Exercise>> getExercises(@NonNull final int workoutId) {
         return ExercisesDao.getExercises(workoutId);

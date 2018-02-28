@@ -75,9 +75,9 @@
     <string name="lb_workout_create_button">Create</string>
     <string name="lb_workout_update_button">Update</string>
     <string name="lb_workout_duplicate_button">Duplicate</string>
-    <string name="lb_workout_delete_button">Remove</string>
+    <string name="lb_workout_delete_button">Delete</string>
 
-    <string name="workout_create_name">Name of Workout</string>
+    <string name="workout_create_name">Name of workout</string>
     <string name="workout_create_desc">Any description</string>
 
     <string name="lb_exercise_create_days">workout Days</string>
@@ -85,9 +85,9 @@
     <string name="lb_exercise_create_button">Create</string>
     <string name="lb_exercise_update_button">Update</string>
     <string name="lb_exercise_duplicate_button">Duplicate</string>
-    <string name="lb_exercise_delete_button">Remove</string>
+    <string name="lb_exercise_delete_button">Delete</string>
 
-    <string name="exercise_create_name">Name of Workout</string>
+    <string name="exercise_create_name">Name of exercise</string>
     <string name="exercise_create_desc">Any description</string>
 
 
@@ -97,5 +97,5 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_add_edit_exercise">AddEditExerciseActivity</string>
 
-    <string name="error_no_extra_found">Error Retrieving Item Detail</string>
+    <string name="error_no_extra_found">Error Retrieving Workout Id</string>
 </resources>

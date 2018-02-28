@@ -23,10 +23,13 @@ import android.widget.TextView;
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
 import com.axfex.dorkout.exercises.list.ExercisesActivity;
+import com.axfex.dorkout.util.DateUtils;
 import com.axfex.dorkout.workouts.addedit.AddEditWorkoutActivity;
 import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.util.ViewModelFactory;
 
+import java.text.DateFormatSymbols;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -78,6 +81,12 @@ public class WorkoutsFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data);
+        //TODO:show message ok
+    }
+
     public void setListData(List<Workout> listOfData) {
         this.workouts = listOfData;
         adapter = new WorkoutsAdapter();
@@ -103,9 +112,6 @@ public class WorkoutsFragment extends Fragment {
         return v;
     }
 
-    public void startAddEditActivity() {
-        startActivity(new Intent(getActivity(), AddEditWorkoutActivity.class));
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -139,53 +145,78 @@ public class WorkoutsFragment extends Fragment {
             if (workout == null) {
                 return;
             }
-            holder.nameView.setText(workout.getName());
-            holder.descView.setText(workout.getDescription());
+            holder.mName.setText(workout.getName());
+            holder.mDesc.setText(workout.getDescription());
+            String[] weekDaysText = DateFormatSymbols.getInstance().getShortWeekdays();
+            ArrayList<Boolean> weekDays = DateUtils.parseWeekDays(workout.getWeekDaysComposed());
+            StringBuffer sb = new StringBuffer("");
+
+            for (int i = 0; i < 7; i++) {
+                if (weekDays.get(i)) {
+                    sb.append(weekDaysText[i + 1] + " ");
+                }
+            }
+            holder.mDays.setText(sb.toString());
+            holder.mStartTime.setText(DateUtils.getTimeString(workout.getStartTime()));
+            holder.mTotalTime.setText(DateUtils.getTimeString(workout.getTotalTime()));
+            holder.itemView.setTag(workout.getId());
 
         }
 
         @Override
         public int getItemCount() {
-            if (workouts.size() > 0) {
-                return workouts.size();
-            } else {
-                return 0;
-            }
+            return workouts.size();
 
         }
     }
 
-    private class WorkoutsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView nameView;
-        TextView descView;
-        TextView totalTimeView;
-        TextView daysView;
-        TextView startTimeView;
+    private class WorkoutsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+        TextView mName;
+        TextView mDesc;
+        TextView mTotalTime;
+        TextView mDays;
+        TextView mStartTime;
 
         public WorkoutsViewHolder(View itemView) {
             super(itemView);
-//            itemView.setOnLongClickListener(this);
+            itemView.setOnLongClickListener(this);
             itemView.setOnClickListener(this);
 
-            nameView = itemView.findViewById(R.id.workout_title);
-            descView = itemView.findViewById(R.id.workout_desc);
-            totalTimeView = itemView.findViewById(R.id.workout_desc_total_time);
-            daysView = itemView.findViewById(R.id.workout_desc_days);
-            startTimeView = itemView.findViewById(R.id.workout_desc_start_time);
+            mName = itemView.findViewById(R.id.workout_title);
+            mDesc = itemView.findViewById(R.id.workout_desc);
+            mTotalTime = itemView.findViewById(R.id.workout_desc_total_time);
+            mDays = itemView.findViewById(R.id.workout_desc_days);
+            mStartTime = itemView.findViewById(R.id.workout_desc_start_time);
 
         }
 
         @Override
         public void onClick(View v) {
-            startExercisesActivity(workouts.get(this.getAdapterPosition()).getId(),v);
+            startExercisesActivity(workouts.get(this.getAdapterPosition()).getId());
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            startAddEditActivity(workouts.get(this.getAdapterPosition()).getId());
+            return true;
         }
     }
 
-    private void startExercisesActivity(int workoutId,View viewRoot){
+    private void startExercisesActivity(int workoutId){
         Intent i = new Intent(getActivity(), ExercisesActivity.class);
         i.putExtra(WORKOUT_ID, workoutId);
         startActivity(i);
     }
 
+    public void startAddEditActivity() {
+        startActivityForResult(
+                new Intent(getActivity(), AddEditWorkoutActivity.class),AddEditWorkoutActivity.REQUEST_ADD_TASK);
+    }
+
+    private void startAddEditActivity(int workoutId){
+        Intent i = new Intent(getActivity(), AddEditWorkoutActivity.class);
+        i.putExtra(WORKOUT_ID, workoutId);
+        startActivity(i);
+    }
 
 }

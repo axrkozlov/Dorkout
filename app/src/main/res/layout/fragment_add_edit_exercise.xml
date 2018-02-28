@@ -9,7 +9,7 @@
     >
 
     <EditText
-        android:id="@+id/exercise_create_name"
+        android:id="@+id/et_exercise_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/exercise_create_name"
@@ -20,7 +20,7 @@
 
 
     <EditText
-        android:id="@+id/exercise_create_desc"
+        android:id="@+id/et_exercise_desc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -28,7 +28,7 @@
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exercise_create_name" />
+        app:layout_constraintTop_toBottomOf="@+id/et_exercise_name" />
 
  
 
@@ -51,7 +51,7 @@
         android:background="@color/colorPrimary"
         android:text="@string/lb_exercise_create_button"
         android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Inverse"
-        app:layout_constraintTop_toBottomOf="@+id/exercise_create_desc" />
+        app:layout_constraintTop_toBottomOf="@+id/et_exercise_desc" />
 
 
     <Button

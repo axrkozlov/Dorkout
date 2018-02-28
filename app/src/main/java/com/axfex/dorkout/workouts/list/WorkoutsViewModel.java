@@ -26,14 +26,7 @@ public class WorkoutsViewModel extends ViewModel {
         return workoutsRepository.getWorkouts();
     }
 
-//    public void deleteWorkout(final Workout workout){
-//        Runnable runnable=new Runnable() {
-//            @Override
-//            public void run() {
-//                workoutsRepository.deleteWorkout(workout);
-//            }
-//        };
-//    }
+
 
 
 }

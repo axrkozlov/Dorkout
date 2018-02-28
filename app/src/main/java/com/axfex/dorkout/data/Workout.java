@@ -1,6 +1,7 @@
 package com.axfex.dorkout.data;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 /**
@@ -24,6 +25,11 @@ public class Workout {
 
     public Workout(String name) {
         this.name = name;
+    }
+
+    @Ignore
+    public Workout(int id) {
+        this.id = id;
     }
 
     public int getId() {
