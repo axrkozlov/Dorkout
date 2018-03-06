@@ -1,6 +1,7 @@
 package com.axfex.dorkout.workouts.addedit;
 
 
+import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -46,7 +47,6 @@ public class AddEditWorkoutFragment extends Fragment implements View.OnClickList
     private ToggleButton mDay7;
     int workoutId;
     private static final String WORKOUT_ID = "workout_id";
-    //private Workout workout;
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -124,9 +124,6 @@ public class AddEditWorkoutFragment extends Fragment implements View.OnClickList
         return v;
     }
 
-    private void startWorkoutsActivity() {
-        startActivity(new Intent(getActivity(), WorkoutsActivity.class));
-    }
 
     private Workout makeWorkout(){
         if (mName.getText().length() == 0) {
@@ -189,7 +186,6 @@ public class AddEditWorkoutFragment extends Fragment implements View.OnClickList
         switch (v.getId()) {
             case R.id.bt_workout_create:
                 createWorkout();
-
                 break;
             case R.id.bt_workout_start_time:
                 showTimePickerDialog();
@@ -198,8 +194,7 @@ public class AddEditWorkoutFragment extends Fragment implements View.OnClickList
                 updateWorkout();
                 break;
             case R.id.bt_workout_delete:
-                addEditWorkoutViewModel.deleteWorkout(new Workout(workoutId));
-                startWorkoutsActivity();
+                deleteWorkout();
                 break;
         }
 
@@ -211,8 +206,9 @@ public class AddEditWorkoutFragment extends Fragment implements View.OnClickList
             return;
         }
         addEditWorkoutViewModel.addWorkout(newWorkout);
+        getActivity().setResult(Activity.RESULT_OK);
         getActivity().finish();
-        startWorkoutsActivity();
+
     }
 
     public void updateWorkout(){
@@ -221,7 +217,14 @@ public class AddEditWorkoutFragment extends Fragment implements View.OnClickList
             return;
         }
         addEditWorkoutViewModel.updateWorkout(newWorkout);
-        startWorkoutsActivity();
+        getActivity().setResult(Activity.RESULT_OK);
+        getActivity().finish();
+    }
+
+    public void deleteWorkout(){
+        addEditWorkoutViewModel.deleteWorkout(new Workout(workoutId));
+        getActivity().setResult(Activity.RESULT_OK);
+        getActivity().finish();
     }
 
     public void showTimePickerDialog() {

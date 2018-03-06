@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
@@ -62,23 +63,21 @@ public class WorkoutsFragment extends Fragment {
                 .getAppComponent()
                 .inject(this);
 
+
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
-
         workoutsViewModel = ViewModelProviders.of(this, viewModelFactory).get(WorkoutsViewModel.class);
         workoutsViewModel.getWorkouts().observe(this, new Observer<List<Workout>>() {
             @Override
             public void onChanged(@Nullable List<Workout> workouts) {
-                if (WorkoutsFragment.this.workouts == null) {
                     setListData(workouts);
-                }
             }
         });
+
     }
 
     @Override
@@ -96,6 +95,7 @@ public class WorkoutsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View v = inflater.inflate(R.layout.fragment_workouts, container, false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView = v.findViewById(R.id.rv_workouts);
@@ -108,7 +108,7 @@ public class WorkoutsFragment extends Fragment {
                 startAddEditActivity();
             }
         });
-        // Inflate the layout for this fragment
+
         return v;
     }
 
@@ -216,7 +216,7 @@ public class WorkoutsFragment extends Fragment {
     private void startAddEditActivity(int workoutId){
         Intent i = new Intent(getActivity(), AddEditWorkoutActivity.class);
         i.putExtra(WORKOUT_ID, workoutId);
-        startActivity(i);
+        startActivityForResult(i,AddEditWorkoutActivity.REQUEST_ADD_TASK);
     }
 
 }

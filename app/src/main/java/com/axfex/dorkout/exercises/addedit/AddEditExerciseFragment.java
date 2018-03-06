@@ -1,5 +1,6 @@
 package com.axfex.dorkout.exercises.addedit;
 
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
@@ -78,9 +79,11 @@ public class AddEditExerciseFragment extends Fragment {
         return v;
     }
     private void startExercisesActivity() {
-        Intent i = new Intent(getActivity(), ExercisesActivity.class);
-        i.putExtra(WORKOUT_ID, workoutId);
-        startActivity(i);
+//        Intent i = new Intent(getActivity(), ExercisesActivity.class);
+//        i.putExtra(WORKOUT_ID, workoutId);
+//        startActivity(i);
+        getActivity().setResult(Activity.RESULT_OK);
+        getActivity().finish();
     }
 
 }

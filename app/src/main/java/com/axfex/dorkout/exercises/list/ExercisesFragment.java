@@ -80,9 +80,7 @@ public class ExercisesFragment extends Fragment {
         exercisesViewModel.getExercises(workoutId).observe(this, new Observer<List<Exercise>>() {
             @Override
             public void onChanged(@Nullable List<Exercise> exercises) {
-                if (ExercisesFragment.this.exercises == null) {
                     setExercises(exercises);
-                }
             }
         });
     }
@@ -114,7 +112,7 @@ public class ExercisesFragment extends Fragment {
     private void startAddEditExercise() {
         Intent i = new Intent(getActivity(), AddEditExerciseActivity.class);
         i.putExtra(WORKOUT_ID, workoutId);
-        startActivity(i);
+        startActivityForResult(i,AddEditWorkoutActivity.REQUEST_ADD_TASK);
     }
 
     @Override

@@ -10,6 +10,7 @@ import com.axfex.dorkout.util.BaseActivity;
 
 public class AddEditWorkoutActivity extends BaseActivity {
     public static final int REQUEST_ADD_TASK = 1;
+
     private static final String ADD_EDIT_FRAG = "ADD_EDIT_WORKOUT_FRAG";
     private static final String WORKOUT_ID = "workout_id";
     private int workoutId;
