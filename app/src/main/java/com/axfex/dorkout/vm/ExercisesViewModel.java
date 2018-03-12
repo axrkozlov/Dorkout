@@ -1,4 +1,4 @@
-package com.axfex.dorkout.exercises.list;
+package com.axfex.dorkout.vm;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;

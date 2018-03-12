@@ -16,18 +16,19 @@ public class Workout {
     private Long startTime;
     private Long totalTime;
     private Long lastDate;
+    private Integer order;
     private Integer weekDaysComposed;
     private Integer exercisesCount;
-
+    @Ignore
     private transient Boolean isChecked = false;
-
+    @Ignore
     private transient Boolean isStarted = false;
 
+    @Ignore
     public Workout(String name) {
         this.name = name;
     }
 
-    @Ignore
     public Workout(int id) {
         this.id = id;
     }
@@ -80,6 +81,14 @@ public class Workout {
         this.lastDate = lastDate;
     }
 
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
+    }
+
     public Integer getWeekDaysComposed() {
         return weekDaysComposed;
     }
@@ -100,8 +109,11 @@ public class Workout {
         return isChecked;
     }
 
-    public void setChecked(Boolean checked) {
-        isChecked = checked;
+    public void check(Boolean checked) {
+        isChecked = true;
+    }
+    public void uncheck(Boolean checked) {
+        isChecked = false;
     }
 
     public Boolean getStarted() {

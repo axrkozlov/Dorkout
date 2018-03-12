@@ -1,9 +1,8 @@
-package com.axfex.dorkout.exercises.list;
+package com.axfex.dorkout.views.exercises.list;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.axfex.dorkout.R;

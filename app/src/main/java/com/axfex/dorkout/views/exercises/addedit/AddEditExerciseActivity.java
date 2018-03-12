@@ -1,4 +1,4 @@
-package com.axfex.dorkout.exercises.addedit;
+package com.axfex.dorkout.views.exercises.addedit;
 
 import android.content.Intent;
 import android.os.Bundle;

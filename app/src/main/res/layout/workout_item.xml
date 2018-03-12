@@ -57,6 +57,29 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/workout_title" />
 
+        <TextView
+            android:id="@+id/lb_workout_desc_total_exercises"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="48dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/lb_workout_desc_exercises"
+            android:textColor="@color/secondary_text"
+            android:textSize="@dimen/small_label_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/workout_desc" />
+
+        <TextView
+            android:id="@+id/workout_desc_exercises"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/workout_desc_exercises"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/small_label_text"
+            app:layout_constraintBaseline_toBaselineOf="@+id/lb_workout_desc_total_exercises"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/lb_workout_desc_total_exercises" />
 
         <TextView
             android:id="@+id/lb_workout_desc_total_time"
@@ -69,7 +92,7 @@
             android:textColor="@color/secondary_text"
             android:textSize="@dimen/small_label_text"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/workout_desc" />
+            app:layout_constraintTop_toBottomOf="@+id/lb_workout_desc_total_exercises" />
 
         <TextView
             android:id="@+id/workout_desc_total_time"

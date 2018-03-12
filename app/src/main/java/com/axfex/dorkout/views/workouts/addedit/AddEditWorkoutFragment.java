@@ -1,11 +1,10 @@
-package com.axfex.dorkout.workouts.addedit;
+package com.axfex.dorkout.views.workouts.addedit;
 
 
 import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,8 +21,8 @@ import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
 import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.util.DateUtils;
-import com.axfex.dorkout.util.ViewModelFactory;
-import com.axfex.dorkout.workouts.list.WorkoutsActivity;
+import com.axfex.dorkout.vm.AddEditWorkoutViewModel;
+import com.axfex.dorkout.vm.ViewModelFactory;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -114,28 +113,47 @@ public class AddEditWorkoutFragment extends Fragment implements View.OnClickList
         mDuplicate.setOnClickListener(this);
         mDelete.setOnClickListener(this);
 
-//        mCreate.setOnClickListener(view -> {
-//            Workout newWorkout=new Workout(mName.getText().toString());
-//            addEditWorkoutViewModel.addWorkout(newWorkout);
-//            startWorkoutsActivity();
-//        });
-
-
         return v;
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.bt_workout_create:
+                addWorkout();
+                break;
+            case R.id.bt_workout_start_time:
+                showTimePickerDialog();
+                break;
+            case R.id.bt_workout_update:
+                updateWorkout();
+                break;
+            case R.id.bt_workout_delete:
+                deleteWorkout();
+                break;
+        }
+    }
 
-    private Workout makeWorkout(){
+    private boolean checkNameField(){
         if (mName.getText().length() == 0) {
             Toast.makeText(getContext(), "Please, type Name of workout", Toast.LENGTH_SHORT).show();
-            return null;
+            return false;
+        }
+        return true;
+    }
+
+    private Workout buildWorkout(){
+
+        Workout workout=new Workout(mName.getText().toString());
+        if (workoutId != 0) {
+            workout.setId(workoutId);
+        } else {
+            workout.setLastDate(0L);
+            workout.setTotalTime(0L);
+            workout.setExercisesCount(0);
         }
 
-        Workout newWorkout=new Workout(mName.getText().toString());
-        if (workoutId != 0) {
-            newWorkout.setId(workoutId);
-        }
-        newWorkout.setDescription(mDesc.getText().toString());
+        workout.setDescription(mDesc.getText().toString());
         ArrayList<Boolean> weekDays = new ArrayList<>();
         weekDays.add(mDay1.isChecked());
         weekDays.add(mDay2.isChecked());
@@ -145,15 +163,19 @@ public class AddEditWorkoutFragment extends Fragment implements View.OnClickList
         weekDays.add(mDay6.isChecked());
         weekDays.add(mDay7.isChecked());
 
-        newWorkout.setWeekDaysComposed(DateUtils.composeWeekDays(weekDays));
+        workout.setWeekDaysComposed(DateUtils.composeWeekDays(weekDays));
 
         String startTimeText = mStartTime.getText().toString();
         if (!startTimeText.equals(getResources().getString(R.string.workout_id_tag))) {
             long startTimeLong = DateUtils.getTimeMillis(startTimeText);
-            newWorkout.setStartTime(startTimeLong);
+            workout.setStartTime(startTimeLong);
         }
 
-        return newWorkout;
+
+
+
+
+        return workout;
     }
 
     private void bindWorkoutToEdit(Workout workout) {
@@ -181,50 +203,33 @@ public class AddEditWorkoutFragment extends Fragment implements View.OnClickList
 
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.bt_workout_create:
-                createWorkout();
-                break;
-            case R.id.bt_workout_start_time:
-                showTimePickerDialog();
-                break;
-            case R.id.bt_workout_update:
-                updateWorkout();
-                break;
-            case R.id.bt_workout_delete:
-                deleteWorkout();
-                break;
+    public void addWorkout(){
+        if (!checkNameField()){
+            return;
         }
-
-    }
-
-    public void createWorkout(){
-        Workout newWorkout = makeWorkout();
+        Workout newWorkout = buildWorkout();
         if (newWorkout == null) {
             return;
         }
         addEditWorkoutViewModel.addWorkout(newWorkout);
-        getActivity().setResult(Activity.RESULT_OK);
-        getActivity().finish();
-
+        close();
     }
 
     public void updateWorkout(){
-        Workout newWorkout = makeWorkout();
+        if (!checkNameField()){
+            return;
+        }
+        Workout newWorkout = buildWorkout();
         if (newWorkout == null) {
             return;
         }
         addEditWorkoutViewModel.updateWorkout(newWorkout);
-        getActivity().setResult(Activity.RESULT_OK);
-        getActivity().finish();
+        close();
     }
 
     public void deleteWorkout(){
         addEditWorkoutViewModel.deleteWorkout(new Workout(workoutId));
-        getActivity().setResult(Activity.RESULT_OK);
-        getActivity().finish();
+        close();
     }
 
     public void showTimePickerDialog() {
@@ -241,4 +246,10 @@ public class AddEditWorkoutFragment extends Fragment implements View.OnClickList
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         mStartTime.setText(String.format("%02d:%02d", hourOfDay, minute));
     }
+
+    private void close() {
+        getActivity().setResult(Activity.RESULT_OK);
+        getActivity().finish();
+    }
+
 }

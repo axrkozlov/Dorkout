@@ -8,9 +8,13 @@
     <string name="lb_total_time">time</string>
     <string name="lb_rest_time">rest</string>
 
+
+    <string name="lb_workout_desc_exercises">Exercises:</string>
     <string name="lb_workout_desc_total_time">Total time:</string>
     <string name="lb_workout_desc_days">Days:</string>
     <string name="lb_workout_desc_start_time">Start time:</string>
+
+
 
 
     <string name="lb_last_result">Last result</string>
@@ -46,6 +50,7 @@
 
     <string name="workout_title">Mourning workout</string>
     <string name="workout_desc">Horizontal bar, jump, run</string>
+    <string name="workout_desc_exercises">20</string>
     <string name="workout_desc_total_time">1:20</string>
     <string name="workout_desc_days">Mon Wed</string>
     <string name="workout_null_start_time">--:--</string>
@@ -79,7 +84,6 @@
 
     <string name="workout_create_name">Name of workout</string>
     <string name="workout_create_desc">Any description</string>
-
     <string name="lb_exercise_create_days">workout Days</string>
     <string name="lb_exercise_create_start_time">Start at</string>
     <string name="lb_exercise_create_button">Create</string>

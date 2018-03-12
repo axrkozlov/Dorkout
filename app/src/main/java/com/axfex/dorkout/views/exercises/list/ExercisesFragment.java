@@ -1,11 +1,9 @@
-package com.axfex.dorkout.exercises.list;
+package com.axfex.dorkout.views.exercises.list;
 
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -20,11 +18,10 @@ import android.widget.TextView;
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
 import com.axfex.dorkout.data.Exercise;
-import com.axfex.dorkout.data.Workout;
-import com.axfex.dorkout.exercises.addedit.AddEditExerciseActivity;
-import com.axfex.dorkout.util.ViewModelFactory;
-import com.axfex.dorkout.workouts.addedit.AddEditWorkoutActivity;
-import com.axfex.dorkout.workouts.list.WorkoutsFragment;
+import com.axfex.dorkout.views.exercises.addedit.AddEditExerciseActivity;
+import com.axfex.dorkout.vm.ExercisesViewModel;
+import com.axfex.dorkout.vm.ViewModelFactory;
+import com.axfex.dorkout.views.workouts.addedit.AddEditWorkoutActivity;
 
 import java.util.List;
 

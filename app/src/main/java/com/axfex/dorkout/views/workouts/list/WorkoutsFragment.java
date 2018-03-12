@@ -1,33 +1,28 @@
-package com.axfex.dorkout.workouts.list;
+package com.axfex.dorkout.views.workouts.list;
 
-import android.app.Activity;
-import android.app.ActivityOptions;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.transition.Fade;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
-import com.axfex.dorkout.exercises.list.ExercisesActivity;
+import com.axfex.dorkout.views.exercises.list.ExercisesActivity;
 import com.axfex.dorkout.util.DateUtils;
-import com.axfex.dorkout.workouts.addedit.AddEditWorkoutActivity;
+import com.axfex.dorkout.vm.WorkoutsViewModel;
+import com.axfex.dorkout.views.workouts.addedit.AddEditWorkoutActivity;
 import com.axfex.dorkout.data.Workout;
-import com.axfex.dorkout.util.ViewModelFactory;
+import com.axfex.dorkout.vm.ViewModelFactory;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
@@ -156,6 +151,11 @@ public class WorkoutsFragment extends Fragment {
                     sb.append(weekDaysText[i + 1] + " ");
                 }
             }
+            Integer exercisesCount=workout.getExercisesCount();
+            if (exercisesCount != null) {
+                holder.mExercises.setText(exercisesCount.toString());
+            }
+
             holder.mDays.setText(sb.toString());
             holder.mStartTime.setText(DateUtils.getTimeString(workout.getStartTime()));
             holder.mTotalTime.setText(DateUtils.getTimeString(workout.getTotalTime()));
@@ -173,6 +173,7 @@ public class WorkoutsFragment extends Fragment {
     private class WorkoutsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         TextView mName;
         TextView mDesc;
+        TextView mExercises;
         TextView mTotalTime;
         TextView mDays;
         TextView mStartTime;
@@ -184,6 +185,7 @@ public class WorkoutsFragment extends Fragment {
 
             mName = itemView.findViewById(R.id.workout_title);
             mDesc = itemView.findViewById(R.id.workout_desc);
+            mExercises = itemView.findViewById(R.id.workout_desc_exercises);
             mTotalTime = itemView.findViewById(R.id.workout_desc_total_time);
             mDays = itemView.findViewById(R.id.workout_desc_days);
             mStartTime = itemView.findViewById(R.id.workout_desc_start_time);

@@ -1,4 +1,4 @@
-package com.axfex.dorkout.workouts.list;
+package com.axfex.dorkout.vm;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
@@ -26,6 +26,8 @@ public class WorkoutsViewModel extends ViewModel {
     public LiveData<List<Workout>> getWorkouts(){
         return workoutsRepository.getWorkouts();
     }
+
+
 
 
 

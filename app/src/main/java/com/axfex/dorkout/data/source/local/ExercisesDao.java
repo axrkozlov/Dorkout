@@ -5,7 +5,10 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
+
 import com.axfex.dorkout.data.Exercise;
+import com.axfex.dorkout.data.Workout;
 
 import java.util.List;
 
@@ -19,10 +22,13 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 public interface ExercisesDao {
 
     @Query("SELECT * FROM Exercise WHERE id = :id")
-    LiveData<Exercise> getExercise(Long id);
+    LiveData<Exercise> getExercise(int id);
 
     @Query("SELECT * from Exercise where workoutId = :workoutId")
     LiveData<List<Exercise>> getExercises(final int workoutId);
+
+    @Query("SELECT COUNT(*) from Exercise  where workoutId = :workoutId")
+    LiveData<Integer> getExercisesCount(final int workoutId);
 
     //Test stuff
     @Query("SELECT * from Exercise")
@@ -30,6 +36,9 @@ public interface ExercisesDao {
 
     @Insert(onConflict = REPLACE)
     Long insertExercise(Exercise exercise);
+
+    @Update
+    int updateExercise(Exercise exercise);
 
     @Delete
     void deleteExercise(Exercise... exercises);

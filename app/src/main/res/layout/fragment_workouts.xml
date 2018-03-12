@@ -5,7 +5,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 xmlns:tools="http://schemas.android.com/tools"
-tools:context="com.axfex.dorkout.workouts.list.WorkoutsFragment"
+tools:context=".views.workouts.list.WorkoutsFragment"
 android:background="#666666">
 
 <android.support.design.widget.FloatingActionButton
