@@ -42,16 +42,29 @@
     <!--app:layout_constraintTop_toBottomOf="@+id/lb_exercise_create_start_time" />-->
 
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_sets"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bt_exercise_create"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_exercise_desc">
+
+    </android.support.v7.widget.RecyclerView>
+
     <Button
         android:id="@+id/bt_exercise_create"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
         android:background="@color/colorPrimary"
         android:text="@string/lb_exercise_create_button"
         android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Inverse"
-        app:layout_constraintTop_toBottomOf="@+id/et_exercise_desc" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="12dp" />
 
 
     <Button

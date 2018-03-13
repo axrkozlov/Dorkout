@@ -6,6 +6,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +18,16 @@ import android.widget.Toast;
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
 import com.axfex.dorkout.data.Exercise;
+import com.axfex.dorkout.data.Set;
 import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.vm.AddEditExerciseViewModel;
+import com.axfex.dorkout.vm.AddEditSetViewModel;
+import com.axfex.dorkout.vm.SetsViewModel;
 import com.axfex.dorkout.vm.ViewModelFactory;
 import com.axfex.dorkout.vm.AddEditWorkoutViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -33,13 +41,20 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
     int exerciseId;
     private Workout mWorkout;
     private Integer mExercisesCount;
+    private List<Set> mSets;
 
+    private RecyclerView recyclerView;
+    private  RecyclerView.Adapter adapter;
+    private LayoutInflater layoutInflater;
     private static final String WORKOUT_ID = "workout_id";
+    private static final String EXERCISE_ID = "exercise_id";
+
 
 
     @Inject
     ViewModelFactory viewModelFactory;
-
+    AddEditSetViewModel addEditSetViewModel;
+    SetsViewModel setsViewModel;
     AddEditExerciseViewModel addEditExerciseViewModel;
     AddEditWorkoutViewModel addEditWorkoutViewModel;
 
@@ -66,13 +81,31 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        setsViewModel=ViewModelProviders.of(this,viewModelFactory).get(SetsViewModel.class);
+        addEditSetViewModel= ViewModelProviders.of(this,viewModelFactory).get(AddEditSetViewModel.class);
         addEditExerciseViewModel= ViewModelProviders.of(this,viewModelFactory).get(AddEditExerciseViewModel.class);
         addEditWorkoutViewModel= ViewModelProviders.of(this,viewModelFactory).get(AddEditWorkoutViewModel.class);
+
+        setsViewModel.getSets(exerciseId).observe(this, new Observer<List<Set>>() {
+            @Override
+            public void onChanged(@Nullable List<Set> sets) {
+                if (mSets!=null) {
+                    mSets = sets;
+                    swapAdapter();
+                } else {
+                    mSets=new ArrayList<Set>();
+                    addset();
+                }
+            }
+        });
+
         addEditExerciseViewModel.getExercisesCount(workoutId).observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(@Nullable Integer exercisesCount) {
                 if (exercisesCount != null) {
                     mExercisesCount=exercisesCount;
+                } else {
+                        mExercisesCount=0;
                 }
             }
         });
@@ -84,6 +117,7 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
                 }
             }
         });
+
         addEditWorkoutViewModel.getWorkout(workoutId).observe(this, new Observer<Workout>() {
             @Override
             public void onChanged(@Nullable Workout workout) {
@@ -94,13 +128,24 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
         });
     }
 
+    private void swapAdapter(){
+        adapter = new SetsAdapter();
+        recyclerView.setAdapter(adapter);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v =inflater.inflate(R.layout.fragment_add_edit_exercise, container, false);
         mName =v.findViewById(R.id.et_exercise_name);
-        Button done=v.findViewById(R.id.bt_exercise_create);
-        done.setOnClickListener(this);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView = v.findViewById(R.id.rv_sets);
+        recyclerView.setLayoutManager(layoutManager);
+        layoutInflater = getActivity().getLayoutInflater();
+
+        v.findViewById(R.id.bt_exercise_create).setOnClickListener(this);
+        //v.findViewById(R.id.bt_set_add).setOnClickListener(this);
 
         return v;
     }
@@ -120,8 +165,12 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
             case R.id.bt_workout_delete:
                 deleteExercise();
                 break;
+            case R.id.bt_set_add:
+                addset();
         }
     }
+
+
 
     private boolean checkNameField(){
         if (mName.getText().length() == 0) {
@@ -164,9 +213,6 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
         if (mWorkout == null) {
             return;
         }
-        if (mExercisesCount == null) {
-            mExercisesCount=0;
-        }
         mWorkout.setExercisesCount(++mExercisesCount);
         addEditWorkoutViewModel.updateWorkout(mWorkout);
     }
@@ -180,4 +226,44 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
         getActivity().setResult(Activity.RESULT_OK);
         getActivity().finish();
     }
+
+    private void addset(){
+        mSets.add(new Set(0));
+        swapAdapter();
+
+    }
+
+    private class SetsAdapter extends RecyclerView.Adapter<SetsViewHolder>{
+
+
+        @Override
+        public SetsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            LayoutInflater inflater=LayoutInflater.from(getContext());
+            View view=inflater.inflate(R.layout.item_set,parent,false);
+            SetsViewHolder viewHolder=new SetsViewHolder(view);
+
+            return viewHolder;
+        }
+
+        @Override
+        public void onBindViewHolder(SetsViewHolder holder, int position) {
+            holder.bt_add_set.setOnClickListener(AddEditExerciseFragment.this);
+        }
+
+        @Override
+        public int getItemCount() {
+            return mSets.size();
+        }
+    }
+
+
+    private class SetsViewHolder extends RecyclerView.ViewHolder{
+        Button bt_add_set;
+        public SetsViewHolder(View itemView) {
+            super(itemView);
+            bt_add_set=itemView.findViewById(R.id.bt_set_add);
+
+        }
+    }
+
 }

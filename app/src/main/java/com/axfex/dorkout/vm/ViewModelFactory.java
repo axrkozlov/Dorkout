@@ -42,11 +42,11 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             return (T) new AddEditExerciseViewModel(workoutsRepository);
 
         else
-        if (modelClass.isAssignableFrom(AddEditExerciseViewModel.class))
+        if (modelClass.isAssignableFrom(SetsViewModel.class))
             return (T) new SetsViewModel(workoutsRepository);
 
         else
-        if (modelClass.isAssignableFrom(AddEditExerciseViewModel.class))
+        if (modelClass.isAssignableFrom(AddEditSetViewModel.class))
             return (T) new AddEditSetViewModel(workoutsRepository);
 
         else {

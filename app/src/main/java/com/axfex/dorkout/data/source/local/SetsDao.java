@@ -18,13 +18,13 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
  */
 @Dao
 public interface SetsDao {
-    @Query("SELECT * FROM 'Set' WHERE id = :id")
+    @Query("SELECT * FROM `Set` WHERE id = :id")
     LiveData<Set> getSet(int id);
 
-    @Query("SELECT * from 'Set' where exerciseId = :exerciseId")
+    @Query("SELECT * from `Set` where exerciseId = :exerciseId")
     LiveData<List<Set>> getSets(final int exerciseId);
 
-    @Query("SELECT COUNT(*) from 'Set'  where exerciseId = :exerciseId")
+    @Query("SELECT COUNT(*) from `Set`  where exerciseId = :exerciseId")
     LiveData<Integer> getSetsCount(final int exerciseId);
 
     @Insert(onConflict = REPLACE)

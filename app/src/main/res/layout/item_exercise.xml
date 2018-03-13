@@ -78,7 +78,7 @@
 
             <include
                 android:id="@+id/exercise_info_bar"
-                layout="@layout/exercise_item_info_bar"
+                layout="@layout/item_exercise_info_bar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"

@@ -58,12 +58,12 @@
 
     <string name="exercise_number">2</string>
     <string name="exercise_title">Barbell</string>
-    <string name="exercise_desc">Up and high, weight: 11kg. sets 3, reps 115 </string>
+    <string name="exercise_desc">Up and high, weight: 11kg. mSets 3, reps 115 </string>
 
 
     <string name="norm_time">1:24</string>
     <string name="norm_reps">31</string>
-    <string name="sets">3</string>
+    <string name="mSets">3</string>
     <string name="weight">50</string>
     <string name="rest">3:30</string>
     <string name="result_time">1:24:29</string>
