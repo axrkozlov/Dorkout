@@ -19,7 +19,7 @@ public class ExercisesActivity extends BaseActivity {
         Intent i = getIntent();
 
         if (i.hasExtra(WORKOUT_ID)) {
-            int workoutId = i.getIntExtra(WORKOUT_ID,0);
+            Long workoutId = i.getLongExtra(WORKOUT_ID,0L);
 
             FragmentManager fragmentManager = getSupportFragmentManager();
             ExercisesFragment exercisesFragment = (ExercisesFragment) fragmentManager.findFragmentByTag(EXERCISES_FRAG);

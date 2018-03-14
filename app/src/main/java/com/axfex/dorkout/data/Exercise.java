@@ -7,6 +7,9 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 /**
@@ -22,9 +25,9 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 
     public class Exercise {
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private Long id;
     @ColumnInfo(name = "workoutId")
-    private final int workoutId;
+    private Long workoutId;
     private String name;
     private String description;
     private Integer order;
@@ -33,22 +36,28 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
     private transient Boolean isChecked = false;
     @Ignore
     private transient Boolean isStarted = false;
+    @Ignore
+    private List<Set> sets;
 
-    public Exercise(String name, final int workoutId) {
+    public Exercise(String name, final Long workoutId) {
         this.name = name;
         this.workoutId=workoutId;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getWorkoutId() {
+    public Long getWorkoutId() {
         return workoutId;
+    }
+
+    public void setWorkoutId(Long workoutId) {
+        this.workoutId = workoutId;
     }
 
     public String getName() {
@@ -81,6 +90,14 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 
     public void setSetsCount(Integer setsCount) {
         this.setsCount = setsCount;
+    }
+
+    public List<Set> getSets() {
+        return sets;
+    }
+
+    public void setSets(List<Set> sets) {
+        this.sets = sets;
     }
 
     public Boolean getChecked() {

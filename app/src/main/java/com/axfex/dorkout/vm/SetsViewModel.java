@@ -20,7 +20,7 @@ public class SetsViewModel extends ViewModel {
         this.workoutsRepository = workoutsRepository;
     }
 
-    public LiveData<List<Set>> getSets(@NonNull int exerciseId){
+    public LiveData<List<Set>> getSets(@NonNull Long exerciseId){
         return workoutsRepository.getSets(exerciseId);
     }
 }

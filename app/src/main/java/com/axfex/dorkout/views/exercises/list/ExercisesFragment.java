@@ -41,17 +41,17 @@ public class ExercisesFragment extends Fragment {
 
     private static final String WORKOUT_ID = "workout_id";
 
-    private int workoutId;
+    private Long workoutId;
     private String mParam2;
 
     public ExercisesFragment() {
         // Required empty public constructor
     }
 
-    public static ExercisesFragment newInstance(int workoutId) {
+    public static ExercisesFragment newInstance(Long workoutId) {
         ExercisesFragment fragment = new ExercisesFragment();
         Bundle args = new Bundle();
-        args.putInt(WORKOUT_ID, workoutId);
+        args.putLong(WORKOUT_ID, workoutId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,7 +60,7 @@ public class ExercisesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            workoutId = getArguments().getInt(WORKOUT_ID);
+            workoutId = getArguments().getLong(WORKOUT_ID);
         }
         ((WorkoutApplication) getActivity().getApplication())
                 .getAppComponent()

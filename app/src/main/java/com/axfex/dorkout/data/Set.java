@@ -21,9 +21,9 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 )
 public class Set {
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private Long id;
     @ColumnInfo(name = "exerciseId")
-    private final int exerciseId;
+    private Long exerciseId;
     private Integer order;
     private Integer normWeight;
     private Integer normRepeats;
@@ -36,20 +36,24 @@ public class Set {
     @Ignore
     private transient Boolean isStarted = false;
 
-    public Set(int exerciseId) {
+    public Set(Long exerciseId) {
         this.exerciseId = exerciseId;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getExerciseId() {
+    public Long getExerciseId() {
         return exerciseId;
+    }
+
+    public void setExerciseId(Long exerciseId) {
+        this.exerciseId = exerciseId;
     }
 
     public Integer getOrder() {

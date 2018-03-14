@@ -2,6 +2,8 @@ package com.axfex.dorkout.vm;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -23,15 +25,43 @@ public class AddEditExerciseViewModel extends ViewModel {
         this.workoutsRepository = workoutsRepository;
     }
 
-    public void addExercise(@NonNull final Exercise exercise){
+    public void addExercise(@NonNull final Exercise exercise) {
+
         new Thread(() -> workoutsRepository.createExercise(exercise)).start();
+
+//        final Handler handler = new Handler();
+//        final Long[] res=new Long[1];
+//        Runnable runnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                final Long createdId= workoutsRepository.createExercise(exercise);
+//
+//                handler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        res[0]=createdId;
+//                        //res[0] = createdId;
+//                    }
+//                });
+//
+//            }
+//
+//        };
+//        new Thread(runnable).start();
+//        LiveData<Long> longLiveData = new LiveData>();
+//        return new LiveData<>;
+
+
+
+
+
     }
 
-    public LiveData<Exercise> getExercise(@NonNull final int exerciseId) {
+    public LiveData<Exercise> getExercise(@NonNull final Long exerciseId) {
         return workoutsRepository.getExercise(exerciseId);
     }
 
-    public LiveData<Integer> getExercisesCount(@NonNull final int workoutId){
+    public LiveData<Integer> getExercisesCount(@NonNull final Long workoutId){
         return workoutsRepository.getExercisesCount(workoutId);
     }
 

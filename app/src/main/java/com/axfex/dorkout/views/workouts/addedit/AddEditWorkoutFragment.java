@@ -44,7 +44,7 @@ public class AddEditWorkoutFragment extends Fragment implements View.OnClickList
     private ToggleButton mDay5;
     private ToggleButton mDay6;
     private ToggleButton mDay7;
-    int workoutId;
+    private Long workoutId;
     private static final String WORKOUT_ID = "workout_id";
 
     @Inject
@@ -65,7 +65,7 @@ public class AddEditWorkoutFragment extends Fragment implements View.OnClickList
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         if (getArguments() != null) {
-            workoutId = getArguments().getInt(WORKOUT_ID);
+            workoutId = getArguments().getLong(WORKOUT_ID);
         }
         ((WorkoutApplication) getActivity().getApplication())
                 .getAppComponent()

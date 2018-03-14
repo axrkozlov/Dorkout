@@ -24,7 +24,7 @@ public class AddEditWorkoutViewModel extends ViewModel {
         new Thread(()->workoutsRepository.createWorkout(workout)).start();
     }
 
-    public LiveData<Workout> getWorkout(@NonNull final int workoutId) {
+    public LiveData<Workout> getWorkout(@NonNull final Long workoutId) {
         return workoutsRepository.getWorkout(workoutId);
     }
 

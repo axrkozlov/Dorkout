@@ -21,7 +21,7 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 public interface WorkoutsDao {
 
     @Query("SELECT * FROM Workout WHERE id = :id")
-    LiveData<Workout> getWorkout(int id);
+    LiveData<Workout> getWorkout(Long id);
 
     @Query("SELECT * FROM Workout")
     LiveData<List<Workout>> getWorkouts();

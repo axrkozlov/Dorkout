@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,8 +38,8 @@ import javax.inject.Inject;
 public class AddEditExerciseFragment extends Fragment implements View.OnClickListener {
 
     private EditText mName;
-    int workoutId;
-    int exerciseId;
+    Long workoutId;
+    Long exerciseId;
     private Workout mWorkout;
     private Integer mExercisesCount;
     private List<Set> mSets;
@@ -58,10 +59,10 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
     AddEditExerciseViewModel addEditExerciseViewModel;
     AddEditWorkoutViewModel addEditWorkoutViewModel;
 
-    public static AddEditExerciseFragment newInstance(int workoutId) {
+    public static AddEditExerciseFragment newInstance(Long workoutId) {
         AddEditExerciseFragment fragment = new AddEditExerciseFragment();
         Bundle args = new Bundle();
-        args.putInt(WORKOUT_ID, workoutId);
+        args.putLong(WORKOUT_ID, workoutId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -71,7 +72,7 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         if (getArguments() != null) {
-            workoutId = getArguments().getInt(WORKOUT_ID);
+            workoutId = getArguments().getLong(WORKOUT_ID);
         }
         ((WorkoutApplication) getActivity().getApplication())
                 .getAppComponent()
@@ -170,8 +171,6 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
         }
     }
 
-
-
     private boolean checkNameField(){
         if (mName.getText().length() == 0) {
             Toast.makeText(getContext(), "Please, type Name of workout", Toast.LENGTH_SHORT).show();
@@ -181,7 +180,10 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
     }
 
     private Exercise buildExercise(){
-        return new Exercise(mName.getText().toString(),workoutId);
+        Exercise newExercise=new Exercise(mName.getText().toString(),workoutId);
+        newExercise.setSets(mSets);
+
+        return newExercise;
     }
 
     private void bindExerciseToEdit(Exercise exercise) {
@@ -200,9 +202,18 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
         if (newExercise == null) {
             return;
         }
+
         addEditExerciseViewModel.addExercise(newExercise);
+
+
         updateWorkout();
+        //Log.e("ADDD", "addExercise: "+result.toString());
+        //Toast.makeText(getContext().getApplicationContext(), "added id:"+result.toString(), Toast.LENGTH_SHORT).show();
         close();
+    }
+
+    private void showId(Long insertedId){
+        Toast.makeText(getContext(), "added id:"+insertedId.toString(), Toast.LENGTH_SHORT).show();
     }
 
     private void updateExercise(){
@@ -228,7 +239,7 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
     }
 
     private void addset(){
-        mSets.add(new Set(0));
+        mSets.add(new Set(0L));
         swapAdapter();
 
     }

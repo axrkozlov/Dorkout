@@ -10,7 +10,7 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity
 public class Workout {
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private Long id;
     private String name;
     private String description;
     private Long startTime;
@@ -29,15 +29,15 @@ public class Workout {
         this.name = name;
     }
 
-    public Workout(int id) {
+    public Workout(Long id) {
         this.id = id;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

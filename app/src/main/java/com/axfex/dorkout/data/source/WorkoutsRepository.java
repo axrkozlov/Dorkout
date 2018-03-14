@@ -10,6 +10,8 @@ import com.axfex.dorkout.data.source.local.ExercisesDao;
 import com.axfex.dorkout.data.source.local.SetsDao;
 import com.axfex.dorkout.data.source.local.WorkoutsDao;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,7 +41,7 @@ public class WorkoutsRepository  {
         return workoutsDao.getWorkouts();
     }
 
-    public LiveData<Workout> getWorkout(@NonNull int id) {
+    public LiveData<Workout> getWorkout(@NonNull Long id) {
         return workoutsDao.getWorkout(id);
     }
 
@@ -53,20 +55,30 @@ public class WorkoutsRepository  {
 
     /**Exercises**/
 
-    public Long createExercise(@NonNull Exercise exercise) {
-        return exercisesDao.insertExercise(exercise);
+    public void createExercise(@NonNull Exercise exercise) {
+
+        Long exerciseId=
+                exercisesDao.insertExercise(exercise);
+        List<Set> sets=exercise.getSets();
+
+        for (Set set:sets) {
+            set.setExerciseId(exerciseId);
+        }
+        Set[] setsArray=sets.toArray(new Set[sets.size()]);
+        createSets(setsArray);
+
     }
 
-    public LiveData<List<Exercise>> getExercises(@NonNull final int workoutId) {
+    public LiveData<List<Exercise>> getExercises(@NonNull final Long workoutId) {
         return exercisesDao.getExercises(workoutId);
         //return exercisesDao.getAllExercises();
     }
 
-    public LiveData<Exercise> getExercise(@NonNull int id) {
+    public LiveData<Exercise> getExercise(@NonNull Long id) {
         return exercisesDao.getExercise(id);
     }
 
-    public LiveData<Integer> getExercisesCount(@NonNull final int workoutId) {
+    public LiveData<Integer> getExercisesCount(@NonNull final Long workoutId) {
         return exercisesDao.getExercisesCount(workoutId);
     }
 
@@ -80,20 +92,20 @@ public class WorkoutsRepository  {
 
     /**Sets**/
 
-    public Long createSet(@NonNull Set set) {
-        return setsDao.insertSet(set);
+    public Long[] createSets(@NonNull Set... sets) {
+        return setsDao.insertSets(sets);
     }
 
-    public LiveData<List<Set>> getSets(@NonNull final int exerciseId) {
+    public LiveData<List<Set>> getSets(@NonNull final Long exerciseId) {
         return setsDao.getSets(exerciseId);
         //return exercisesDao.getAllExercises();
     }
 
-    public LiveData<Set> getSet(@NonNull int id) {
+    public LiveData<Set> getSet(@NonNull Long id) {
         return setsDao.getSet(id);
     }
 
-    public LiveData<Integer> getSetsCount(@NonNull final int exerciseId) {
+    public LiveData<Integer> getSetsCount(@NonNull final Long exerciseId) {
         return setsDao.getSetsCount(exerciseId);
     }
 

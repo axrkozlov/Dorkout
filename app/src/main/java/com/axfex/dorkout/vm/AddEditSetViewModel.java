@@ -17,15 +17,15 @@ public class AddEditSetViewModel extends ViewModel {
         this.workoutsRepository = workoutsRepository;
     }
 
-    public void addSet(@NonNull final Set set){
-        new Thread(() -> workoutsRepository.createSet(set)).start();
+    public void addSet(@NonNull final Set... sets){
+        new Thread(() -> workoutsRepository.createSets(sets)).start();
     }
 
-    public LiveData<Set> getSet(@NonNull final int setId) {
+    public LiveData<Set> getSet(@NonNull final Long setId) {
         return workoutsRepository.getSet(setId);
     }
 
-    public LiveData<Integer> getSetsCount(@NonNull final int exerciseId){
+    public LiveData<Integer> getSetsCount(@NonNull final Long exerciseId){
         return workoutsRepository.getSetsCount(exerciseId);
     }
 

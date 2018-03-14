@@ -1,7 +1,7 @@
 package com.axfex.dorkout.views.workouts.list;
 
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
+import 	android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -204,7 +204,7 @@ public class WorkoutsFragment extends Fragment {
         }
     }
 
-    private void startExercisesActivity(int workoutId){
+    private void startExercisesActivity(Long workoutId){
         Intent i = new Intent(getActivity(), ExercisesActivity.class);
         i.putExtra(WORKOUT_ID, workoutId);
         startActivity(i);
@@ -215,7 +215,7 @@ public class WorkoutsFragment extends Fragment {
                 new Intent(getActivity(), AddEditWorkoutActivity.class),AddEditWorkoutActivity.REQUEST_ADD_TASK);
     }
 
-    private void startAddEditActivity(int workoutId){
+    private void startAddEditActivity(Long workoutId){
         Intent i = new Intent(getActivity(), AddEditWorkoutActivity.class);
         i.putExtra(WORKOUT_ID, workoutId);
         startActivityForResult(i,AddEditWorkoutActivity.REQUEST_ADD_TASK);
