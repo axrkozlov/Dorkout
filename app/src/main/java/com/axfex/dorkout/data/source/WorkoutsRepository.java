@@ -2,6 +2,7 @@ package com.axfex.dorkout.data.source;
 
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.axfex.dorkout.data.Exercise;
 import com.axfex.dorkout.data.Set;
@@ -59,8 +60,9 @@ public class WorkoutsRepository  {
 
         Long exerciseId=
                 exercisesDao.insertExercise(exercise);
-        List<Set> sets=exercise.getSets();
 
+        List<Set> sets=exercise.getSets();
+        Log.e( "ID",exerciseId.toString());
         for (Set set:sets) {
             set.setExerciseId(exerciseId);
         }

@@ -52,10 +52,12 @@ public class AddEditWorkoutFragment extends Fragment implements View.OnClickList
     AddEditWorkoutViewModel addEditWorkoutViewModel;
 
 
-    public static AddEditWorkoutFragment newInstance(int workoutId) {
+    public static AddEditWorkoutFragment newInstance(@Nullable Long workoutId) {
         AddEditWorkoutFragment fragment = new AddEditWorkoutFragment();
         Bundle args = new Bundle();
-        args.putInt(WORKOUT_ID, workoutId);
+        if (workoutId != null) {
+            args.putLong(WORKOUT_ID, workoutId);
+        }
         fragment.setArguments(args);
         return fragment;
     }

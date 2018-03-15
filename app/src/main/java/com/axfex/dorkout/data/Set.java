@@ -36,9 +36,7 @@ public class Set {
     @Ignore
     private transient Boolean isStarted = false;
 
-    public Set(Long exerciseId) {
-        this.exerciseId = exerciseId;
-    }
+    public Set() {}
 
     public Long getId() {
         return id;

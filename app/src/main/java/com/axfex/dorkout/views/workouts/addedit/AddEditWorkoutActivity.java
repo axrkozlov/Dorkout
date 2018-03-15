@@ -13,7 +13,7 @@ public class AddEditWorkoutActivity extends BaseActivity {
 
     private static final String ADD_EDIT_FRAG = "ADD_EDIT_WORKOUT_FRAG";
     private static final String WORKOUT_ID = "workout_id";
-    private int workoutId;
+    private Long workoutId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,10 +22,8 @@ public class AddEditWorkoutActivity extends BaseActivity {
 
         Intent i = getIntent();
         if (i.hasExtra(WORKOUT_ID)) {
-
-            workoutId = i.getIntExtra(WORKOUT_ID, 0);
-
-            }
+            workoutId = i.getLongExtra(WORKOUT_ID, 0L);
+        }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         AddEditWorkoutFragment addEditWorkoutFragment = (AddEditWorkoutFragment) fragmentManager.findFragmentByTag(ADD_EDIT_FRAG);

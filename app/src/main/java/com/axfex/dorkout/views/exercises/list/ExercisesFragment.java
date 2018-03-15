@@ -21,7 +21,6 @@ import com.axfex.dorkout.data.Exercise;
 import com.axfex.dorkout.views.exercises.addedit.AddEditExerciseActivity;
 import com.axfex.dorkout.vm.ExercisesViewModel;
 import com.axfex.dorkout.vm.ViewModelFactory;
-import com.axfex.dorkout.views.workouts.addedit.AddEditWorkoutActivity;
 
 import java.util.List;
 
@@ -37,12 +36,13 @@ public class ExercisesFragment extends Fragment {
     private RecyclerView recyclerView;
     private LayoutInflater layoutInflater;
     private RecyclerView.Adapter adapter;
-    private List<Exercise> exercises;
+    private List<Exercise> mExercises;
 
     private static final String WORKOUT_ID = "workout_id";
+    private static final String EXERCISE_ID = "exercise_id";
+
 
     private Long workoutId;
-    private String mParam2;
 
     public ExercisesFragment() {
         // Required empty public constructor
@@ -83,7 +83,7 @@ public class ExercisesFragment extends Fragment {
     }
 
     private void setExercises(List<Exercise> exercises) {
-        this.exercises = exercises;
+        this.mExercises = exercises;
         adapter = new ExercisesAdapter();
         recyclerView.setAdapter(adapter);
     }
@@ -100,17 +100,12 @@ public class ExercisesFragment extends Fragment {
         fabulous.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startAddEditExercise();
+                startAddEditExerciseActivity();
             }
         });
         return v;
     }
 
-    private void startAddEditExercise() {
-        Intent i = new Intent(getActivity(), AddEditExerciseActivity.class);
-        i.putExtra(WORKOUT_ID, workoutId);
-        startActivityForResult(i,AddEditWorkoutActivity.REQUEST_ADD_TASK);
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -135,10 +130,10 @@ public class ExercisesFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ExercisesViewHolder holder, int position) {
-            if (exercises.size() == 0) {
+            if (mExercises.size() == 0) {
                 return;
             }
-            Exercise exercise = exercises.get(position);
+            Exercise exercise = mExercises.get(position);
             if (exercise == null) {
                 return;
             }
@@ -149,8 +144,8 @@ public class ExercisesFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            if (exercises.size() > 0) {
-                return exercises.size();
+            if (mExercises.size() > 0) {
+                return mExercises.size();
             } else {
                 return 0;
             }
@@ -159,15 +154,44 @@ public class ExercisesFragment extends Fragment {
     }
 
 
-    private class ExercisesViewHolder extends RecyclerView.ViewHolder {
+    private class ExercisesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         TextView nameView;
         TextView descView;
+
         public ExercisesViewHolder(View itemView) {
             super(itemView);
             nameView = itemView.findViewById(R.id.exercise_title);
             descView = itemView.findViewById(R.id.exercise_desc);
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
 
         }
+
+        @Override
+        public void onClick(View view) {
+
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            startAddEditActivity(mExercises.get(this.getAdapterPosition()).getId());
+            return true;
+        }
     }
+
+        private void startAddEditExerciseActivity() {
+            Intent i = new Intent(getActivity(), AddEditExerciseActivity.class);
+            i.putExtra(WORKOUT_ID, workoutId);
+            startActivityForResult(i,AddEditExerciseActivity.REQUEST_ADD_TASK);
+        }
+
+        private void startAddEditActivity(Long exerciseId){
+            Intent i = new Intent(getActivity(), AddEditExerciseActivity.class);
+            i.putExtra(WORKOUT_ID, workoutId);
+            i.putExtra(EXERCISE_ID, exerciseId);
+            startActivityForResult(i,AddEditExerciseActivity.REQUEST_ADD_TASK);
+        }
+
+
 
 }

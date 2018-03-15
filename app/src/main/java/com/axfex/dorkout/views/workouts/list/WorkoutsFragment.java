@@ -40,7 +40,7 @@ public class WorkoutsFragment extends Fragment {
     private RecyclerView recyclerView;
     private LayoutInflater layoutInflater;
     private RecyclerView.Adapter adapter;
-    private List<Workout> workouts;
+    private List<Workout> mWorkouts;
     private static final String WORKOUT_ID="workout_id";
     public WorkoutsFragment() {
         // Required empty public constructor
@@ -82,7 +82,7 @@ public class WorkoutsFragment extends Fragment {
     }
 
     public void setListData(List<Workout> listOfData) {
-        this.workouts = listOfData;
+        this.mWorkouts = listOfData;
         adapter = new WorkoutsAdapter();
         recyclerView.setAdapter(adapter);
     }
@@ -133,10 +133,10 @@ public class WorkoutsFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(WorkoutsViewHolder holder, int position) {
-            if (workouts.size() == 0) {
+            if (mWorkouts.size() == 0) {
                 return;
             }
-            Workout workout = workouts.get(position);
+            Workout workout = mWorkouts.get(position);
             if (workout == null) {
                 return;
             }
@@ -165,7 +165,7 @@ public class WorkoutsFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return workouts.size();
+            return mWorkouts.size();
 
         }
     }
@@ -194,12 +194,12 @@ public class WorkoutsFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            startExercisesActivity(workouts.get(this.getAdapterPosition()).getId());
+            startExercisesActivity(mWorkouts.get(this.getAdapterPosition()).getId());
         }
 
         @Override
         public boolean onLongClick(View v) {
-            startAddEditActivity(workouts.get(this.getAdapterPosition()).getId());
+            startAddEditActivity(mWorkouts.get(this.getAdapterPosition()).getId());
             return true;
         }
     }
