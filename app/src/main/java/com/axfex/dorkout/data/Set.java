@@ -28,6 +28,7 @@ public class Set {
     private Integer normWeight;
     private Integer normRepeats;
     private Integer normTime;
+    private Integer restTime;
     private Integer factWeight;
     private Integer factRepeats;
     private Integer factTime;
@@ -84,6 +85,14 @@ public class Set {
 
     public void setNormTime(Integer normTime) {
         this.normTime = normTime;
+    }
+
+    public Integer getRestTime() {
+        return restTime;
+    }
+
+    public void setRestTime(Integer restTime) {
+        this.restTime = restTime;
     }
 
     public Integer getFactWeight() {

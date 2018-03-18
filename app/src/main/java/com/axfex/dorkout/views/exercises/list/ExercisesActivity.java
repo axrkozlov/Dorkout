@@ -3,6 +3,9 @@ package com.axfex.dorkout.views.exercises.list;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.axfex.dorkout.R;
@@ -11,6 +14,7 @@ import com.axfex.dorkout.util.BaseActivity;
 public class ExercisesActivity extends BaseActivity {
     private static final String EXERCISES_FRAG = "EXERCISES_FRAG";
     private static final String WORKOUT_ID = "workout_id";
+    private ExercisesFragment mExercisesFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,21 +26,23 @@ public class ExercisesActivity extends BaseActivity {
             Long workoutId = i.getLongExtra(WORKOUT_ID,0L);
 
             FragmentManager fragmentManager = getSupportFragmentManager();
-            ExercisesFragment exercisesFragment = (ExercisesFragment) fragmentManager.findFragmentByTag(EXERCISES_FRAG);
+            mExercisesFragment  = (ExercisesFragment) fragmentManager.findFragmentByTag(EXERCISES_FRAG);
 
 
-            if (exercisesFragment == null) {
-                exercisesFragment = ExercisesFragment.newInstance(workoutId);
+            if (mExercisesFragment == null) {
+                mExercisesFragment = ExercisesFragment.newInstance(workoutId);
             }
             addFragmentToActivity(fragmentManager,
-                    exercisesFragment,
+                    mExercisesFragment,
                     R.id.root_activity_exercises,
                     EXERCISES_FRAG);
-
 
         } else {
             Toast.makeText(this, R.string.error_no_extra_found, Toast.LENGTH_LONG).show();
         }
 
+
+
     }
+
 }

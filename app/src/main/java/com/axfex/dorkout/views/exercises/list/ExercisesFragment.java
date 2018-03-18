@@ -10,10 +10,18 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
@@ -22,24 +30,32 @@ import com.axfex.dorkout.views.exercises.addedit.AddEditExerciseActivity;
 import com.axfex.dorkout.vm.ExercisesViewModel;
 import com.axfex.dorkout.vm.ViewModelFactory;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import static android.support.v4.view.MotionEventCompat.getActionMasked;
+
 public class ExercisesFragment extends Fragment {
+    private static final int TAG_EXERCISE_ID =503;
 
 
     @Inject
     ViewModelFactory viewModelFactory;
 
+    private MenuItem mEditMenu;
+    private FloatingActionButton mAddButton;
+
     private ExercisesViewModel exercisesViewModel;
     private RecyclerView recyclerView;
     private LayoutInflater layoutInflater;
-    private RecyclerView.Adapter adapter;
+    private ExercisesAdapter mAdapter;
     private List<Exercise> mExercises;
-
+    private ItemTouchHelper mItemTouchHelper;
     private static final String WORKOUT_ID = "workout_id";
     private static final String EXERCISE_ID = "exercise_id";
+    private Boolean mEditMode=false;
 
 
     private Long workoutId;
@@ -70,9 +86,7 @@ public class ExercisesFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-
-
+        setHasOptionsMenu(true);
         exercisesViewModel = ViewModelProviders.of(this, viewModelFactory).get(ExercisesViewModel.class);
         exercisesViewModel.getExercises(workoutId).observe(this, new Observer<List<Exercise>>() {
             @Override
@@ -84,8 +98,8 @@ public class ExercisesFragment extends Fragment {
 
     private void setExercises(List<Exercise> exercises) {
         this.mExercises = exercises;
-        adapter = new ExercisesAdapter();
-        recyclerView.setAdapter(adapter);
+        mAdapter = new ExercisesAdapter();
+        recyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -96,16 +110,36 @@ public class ExercisesFragment extends Fragment {
         recyclerView = v.findViewById(R.id.rv_exercises);
         recyclerView.setLayoutManager(layoutManager);
         layoutInflater = getActivity().getLayoutInflater();
-        FloatingActionButton fabulous = v.findViewById(R.id.fab_add_exercise);
-        fabulous.setOnClickListener(new View.OnClickListener() {
+        mAddButton = v.findViewById(R.id.fab_add_exercise);
+        mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startAddEditExerciseActivity();
             }
         });
+        //mAddButton.hide();
         return v;
     }
 
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu,inflater);
+        getActivity().getMenuInflater().inflate(R.menu.menu_exercises,menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch( item.getItemId()){
+            case R.id.menu_exercises_edit: {
+                mEditMenu=item;
+                switchToEditMode();
+                break;
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -117,6 +151,58 @@ public class ExercisesFragment extends Fragment {
         super.onDetach();
     }
 
+    private void startAddEditExerciseActivity() {
+        Intent i = new Intent(getActivity(), AddEditExerciseActivity.class);
+        i.putExtra(WORKOUT_ID, workoutId);
+        startActivityForResult(i,AddEditExerciseActivity.REQUEST_ADD_TASK);
+    }
+
+    private void startAddEditActivity(Long exerciseId){
+        Intent i = new Intent(getActivity(), AddEditExerciseActivity.class);
+        i.putExtra(WORKOUT_ID, workoutId);
+        i.putExtra(EXERCISE_ID, exerciseId);
+        startActivityForResult(i,AddEditExerciseActivity.REQUEST_ADD_TASK);
+    }
+
+
+    private void updateExercises(){
+        exercisesViewModel.updateExercises(mExercises);
+    }
+
+    public Boolean switchToEditMode(){
+        mEditMode=!mEditMode;
+        if (mEditMode) {
+            showEdit();
+        } else {
+            hideEdit();
+        }
+        return mEditMode;
+
+    }
+
+    private void showEdit(){
+
+        mEditMenu.setTitle(R.string.menu_exercises_done);
+        mEditMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+        mItemTouchHelper= new ItemTouchHelper(new TouchHelperCallback());
+        mItemTouchHelper.attachToRecyclerView(recyclerView);
+
+        mAdapter.notifyDataSetChanged();
+        mAddButton.show();
+    }
+
+    private void hideEdit(){
+        mEditMenu.setTitle(R.string.menu_exercises_edit);
+        //mEditMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        mAdapter.notifyDataSetChanged();
+        mItemTouchHelper=null;
+        mAddButton.hide();
+    }
+
+
+    /**------------------------------------------**/
+
     private class ExercisesAdapter extends RecyclerView.Adapter<ExercisesViewHolder> {
 
         @Override
@@ -124,7 +210,6 @@ public class ExercisesFragment extends Fragment {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             View view = inflater.inflate(R.layout.item_exercise, parent, false);
             ExercisesViewHolder viewHolder = new ExercisesViewHolder(view);
-
             return viewHolder;
         }
 
@@ -137,31 +222,72 @@ public class ExercisesFragment extends Fragment {
             if (exercise == null) {
                 return;
             }
+            if (mEditMode){
+                holder.collapseButton.setImageResource(R.drawable.ic_headline_24dp);
+                holder.collapseButton.setOnTouchListener(
+                        new View.OnTouchListener() {
+                            @Override
+                            public boolean onTouch(View view, MotionEvent motionEvent) {
+                                if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
+                                    mItemTouchHelper.startDrag(holder);
+                                }
+                                return false;
+                            }
+
+
+                        });
+            } else {
+
+                holder.collapseButton.setImageResource(R.drawable.ic_expand_less_24dp);
+                holder.collapseButton.setOnTouchListener(null);
+            }
+
             holder.nameView.setText(exercise.getName());
             holder.descView.setText(exercise.getDescription());
+            holder.numberView.setText(Integer.toString(position+1));
+            holder.itemView.setTag(exercise.getId());
 
+
+
+        }
+
+
+        public boolean onItemMoved(int base,int target){
+
+            //Toast.makeText(getContext(), "from:"+base+" to:"+target, Toast.LENGTH_SHORT).show();
+            if (base < target) {
+                for (int i = base; i < target; i++) {
+                    Collections.swap(mExercises, i, i + 1);
+                }
+            } else {
+                for (int i = base; i > target; i--) {
+                    Collections.swap(mExercises, i, i - 1);
+                }
+            }
+            notifyItemMoved(base, target);
+            return true;
         }
 
         @Override
         public int getItemCount() {
-            if (mExercises.size() > 0) {
                 return mExercises.size();
-            } else {
-                return 0;
-            }
-
         }
     }
 
+    /**------------------------------------------**/
 
     private class ExercisesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         TextView nameView;
         TextView descView;
+        TextView numberView;
+        ImageButton collapseButton;
 
         public ExercisesViewHolder(View itemView) {
             super(itemView);
             nameView = itemView.findViewById(R.id.exercise_title);
             descView = itemView.findViewById(R.id.exercise_desc);
+            numberView = itemView.findViewById(R.id.exercise_number);
+            collapseButton= itemView.findViewById(R.id.exercise_collapse);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
 
@@ -174,23 +300,51 @@ public class ExercisesFragment extends Fragment {
 
         @Override
         public boolean onLongClick(View view) {
-            startAddEditActivity(mExercises.get(this.getAdapterPosition()).getId());
+            startAddEditActivity((Long)view.getTag());
             return true;
         }
     }
 
-        private void startAddEditExerciseActivity() {
-            Intent i = new Intent(getActivity(), AddEditExerciseActivity.class);
-            i.putExtra(WORKOUT_ID, workoutId);
-            startActivityForResult(i,AddEditExerciseActivity.REQUEST_ADD_TASK);
+    /**------------------------------------------**/
+
+    private class TouchHelperCallback extends ItemTouchHelper.Callback{
+
+        @Override
+        public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+            int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
+            int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+            return makeMovementFlags(dragFlags,swipeFlags);
         }
 
-        private void startAddEditActivity(Long exerciseId){
-            Intent i = new Intent(getActivity(), AddEditExerciseActivity.class);
-            i.putExtra(WORKOUT_ID, workoutId);
-            i.putExtra(EXERCISE_ID, exerciseId);
-            startActivityForResult(i,AddEditExerciseActivity.REQUEST_ADD_TASK);
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            mAdapter.onItemMoved(viewHolder.getAdapterPosition(),target.getAdapterPosition());
+            return true;
+
         }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            exercisesViewModel.deleteExercise((Long)viewHolder.itemView.getTag());
+        }
+
+        @Override
+        public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+            super.clearView(recyclerView, viewHolder);
+            updateExercises();
+        }
+
+//        @Override
+//        public boolean isItemViewSwipeEnabled() {
+//            return false;
+//        }
+
+        @Override
+        public boolean isLongPressDragEnabled() {
+            return false;
+        }
+    }
+
 
 
 

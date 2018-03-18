@@ -98,7 +98,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="action_settings">Settings</string>
+    <string name="menu_exercises_edit">Edit…</string>
+    <string name="menu_exercises_done">Done edit</string>
+
     <string name="title_activity_add_edit_exercise">AddEditExerciseActivity</string>
 
     <string name="error_no_extra_found">Error Retrieving Workout Id</string>

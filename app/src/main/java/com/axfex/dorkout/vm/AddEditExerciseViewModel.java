@@ -65,9 +65,6 @@ public class AddEditExerciseViewModel extends ViewModel {
         return workoutsRepository.getExercisesCount(workoutId);
     }
 
-    public void updateExercise(@NonNull final Exercise exercise) {
-        new Thread(()->workoutsRepository.updateExercise(exercise)).start();
-    }
 
     public void deleteExercise(final Exercise  exercise){
         new Thread(() -> workoutsRepository.deleteExercise(exercise)).start();

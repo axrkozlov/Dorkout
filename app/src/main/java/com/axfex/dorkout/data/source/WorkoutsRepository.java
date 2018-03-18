@@ -62,7 +62,6 @@ public class WorkoutsRepository  {
                 exercisesDao.insertExercise(exercise);
 
         List<Set> sets=exercise.getSets();
-        Log.e( "ID",exerciseId.toString());
         for (Set set:sets) {
             set.setExerciseId(exerciseId);
         }
@@ -84,12 +83,26 @@ public class WorkoutsRepository  {
         return exercisesDao.getExercisesCount(workoutId);
     }
 
-    public int updateExercise(@NonNull Exercise exercise) {
+    public int updateExercise(@NonNull Exercise... exercise) {
         return exercisesDao.updateExercise(exercise);
+    }
+
+    public int updateExercises(@NonNull List<Exercise> exercises) {
+        int i=0;
+        for (Exercise e :
+                exercises) {
+            e.setOrder(++i);
+        }
+        Exercise[] exercisesArray=exercises.toArray(new Exercise[exercises.size()]);
+        return exercisesDao.updateExercise(exercisesArray);
     }
 
     public void deleteExercise(@NonNull Exercise... exercise) {
         exercisesDao.deleteExercise(exercise);
+    }
+
+    public void deleteExercise(@NonNull Long exerciseId) {
+        exercisesDao.deleteExercise(exerciseId);
     }
 
     /**Sets**/

@@ -24,7 +24,7 @@ public interface ExercisesDao {
     @Query("SELECT * FROM Exercise WHERE id = :id")
     LiveData<Exercise> getExercise(Long id);
 
-    @Query("SELECT * from Exercise where workoutId = :workoutId")
+    @Query("SELECT * from Exercise where workoutId = :workoutId order by `order`")
     LiveData<List<Exercise>> getExercises(final Long workoutId);
 
     @Query("SELECT COUNT(*) from Exercise  where workoutId = :workoutId")
@@ -38,8 +38,12 @@ public interface ExercisesDao {
     Long insertExercise(Exercise exercise);
 
     @Update
-    int updateExercise(Exercise exercise);
+    int updateExercise(Exercise... exercise);
 
     @Delete
     void deleteExercise(Exercise... exercises);
+
+    @Query("DELETE from Exercise where id = :exerciseId")
+    void deleteExercise(final Long exerciseId);
+
 }

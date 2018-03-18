@@ -26,4 +26,16 @@ public class ExercisesViewModel extends ViewModel {
         return workoutsRepository.getExercises(workoutId);
     }
 
+    public void deleteExercise(final Long  exerciseId){
+        new Thread(() -> workoutsRepository.deleteExercise(exerciseId)).start();
+    }
+
+    public void updateExercise(@NonNull final Exercise exercise) {
+        new Thread(()->workoutsRepository.updateExercise(exercise)).start();
+    }
+
+    public void updateExercises(@NonNull final List<Exercise> exercises) {
+        new Thread(()->workoutsRepository.updateExercises(exercises)).start();
+    }
+
 }
