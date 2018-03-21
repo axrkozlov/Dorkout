@@ -3,7 +3,8 @@ package com.axfex.dorkout.vm;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
-import com.axfex.dorkout.data.Set;
+
+import com.axfex.dorkout.data.Eset;
 import com.axfex.dorkout.data.source.WorkoutsRepository;
 
 /**
@@ -17,11 +18,11 @@ public class AddEditSetViewModel extends ViewModel {
         this.workoutsRepository = workoutsRepository;
     }
 
-    public void addSet(@NonNull final Set... sets){
-        new Thread(() -> workoutsRepository.createSets(sets)).start();
+    public void addSet(@NonNull final Eset... esets){
+        new Thread(() -> workoutsRepository.createSets(esets)).start();
     }
 
-    public LiveData<Set> getSet(@NonNull final Long setId) {
+    public LiveData<Eset> getSet(@NonNull final Long setId) {
         return workoutsRepository.getSet(setId);
     }
 
@@ -29,12 +30,12 @@ public class AddEditSetViewModel extends ViewModel {
         return workoutsRepository.getSetsCount(exerciseId);
     }
 
-    public void updateSet(@NonNull final Set set) {
-        new Thread(()->workoutsRepository.updateSet(set)).start();
+    public void updateSet(@NonNull final Eset eset) {
+        new Thread(()->workoutsRepository.updateSet(eset)).start();
     }
 
-    public void deleteSet(final Set  set){
-        new Thread(() -> workoutsRepository.deleteSet(set)).start();
+    public void deleteSet(final Eset eset){
+        new Thread(() -> workoutsRepository.deleteSet(eset)).start();
     }
 
 }

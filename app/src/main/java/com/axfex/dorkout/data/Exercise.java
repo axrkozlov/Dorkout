@@ -7,7 +7,6 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
@@ -30,14 +29,14 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
     private Long workoutId;
     private String name;
     private String description;
-    private Integer order;
+    private Integer orderNumber;
     private Integer setsCount;
     @Ignore
     private transient Boolean isChecked = false;
     @Ignore
     private transient Boolean isStarted = false;
     @Ignore
-    private List<Set> sets;
+    private List<Eset> esets;
 
     public Exercise(String name, final Long workoutId) {
         this.name = name;
@@ -76,12 +75,12 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
         this.description = description;
     }
 
-    public Integer getOrder() {
-        return order;
+    public Integer getOrderNumber() {
+        return orderNumber;
     }
 
-    public void setOrder(Integer order) {
-        this.order = order;
+    public void setOrderNumber(Integer orderNumber) {
+        this.orderNumber = orderNumber;
     }
 
     public Integer getSetsCount() {
@@ -92,12 +91,12 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
         this.setsCount = setsCount;
     }
 
-    public List<Set> getSets() {
-        return sets;
+    public List<Eset> getEsets() {
+        return esets;
     }
 
-    public void setSets(List<Set> sets) {
-        this.sets = sets;
+    public void setEsets(List<Eset> esets) {
+        this.esets = esets;
     }
 
     public Boolean getChecked() {

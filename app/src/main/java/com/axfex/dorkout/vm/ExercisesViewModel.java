@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 
 import com.axfex.dorkout.data.Exercise;
+import com.axfex.dorkout.data.ExerciseWithSets;
 import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.data.source.WorkoutsRepository;
 
@@ -24,6 +25,10 @@ public class ExercisesViewModel extends ViewModel {
 
     public LiveData<List<Exercise>> getExercises(@NonNull Long workoutId){
         return workoutsRepository.getExercises(workoutId);
+    }
+
+    public LiveData<List<ExerciseWithSets>> getExercisesWithSets(@NonNull Long workoutId){
+        return workoutsRepository.getExercisesWithSets(workoutId);
     }
 
     public void deleteExercise(final Long  exerciseId){

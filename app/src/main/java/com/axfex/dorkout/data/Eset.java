@@ -19,12 +19,12 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
         onDelete = CASCADE)},
         indices = {@Index(value = "exerciseId")}
 )
-public class Set {
+public class Eset {
     @PrimaryKey(autoGenerate = true)
     private Long id;
     @ColumnInfo(name = "exerciseId")
     private Long exerciseId;
-    private Integer order;
+    private Integer orderNumber;
     private Integer normWeight;
     private Integer normRepeats;
     private Integer normTime;
@@ -37,7 +37,7 @@ public class Set {
     @Ignore
     private transient Boolean isStarted = false;
 
-    public Set() {}
+    public Eset() {}
 
     public Long getId() {
         return id;
@@ -55,12 +55,12 @@ public class Set {
         this.exerciseId = exerciseId;
     }
 
-    public Integer getOrder() {
-        return order;
+    public Integer getOrderNumber() {
+        return orderNumber;
     }
 
-    public void setOrder(Integer order) {
-        this.order = order;
+    public void setOrderNumber(Integer orderNumber) {
+        this.orderNumber = orderNumber;
     }
 
     public Integer getNormWeight() {

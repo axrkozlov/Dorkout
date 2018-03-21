@@ -4,7 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 
-import com.axfex.dorkout.data.Set;
+import com.axfex.dorkout.data.Eset;
 import com.axfex.dorkout.data.source.WorkoutsRepository;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class SetsViewModel extends ViewModel {
         this.workoutsRepository = workoutsRepository;
     }
 
-    public LiveData<List<Set>> getSets(@NonNull Long exerciseId){
+    public LiveData<List<Eset>> getSets(@NonNull Long exerciseId){
         return workoutsRepository.getSets(exerciseId);
     }
 }

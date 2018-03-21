@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
 import com.axfex.dorkout.data.Exercise;
-import com.axfex.dorkout.data.Set;
+import com.axfex.dorkout.data.Eset;
 import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.vm.AddEditExerciseViewModel;
 import com.axfex.dorkout.vm.AddEditSetViewModel;
@@ -39,7 +39,7 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
     private EditText mDesc;
     private Workout mWorkout;
     private Integer mExercisesCount;
-    private List<Set> mSets;
+    private List<Eset> mEsets;
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -87,7 +87,7 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         //At least one must have.
-        if (mSets== null) createOneSet();
+        if (mEsets == null) createOneSet();
         addEditSetViewModel= ViewModelProviders.of(this,viewModelFactory).get(AddEditSetViewModel.class);
         //addEditWorkoutViewModel= ViewModelProviders.of(this,viewModelFactory).get(AddEditWorkoutViewModel.class);
         addEditExerciseViewModel= ViewModelProviders.of(this,viewModelFactory).get(AddEditExerciseViewModel.class);
@@ -102,8 +102,8 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
         }
     }
 
-    private void bindSets(List<Set> sets){
-        this.mSets=sets;
+    private void bindSets(List<Eset> esets){
+        this.mEsets = esets;
         swapAdapter();
     }
 
@@ -114,22 +114,22 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
     }
 
     private void createOneSet(){
-        mSets=new ArrayList<>();
-        Set set=new Set();
-        set.setNormWeight(999);
-        mSets.add(set);
+        mEsets =new ArrayList<>();
+        Eset eset =new Eset();
+        eset.setNormWeight(999);
+        mEsets.add(eset);
         swapAdapter();
     }
 
-    private void addSet(@Nullable Set previousSet){
-        Set set=new Set();
+    private void addSet(@Nullable Eset previousEset){
+        Eset eset =new Eset();
 
 
         if (exerciseId != null) {
-            set.setExerciseId(exerciseId);
+            eset.setExerciseId(exerciseId);
         }
-        set.setNormWeight(999);
-        mSets.add(set);
+        eset.setNormWeight(999);
+        mEsets.add(eset);
         swapAdapter();
     }
 
@@ -177,7 +177,7 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
 
     private Exercise buildExercise(){
         Exercise newExercise=new Exercise(mName.getText().toString(),workoutId);
-        newExercise.setSets(mSets);
+        newExercise.setEsets(mEsets);
         return newExercise;
     }
 
@@ -212,7 +212,7 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
         @Override
         public SetsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater=LayoutInflater.from(getContext());
-            View view=inflater.inflate(R.layout.item_set,parent,false);
+            View view=inflater.inflate(R.layout.item_edit_exercise_set,parent,false);
             SetsViewHolder viewHolder=new SetsViewHolder(view);
 
             return viewHolder;
@@ -220,21 +220,21 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
 
         @Override
         public void onBindViewHolder(SetsViewHolder holder, int position) {
-            Set set = mSets.get(position);
+            Eset eset = mEsets.get(position);
 
-            if (mSets.size()-position>0){}
+            if (mEsets.size()-position>0){}
 
             holder.bt_set_add.setOnClickListener(this);
 
-            if (set.getNormWeight() != null) {
-                holder.et_set_weight.setText(set.getNormWeight().toString());
+            if (eset.getNormWeight() != null) {
+                holder.et_set_weight.setText(eset.getNormWeight().toString());
             }
 
         }
 
         @Override
         public int getItemCount() {
-            return mSets.size();
+            return mEsets.size();
         }
 
         @Override

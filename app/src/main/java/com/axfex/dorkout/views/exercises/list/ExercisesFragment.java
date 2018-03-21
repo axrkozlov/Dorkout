@@ -7,11 +7,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,11 +21,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
+import com.axfex.dorkout.data.Eset;
 import com.axfex.dorkout.data.Exercise;
+import com.axfex.dorkout.data.ExerciseWithSets;
 import com.axfex.dorkout.views.exercises.addedit.AddEditExerciseActivity;
 import com.axfex.dorkout.vm.ExercisesViewModel;
 import com.axfex.dorkout.vm.ViewModelFactory;
@@ -34,8 +35,6 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
-
-import static android.support.v4.view.MotionEventCompat.getActionMasked;
 
 public class ExercisesFragment extends Fragment {
     private static final int TAG_EXERCISE_ID =503;
@@ -48,10 +47,12 @@ public class ExercisesFragment extends Fragment {
     private FloatingActionButton mAddButton;
 
     private ExercisesViewModel exercisesViewModel;
-    private RecyclerView recyclerView;
-    private LayoutInflater layoutInflater;
+    private RecyclerView rvExercises;
+    //private LayoutInflater layoutInflater;
     private ExercisesAdapter mAdapter;
-    private List<Exercise> mExercises;
+    //private List<Exercise> mExercises;
+    private List<ExerciseWithSets> mExercises;
+
     private ItemTouchHelper mItemTouchHelper;
     private static final String WORKOUT_ID = "workout_id";
     private static final String EXERCISE_ID = "exercise_id";
@@ -88,18 +89,30 @@ public class ExercisesFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
         exercisesViewModel = ViewModelProviders.of(this, viewModelFactory).get(ExercisesViewModel.class);
-        exercisesViewModel.getExercises(workoutId).observe(this, new Observer<List<Exercise>>() {
+//        exercisesViewModel.getExercises(workoutId).observe(this, new Observer<List<Exercise>>() {
+//            @Override
+//            public void onChanged(@Nullable List<Exercise> exercises) {
+//                    setExercises(exercises);
+//            }
+//        });
+        exercisesViewModel.getExercisesWithSets(workoutId).observe(this, new Observer<List<ExerciseWithSets>>() {
             @Override
-            public void onChanged(@Nullable List<Exercise> exercises) {
-                    setExercises(exercises);
+            public void onChanged(@Nullable List<ExerciseWithSets> exercises) {
+                setmExercisesWithSets(exercises);
             }
         });
     }
+//
+//    private void setExercises(List<Exercise> exercises) {
+//        this.mExercises = exercises;
+//        mAdapter = new ExercisesAdapter();
+//        rvExercises.setAdapter(mAdapter);
+//    }
 
-    private void setExercises(List<Exercise> exercises) {
+    private void setmExercisesWithSets(List<ExerciseWithSets> exercises) {
         this.mExercises = exercises;
         mAdapter = new ExercisesAdapter();
-        recyclerView.setAdapter(mAdapter);
+        rvExercises.setAdapter(mAdapter);
     }
 
     @Override
@@ -107,9 +120,9 @@ public class ExercisesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_exercises, container,false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView = v.findViewById(R.id.rv_exercises);
-        recyclerView.setLayoutManager(layoutManager);
-        layoutInflater = getActivity().getLayoutInflater();
+        rvExercises = v.findViewById(R.id.rv_exercises);
+        rvExercises.setLayoutManager(layoutManager);
+        //layoutInflater = getActivity().getLayoutInflater();
         mAddButton = v.findViewById(R.id.fab_add_exercise);
         mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,7 +179,7 @@ public class ExercisesFragment extends Fragment {
 
 
     private void updateExercises(){
-        exercisesViewModel.updateExercises(mExercises);
+   //     exercisesViewModel.updateExercises(mExercises);
     }
 
     public Boolean switchToEditMode(){
@@ -186,7 +199,7 @@ public class ExercisesFragment extends Fragment {
         mEditMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         mItemTouchHelper= new ItemTouchHelper(new TouchHelperCallback());
-        mItemTouchHelper.attachToRecyclerView(recyclerView);
+        mItemTouchHelper.attachToRecyclerView(rvExercises);
 
         mAdapter.notifyDataSetChanged();
         mAddButton.show();
@@ -207,8 +220,7 @@ public class ExercisesFragment extends Fragment {
 
         @Override
         public ExercisesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(getContext());
-            View view = inflater.inflate(R.layout.item_exercise, parent, false);
+            View view = LayoutInflater.from(getContext()).inflate(R.layout.item_exercise, parent, false);
             ExercisesViewHolder viewHolder = new ExercisesViewHolder(view);
             return viewHolder;
         }
@@ -218,11 +230,28 @@ public class ExercisesFragment extends Fragment {
             if (mExercises.size() == 0) {
                 return;
             }
-            Exercise exercise = mExercises.get(position);
+            Exercise exercise = mExercises.get(position).exercise;
+            List<Eset> esets=mExercises.get(position).esets;
             if (exercise == null) {
                 return;
             }
-            if (mEditMode){
+
+            final boolean isExpanded = position==holder.mExpandedPosition;
+            holder.setsView.setVisibility(isExpanded?View.VISIBLE:View.GONE);
+            holder.collapseButton.setImageResource(isExpanded?R.drawable.ic_collapse_24dp:R.drawable.ic_expand_24dp);
+            holder.itemView.setActivated(isExpanded);
+
+            if (!mEditMode){
+                holder.collapseButton.setImageResource(R.drawable.ic_expand_24dp);
+                holder.collapseButton.setOnTouchListener(null);
+                holder.collapseButton.setOnClickListener(view -> {
+                    holder.mExpandedPosition = isExpanded ? -1:position;
+                    TransitionManager.beginDelayedTransition(rvExercises);
+                    notifyDataSetChanged();
+                });
+
+            } else {
+
                 holder.collapseButton.setImageResource(R.drawable.ic_headline_24dp);
                 holder.collapseButton.setOnTouchListener(
                         new View.OnTouchListener() {
@@ -236,21 +265,33 @@ public class ExercisesFragment extends Fragment {
 
 
                         });
-            } else {
 
-                holder.collapseButton.setImageResource(R.drawable.ic_expand_less_24dp);
-                holder.collapseButton.setOnTouchListener(null);
             }
+
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
 
             holder.nameView.setText(exercise.getName());
             holder.descView.setText(exercise.getDescription());
             holder.numberView.setText(Integer.toString(position+1));
+
+
             holder.itemView.setTag(exercise.getId());
-
-
+            String strWeight="";
+            if (esets != null) {
+                for (Eset eset:esets
+                     ) {
+                    Integer weight=eset.getNormWeight();
+                    strWeight+=weight.toString()+":";
+                }
+                holder.setsView.setText(strWeight);
+            }
 
         }
-
 
         public boolean onItemMoved(int base,int target){
 
@@ -281,13 +322,16 @@ public class ExercisesFragment extends Fragment {
         TextView descView;
         TextView numberView;
         ImageButton collapseButton;
+        TextView setsView;
+        Integer mExpandedPosition=-1;
 
         public ExercisesViewHolder(View itemView) {
             super(itemView);
             nameView = itemView.findViewById(R.id.exercise_title);
             descView = itemView.findViewById(R.id.exercise_desc);
             numberView = itemView.findViewById(R.id.exercise_number);
-            collapseButton= itemView.findViewById(R.id.exercise_collapse);
+            collapseButton=itemView.findViewById(R.id.exercise_collapse);
+            setsView=itemView.findViewById(R.id.exercise_sets);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
 

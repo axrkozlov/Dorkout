@@ -8,7 +8,7 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import com.axfex.dorkout.data.Exercise;
-import com.axfex.dorkout.data.Workout;
+import com.axfex.dorkout.data.ExerciseWithSets;
 
 import java.util.List;
 
@@ -24,8 +24,11 @@ public interface ExercisesDao {
     @Query("SELECT * FROM Exercise WHERE id = :id")
     LiveData<Exercise> getExercise(Long id);
 
-    @Query("SELECT * from Exercise where workoutId = :workoutId order by `order`")
+    @Query("SELECT * from Exercise where workoutId = :workoutId order by orderNumber")
     LiveData<List<Exercise>> getExercises(final Long workoutId);
+
+    @Query("SELECT * from Exercise where workoutId = :workoutId")
+    LiveData<List<ExerciseWithSets>> getExercisesWithSets(final Long workoutId);
 
     @Query("SELECT COUNT(*) from Exercise  where workoutId = :workoutId")
     LiveData<Integer> getExercisesCount(final Long workoutId);

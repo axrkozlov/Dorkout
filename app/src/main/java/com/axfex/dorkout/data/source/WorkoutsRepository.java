@@ -2,17 +2,15 @@ package com.axfex.dorkout.data.source;
 
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
+import com.axfex.dorkout.data.Eset;
 import com.axfex.dorkout.data.Exercise;
-import com.axfex.dorkout.data.Set;
+import com.axfex.dorkout.data.ExerciseWithSets;
 import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.data.source.local.ExercisesDao;
 import com.axfex.dorkout.data.source.local.SetsDao;
 import com.axfex.dorkout.data.source.local.WorkoutsDao;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -61,17 +59,22 @@ public class WorkoutsRepository  {
         Long exerciseId=
                 exercisesDao.insertExercise(exercise);
 
-        List<Set> sets=exercise.getSets();
-        for (Set set:sets) {
-            set.setExerciseId(exerciseId);
+        List<Eset> esets =exercise.getEsets();
+        for (Eset eset : esets) {
+            eset.setExerciseId(exerciseId);
         }
-        Set[] setsArray=sets.toArray(new Set[sets.size()]);
+        Eset[] setsArray= esets.toArray(new Eset[esets.size()]);
         createSets(setsArray);
 
     }
 
     public LiveData<List<Exercise>> getExercises(@NonNull final Long workoutId) {
         return exercisesDao.getExercises(workoutId);
+        //return exercisesDao.getAllExercises();
+    }
+
+    public LiveData<List<ExerciseWithSets>> getExercisesWithSets(@NonNull final Long workoutId) {
+        return exercisesDao.getExercisesWithSets(workoutId);
         //return exercisesDao.getAllExercises();
     }
 
@@ -91,7 +94,7 @@ public class WorkoutsRepository  {
         int i=0;
         for (Exercise e :
                 exercises) {
-            e.setOrder(++i);
+            e.setOrderNumber(++i);
         }
         Exercise[] exercisesArray=exercises.toArray(new Exercise[exercises.size()]);
         return exercisesDao.updateExercise(exercisesArray);
@@ -107,16 +110,16 @@ public class WorkoutsRepository  {
 
     /**Sets**/
 
-    public Long[] createSets(@NonNull Set... sets) {
-        return setsDao.insertSets(sets);
+    public Long[] createSets(@NonNull Eset... esets) {
+        return setsDao.insertSets(esets);
     }
 
-    public LiveData<List<Set>> getSets(@NonNull final Long exerciseId) {
+    public LiveData<List<Eset>> getSets(@NonNull final Long exerciseId) {
         return setsDao.getSets(exerciseId);
         //return exercisesDao.getAllExercises();
     }
 
-    public LiveData<Set> getSet(@NonNull Long id) {
+    public LiveData<Eset> getSet(@NonNull Long id) {
         return setsDao.getSet(id);
     }
 
@@ -124,11 +127,11 @@ public class WorkoutsRepository  {
         return setsDao.getSetsCount(exerciseId);
     }
 
-    public int updateSet(@NonNull Set set) {
-        return setsDao.updateSet(set);
+    public int updateSet(@NonNull Eset eset) {
+        return setsDao.updateSet(eset);
     }
 
-    public void deleteSet(@NonNull Set... set) {
-        setsDao.deleteSet(set);
+    public void deleteSet(@NonNull Eset... eset) {
+        setsDao.deleteSet(eset);
     }
 }
