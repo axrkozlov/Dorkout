@@ -39,8 +39,9 @@ public class ExercisesViewModel extends ViewModel {
         new Thread(()->workoutsRepository.updateExercise(exercise)).start();
     }
 
-    public void updateExercises(@NonNull final List<Exercise> exercises) {
-        new Thread(()->workoutsRepository.updateExercises(exercises)).start();
+
+    public void updateExercises(@NonNull final List<ExerciseWithSets> exercisesWithSets) {
+        new Thread(()->workoutsRepository.updateExercises(exercisesWithSets)).start();
     }
 
 }

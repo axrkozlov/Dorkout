@@ -82,7 +82,7 @@
     <string name="lb_workout_duplicate_button">Duplicate</string>
     <string name="lb_workout_delete_button">Delete</string>
 
-    <string name="workout_create_name">Name of workout</string>
+    <string name="workout_create_name">Title</string>
     <string name="workout_create_desc">Any description</string>
     <string name="lb_exercise_create_days">workout Days</string>
     <string name="lb_exercise_create_start_time">Start at</string>
@@ -91,7 +91,7 @@
     <string name="lb_exercise_duplicate_button">Duplicate</string>
     <string name="lb_exercise_delete_button">Delete</string>
 
-    <string name="exercise_create_name">Name of exercise</string>
+    <string name="exercise_create_name">Title</string>
     <string name="exercise_create_desc">Any description</string>
 
 

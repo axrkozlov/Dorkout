@@ -37,7 +37,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class ExercisesFragment extends Fragment {
-    private static final int TAG_EXERCISE_ID =503;
+    private static final int TAG_EXERCISE_ID = 503;
 
 
     @Inject
@@ -50,13 +50,13 @@ public class ExercisesFragment extends Fragment {
     private RecyclerView rvExercises;
     //private LayoutInflater layoutInflater;
     private ExercisesAdapter mAdapter;
-    //private List<Exercise> mExercises;
-    private List<ExerciseWithSets> mExercises;
+    //private List<Exercise> mExercisesWithSets;
+    private List<ExerciseWithSets> mExercisesWithSets;
 
     private ItemTouchHelper mItemTouchHelper;
     private static final String WORKOUT_ID = "workout_id";
     private static final String EXERCISE_ID = "exercise_id";
-    private Boolean mEditMode=false;
+    private Boolean mEditMode = false;
 
 
     private Long workoutId;
@@ -104,13 +104,13 @@ public class ExercisesFragment extends Fragment {
     }
 //
 //    private void setExercises(List<Exercise> exercises) {
-//        this.mExercises = exercises;
+//        this.mExercisesWithSets = exercises;
 //        mAdapter = new ExercisesAdapter();
 //        rvExercises.setAdapter(mAdapter);
 //    }
 
     private void setmExercisesWithSets(List<ExerciseWithSets> exercises) {
-        this.mExercises = exercises;
+        this.mExercisesWithSets = exercises;
         mAdapter = new ExercisesAdapter();
         rvExercises.setAdapter(mAdapter);
     }
@@ -118,11 +118,12 @@ public class ExercisesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_exercises, container,false);
+        View v = inflater.inflate(R.layout.fragment_exercises, container, false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rvExercises = v.findViewById(R.id.rv_exercises);
         rvExercises.setLayoutManager(layoutManager);
-        //layoutInflater = getActivity().getLayoutInflater();
+        mItemTouchHelper = new ItemTouchHelper(new TouchHelperCallback());
+        mItemTouchHelper.attachToRecyclerView(rvExercises);
         mAddButton = v.findViewById(R.id.fab_add_exercise);
         mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,16 +138,16 @@ public class ExercisesFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu,inflater);
-        getActivity().getMenuInflater().inflate(R.menu.menu_exercises,menu);
+        super.onCreateOptionsMenu(menu, inflater);
+        getActivity().getMenuInflater().inflate(R.menu.menu_exercises, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch( item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.menu_exercises_edit: {
-                mEditMenu=item;
+                mEditMenu = item;
                 switchToEditMode();
                 break;
             }
@@ -167,23 +168,23 @@ public class ExercisesFragment extends Fragment {
     private void startAddEditExerciseActivity() {
         Intent i = new Intent(getActivity(), AddEditExerciseActivity.class);
         i.putExtra(WORKOUT_ID, workoutId);
-        startActivityForResult(i,AddEditExerciseActivity.REQUEST_ADD_TASK);
+        startActivityForResult(i, AddEditExerciseActivity.REQUEST_ADD_TASK);
     }
 
-    private void startAddEditActivity(Long exerciseId){
+    private void startAddEditActivity(Long exerciseId) {
         Intent i = new Intent(getActivity(), AddEditExerciseActivity.class);
         i.putExtra(WORKOUT_ID, workoutId);
         i.putExtra(EXERCISE_ID, exerciseId);
-        startActivityForResult(i,AddEditExerciseActivity.REQUEST_ADD_TASK);
+        startActivityForResult(i, AddEditExerciseActivity.REQUEST_ADD_TASK);
     }
 
 
-    private void updateExercises(){
-   //     exercisesViewModel.updateExercises(mExercises);
+    private void updateExercises() {
+        exercisesViewModel.updateExercises(mExercisesWithSets);
     }
 
-    public Boolean switchToEditMode(){
-        mEditMode=!mEditMode;
+    public Boolean switchToEditMode() {
+        mEditMode = !mEditMode;
         if (mEditMode) {
             showEdit();
         } else {
@@ -193,148 +194,129 @@ public class ExercisesFragment extends Fragment {
 
     }
 
-    private void showEdit(){
+    private void showEdit() {
 
         mEditMenu.setTitle(R.string.menu_exercises_done);
         mEditMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-        mItemTouchHelper= new ItemTouchHelper(new TouchHelperCallback());
-        mItemTouchHelper.attachToRecyclerView(rvExercises);
-
+        TransitionManager.beginDelayedTransition(rvExercises);
         mAdapter.notifyDataSetChanged();
         mAddButton.show();
     }
 
-    private void hideEdit(){
+    private void hideEdit() {
         mEditMenu.setTitle(R.string.menu_exercises_edit);
         //mEditMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        TransitionManager.beginDelayedTransition(rvExercises);
         mAdapter.notifyDataSetChanged();
-        mItemTouchHelper=null;
         mAddButton.hide();
     }
 
 
-    /**------------------------------------------**/
+    /**
+     * ------------------------------------------
+     **/
 
     private class ExercisesAdapter extends RecyclerView.Adapter<ExercisesViewHolder> {
 
         @Override
         public ExercisesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(getContext()).inflate(R.layout.item_exercise, parent, false);
-            ExercisesViewHolder viewHolder = new ExercisesViewHolder(view);
-            return viewHolder;
+            return new ExercisesViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(ExercisesViewHolder holder, int position) {
-            if (mExercises.size() == 0) {
+            if (mExercisesWithSets.size() == 0) {
                 return;
             }
-            Exercise exercise = mExercises.get(position).exercise;
-            List<Eset> esets=mExercises.get(position).esets;
+            Exercise exercise = mExercisesWithSets.get(position).exercise;
+            List<Eset> esets = mExercisesWithSets.get(position).esets;
             if (exercise == null) {
                 return;
             }
-
-            final boolean isExpanded = position==holder.mExpandedPosition;
-            holder.setsView.setVisibility(isExpanded?View.VISIBLE:View.GONE);
-            holder.collapseButton.setImageResource(isExpanded?R.drawable.ic_collapse_24dp:R.drawable.ic_expand_24dp);
+            holder.collapseButton.setOnTouchListener(holder);
+            final boolean isExpanded = position == holder.mExpandedPosition && !mEditMode;
+            holder.collapseButton.setImageResource(isExpanded ? R.drawable.ic_collapse_24dp : R.drawable.ic_expand_24dp);
             holder.itemView.setActivated(isExpanded);
+            holder.setsView.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
 
-            if (!mEditMode){
-                holder.collapseButton.setImageResource(R.drawable.ic_expand_24dp);
-                holder.collapseButton.setOnTouchListener(null);
-                holder.collapseButton.setOnClickListener(view -> {
-                    holder.mExpandedPosition = isExpanded ? -1:position;
-                    TransitionManager.beginDelayedTransition(rvExercises);
-                    notifyDataSetChanged();
-                });
+            holder.itemView.setOnClickListener(view -> {
+                holder.mExpandedPosition = isExpanded ? -1 : position;
+                TransitionManager.beginDelayedTransition(rvExercises);
+                notifyDataSetChanged();
+            });
+            if (mEditMode) {
 
             } else {
 
-                holder.collapseButton.setImageResource(R.drawable.ic_headline_24dp);
-                holder.collapseButton.setOnTouchListener(
-                        new View.OnTouchListener() {
-                            @Override
-                            public boolean onTouch(View view, MotionEvent motionEvent) {
-                                if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
-                                    mItemTouchHelper.startDrag(holder);
-                                }
-                                return false;
-                            }
-
-
-                        });
-
             }
-
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                });
-
             holder.nameView.setText(exercise.getName());
             holder.descView.setText(exercise.getDescription());
-            holder.numberView.setText(Integer.toString(position+1));
-
-
+            holder.numberView.setText(Integer.toString(position + 1));
             holder.itemView.setTag(exercise.getId());
-            String strWeight="";
+
+
+            //bindExercise(holder,exercise,position);
+
+            String strWeight = "";
             if (esets != null) {
-                for (Eset eset:esets
-                     ) {
-                    Integer weight=eset.getNormWeight();
-                    strWeight+=weight.toString()+":";
+                for (Eset eset : esets
+                        ) {
+                    Integer weight = eset.getNormWeight();
+                    strWeight += weight.toString() + ":";
                 }
                 holder.setsView.setText(strWeight);
             }
 
         }
 
-        public boolean onItemMoved(int base,int target){
+        private void bindExercise(ExercisesViewHolder holder, Exercise exercise, Integer position) {
 
-            //Toast.makeText(getContext(), "from:"+base+" to:"+target, Toast.LENGTH_SHORT).show();
+
+        }
+
+        private void onItemMoved(int base, int target) {
             if (base < target) {
                 for (int i = base; i < target; i++) {
-                    Collections.swap(mExercises, i, i + 1);
+                    Collections.swap(mExercisesWithSets, i, i + 1);
                 }
             } else {
                 for (int i = base; i > target; i--) {
-                    Collections.swap(mExercises, i, i - 1);
+                    Collections.swap(mExercisesWithSets, i, i - 1);
                 }
             }
             notifyItemMoved(base, target);
-            return true;
         }
 
         @Override
         public int getItemCount() {
-                return mExercises.size();
+            return mExercisesWithSets.size();
         }
+
     }
 
-    /**------------------------------------------**/
+    /**
+     * ------------------------------------------
+     **/
 
-    private class ExercisesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    private class ExercisesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener, View.OnTouchListener {
         TextView nameView;
         TextView descView;
         TextView numberView;
         ImageButton collapseButton;
         TextView setsView;
-        Integer mExpandedPosition=-1;
+        Integer mExpandedPosition = -1;
 
         public ExercisesViewHolder(View itemView) {
             super(itemView);
             nameView = itemView.findViewById(R.id.exercise_title);
             descView = itemView.findViewById(R.id.exercise_desc);
             numberView = itemView.findViewById(R.id.exercise_number);
-            collapseButton=itemView.findViewById(R.id.exercise_collapse);
-            setsView=itemView.findViewById(R.id.exercise_sets);
+            collapseButton = itemView.findViewById(R.id.exercise_collapse);
+            setsView = itemView.findViewById(R.id.exercise_sets);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
-
         }
 
         @Override
@@ -344,32 +326,42 @@ public class ExercisesFragment extends Fragment {
 
         @Override
         public boolean onLongClick(View view) {
-            startAddEditActivity((Long)view.getTag());
+            startAddEditActivity((Long) view.getTag());
+            return true;
+        }
+
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            view.performClick();
+            if (!mEditMode) return false;
+            mItemTouchHelper.startDrag(this);
             return true;
         }
     }
 
-    /**------------------------------------------**/
+    /**
+     * ------------------------------------------
+     **/
 
-    private class TouchHelperCallback extends ItemTouchHelper.Callback{
+    private class TouchHelperCallback extends ItemTouchHelper.Callback {
 
         @Override
         public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
             int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
             int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
-            return makeMovementFlags(dragFlags,swipeFlags);
+            return makeMovementFlags(dragFlags, swipeFlags);
         }
 
         @Override
         public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-            mAdapter.onItemMoved(viewHolder.getAdapterPosition(),target.getAdapterPosition());
+            mAdapter.onItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
             return true;
 
         }
 
         @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-            exercisesViewModel.deleteExercise((Long)viewHolder.itemView.getTag());
+            exercisesViewModel.deleteExercise((Long) viewHolder.itemView.getTag());
         }
 
         @Override
@@ -378,18 +370,16 @@ public class ExercisesFragment extends Fragment {
             updateExercises();
         }
 
-//        @Override
-//        public boolean isItemViewSwipeEnabled() {
-//            return false;
-//        }
+        @Override
+        public boolean isItemViewSwipeEnabled() {
+            return mEditMode;
+        }
 
         @Override
         public boolean isLongPressDragEnabled() {
             return false;
         }
     }
-
-
 
 
 }

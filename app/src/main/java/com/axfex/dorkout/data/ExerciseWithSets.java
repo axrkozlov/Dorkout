@@ -18,19 +18,4 @@ public class ExerciseWithSets {
             entityColumn = "exerciseId", entity = Eset.class)
     public List<Eset> esets;
 
-//    public Exercise getExercise() {
-//        return exercise;
-//    }
-//
-//    public void setExercise(Exercise exercise) {
-//        this.exercise = exercise;
-//    }
-//
-//    public List<Eset> getEsets() {
-//        return esets;
-//    }
-//
-//    public void setEsets(List<Eset> esets) {
-//        this.esets = esets;
-//    }
 }

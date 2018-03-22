@@ -90,13 +90,24 @@ public class WorkoutsRepository  {
         return exercisesDao.updateExercise(exercise);
     }
 
-    public int updateExercises(@NonNull List<Exercise> exercises) {
-        int i=0;
-        for (Exercise e :
-                exercises) {
-            e.setOrderNumber(++i);
+//    public int updateExercises(@NonNull List<Exercise> exercises) {
+//        int i=0;
+//        for (Exercise e :
+//                exercises) {
+//            e.setOrderNumber(++i);
+//        }
+//        Exercise[] exercisesArray=exercises.toArray(new Exercise[exercises.size()]);
+//        return exercisesDao.updateExercise(exercisesArray);
+//    }
+
+    public int updateExercises(List<ExerciseWithSets> exercisesWithSets){
+        int exercisesArraySize=exercisesWithSets.size();
+        Exercise[] exercisesArray=new Exercise[exercisesArraySize];
+        for (int i = 0; i < exercisesArraySize; i++) {
+            Exercise exercise=exercisesWithSets.get(i).exercise;
+            exercise.setOrderNumber(i);
+            exercisesArray[i]=exercise;
         }
-        Exercise[] exercisesArray=exercises.toArray(new Exercise[exercises.size()]);
         return exercisesDao.updateExercise(exercisesArray);
     }
 

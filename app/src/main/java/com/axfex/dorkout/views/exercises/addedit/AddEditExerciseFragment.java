@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.axfex.dorkout.R;
@@ -37,6 +39,8 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
 
     private EditText mName;
     private EditText mDesc;
+    private FloatingActionButton mDone;
+    private ImageButton mAddEset;
     private Workout mWorkout;
     private Integer mExercisesCount;
     private List<Eset> mEsets;
@@ -87,7 +91,7 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         //At least one must have.
-        if (mEsets == null) createOneSet();
+        if (mEsets == null) createOneEset();
         addEditSetViewModel= ViewModelProviders.of(this,viewModelFactory).get(AddEditSetViewModel.class);
         //addEditWorkoutViewModel= ViewModelProviders.of(this,viewModelFactory).get(AddEditWorkoutViewModel.class);
         addEditExerciseViewModel= ViewModelProviders.of(this,viewModelFactory).get(AddEditExerciseViewModel.class);
@@ -113,7 +117,7 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
         mDesc.setText(exercise.getDescription());
     }
 
-    private void createOneSet(){
+    private void createOneEset(){
         mEsets =new ArrayList<>();
         Eset eset =new Eset();
         eset.setNormWeight(999);
@@ -121,14 +125,15 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
         swapAdapter();
     }
 
-    private void addSet(@Nullable Eset previousEset){
+    private void buildEset(@Nullable Eset previousEset){
         Eset eset =new Eset();
-
 
         if (exerciseId != null) {
             eset.setExerciseId(exerciseId);
         }
         eset.setNormWeight(999);
+        eset.setNormRepeats(0);
+        eset.setNormTime(0);
         mEsets.add(eset);
         swapAdapter();
     }
@@ -144,6 +149,10 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
         recyclerView.setLayoutManager(layoutManager);
         layoutInflater = getActivity().getLayoutInflater();
         swapAdapter();
+        //mDone=v.findViewById(R.id.fab_edit_exercise_done);
+        //mDone.setOnClickListener(this);
+        mAddEset=v.findViewById(R.id.ib_addeditexercises_add_set);
+        mAddEset.setOnClickListener(this);
         v.findViewById(R.id.bt_exercise_create).setOnClickListener(this);
 
         return v;
@@ -155,8 +164,8 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
             case R.id.bt_exercise_create:
                 addExercise();
                 break;
-            case R.id.bt_workout_start_time:
-                //showTimePickerDialog();
+            case R.id.ib_addeditexercises_add_set:
+                addEset();
                 break;
             case R.id.bt_workout_update:
                 updateExercise();
@@ -178,6 +187,7 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
     private Exercise buildExercise(){
         Exercise newExercise=new Exercise(mName.getText().toString(),workoutId);
         newExercise.setEsets(mEsets);
+
         return newExercise;
     }
 
@@ -187,6 +197,11 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
         addEditExerciseViewModel.addExercise(buildExercise());
 
         close();
+    }
+
+    private void addEset(){
+        buildEset(null);
+
     }
 
 
@@ -239,7 +254,7 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
 
         @Override
         public void onClick(View view) {
-            addSet(null);
+            buildEset(null);
         }
 
     }

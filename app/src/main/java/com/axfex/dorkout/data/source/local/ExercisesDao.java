@@ -27,7 +27,7 @@ public interface ExercisesDao {
     @Query("SELECT * from Exercise where workoutId = :workoutId order by orderNumber")
     LiveData<List<Exercise>> getExercises(final Long workoutId);
 
-    @Query("SELECT * from Exercise where workoutId = :workoutId")
+    @Query("SELECT * from Exercise where workoutId = :workoutId order by orderNumber")
     LiveData<List<ExerciseWithSets>> getExercisesWithSets(final Long workoutId);
 
     @Query("SELECT COUNT(*) from Exercise  where workoutId = :workoutId")
