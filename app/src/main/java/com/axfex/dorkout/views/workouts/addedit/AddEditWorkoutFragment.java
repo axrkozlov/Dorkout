@@ -93,7 +93,7 @@ public class AddEditWorkoutFragment extends Fragment implements View.OnClickList
                              Bundle savedInstanceState) {
         View v =inflater.inflate(R.layout.fragment_add_edit_workout, container, false);
 
-        mName =v.findViewById(R.id.et_exercise_name);
+        //mName =v.findViewById(R.id.et_exercise_name);
         mCreate = v.findViewById(R.id.bt_workout_create);
         mUpdate = v.findViewById(R.id.bt_workout_update);
         mDuplicate = v.findViewById(R.id.bt_workout_duplicate);

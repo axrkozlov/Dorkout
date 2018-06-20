@@ -24,9 +24,7 @@ import android.widget.TextView;
 
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
-import com.axfex.dorkout.data.Eset;
 import com.axfex.dorkout.data.Exercise;
-import com.axfex.dorkout.data.ExerciseWithSets;
 import com.axfex.dorkout.views.exercises.addedit.AddEditExerciseActivity;
 import com.axfex.dorkout.vm.ExercisesViewModel;
 import com.axfex.dorkout.vm.ViewModelFactory;
@@ -48,10 +46,8 @@ public class ExercisesFragment extends Fragment {
 
     private ExercisesViewModel exercisesViewModel;
     private RecyclerView rvExercises;
-    //private LayoutInflater layoutInflater;
     private ExercisesAdapter mAdapter;
-    //private List<Exercise> mExercisesWithSets;
-    private List<ExerciseWithSets> mExercisesWithSets;
+    private List<Exercise> mExercises;
 
     private ItemTouchHelper mItemTouchHelper;
     private static final String WORKOUT_ID = "workout_id";
@@ -89,31 +85,14 @@ public class ExercisesFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
         exercisesViewModel = ViewModelProviders.of(this, viewModelFactory).get(ExercisesViewModel.class);
-//        exercisesViewModel.getExercises(workoutId).observe(this, new Observer<List<Exercise>>() {
-//            @Override
-//            public void onChanged(@Nullable List<Exercise> exercises) {
-//                    setExercises(exercises);
-//            }
-//        });
-        exercisesViewModel.getExercisesWithSets(workoutId).observe(this, new Observer<List<ExerciseWithSets>>() {
-            @Override
-            public void onChanged(@Nullable List<ExerciseWithSets> exercises) {
-                setmExercisesWithSets(exercises);
-            }
-        });
+        exercisesViewModel.getExercises(workoutId).observe(this, exercises -> setExercises(exercises));
     }
-//
-//    private void setExercises(List<Exercise> exercises) {
-//        this.mExercisesWithSets = exercises;
-//        mAdapter = new ExercisesAdapter();
-//        rvExercises.setAdapter(mAdapter);
-//    }
-
-    private void setmExercisesWithSets(List<ExerciseWithSets> exercises) {
-        this.mExercisesWithSets = exercises;
+    private void setExercises(List<Exercise> exercises) {
+        this.mExercises = exercises;
         mAdapter = new ExercisesAdapter();
         rvExercises.setAdapter(mAdapter);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -131,7 +110,6 @@ public class ExercisesFragment extends Fragment {
                 startAddEditExerciseActivity();
             }
         });
-        //mAddButton.hide();
         return v;
     }
 
@@ -180,7 +158,7 @@ public class ExercisesFragment extends Fragment {
 
 
     private void updateExercises() {
-        exercisesViewModel.updateExercises(mExercisesWithSets);
+        exercisesViewModel.updateExercises(mExercises);
     }
 
     public Boolean switchToEditMode() {
@@ -227,11 +205,10 @@ public class ExercisesFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ExercisesViewHolder holder, int position) {
-            if (mExercisesWithSets.size() == 0) {
+            if (mExercises.size() == 0) {
                 return;
             }
-            Exercise exercise = mExercisesWithSets.get(position).exercise;
-            List<Eset> esets = mExercisesWithSets.get(position).esets;
+            Exercise exercise = mExercises.get(position);
             if (exercise == null) {
                 return;
             }
@@ -256,19 +233,6 @@ public class ExercisesFragment extends Fragment {
             holder.numberView.setText(Integer.toString(position + 1));
             holder.itemView.setTag(exercise.getId());
 
-
-            //bindExercise(holder,exercise,position);
-
-            String strWeight = "";
-            if (esets != null) {
-                for (Eset eset : esets
-                        ) {
-                    Integer weight = eset.getNormWeight();
-                    strWeight += weight.toString() + ":";
-                }
-                holder.setsView.setText(strWeight);
-            }
-
         }
 
         private void bindExercise(ExercisesViewHolder holder, Exercise exercise, Integer position) {
@@ -279,11 +243,11 @@ public class ExercisesFragment extends Fragment {
         private void onItemMoved(int base, int target) {
             if (base < target) {
                 for (int i = base; i < target; i++) {
-                    Collections.swap(mExercisesWithSets, i, i + 1);
+                    Collections.swap(mExercises, i, i + 1);
                 }
             } else {
                 for (int i = base; i > target; i--) {
-                    Collections.swap(mExercisesWithSets, i, i - 1);
+                    Collections.swap(mExercises, i, i - 1);
                 }
             }
             notifyItemMoved(base, target);
@@ -291,7 +255,7 @@ public class ExercisesFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return mExercisesWithSets.size();
+            return mExercises.size();
         }
 
     }
@@ -356,7 +320,6 @@ public class ExercisesFragment extends Fragment {
         public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
             mAdapter.onItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
             return true;
-
         }
 
         @Override

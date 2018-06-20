@@ -86,22 +86,27 @@
     <string name="workout_create_desc">Any description</string>
     <string name="lb_exercise_create_days">workout Days</string>
     <string name="lb_exercise_create_start_time">Start at</string>
-    <string name="lb_exercise_create_button">Create</string>
-    <string name="lb_exercise_update_button">Update</string>
-    <string name="lb_exercise_duplicate_button">Duplicate</string>
-    <string name="lb_exercise_delete_button">Delete</string>
 
-    <string name="exercise_create_name">Title</string>
-    <string name="exercise_create_desc">Any description</string>
-
-
+    <string name="add_edit_exercise_name">Title</string>
+    <string name="add_edit_exercise_type">Type of exercise</string>
+    <string name="add_edit_exercise_desc">Any description</string>
+    <string name="add_edit_exercise_weight">Weight</string>
+    <string name="add_edit_exercise_repeats">Repeats</string>
+    <string name="add_edit_exercise_distance">Distance</string>
+    <string name="add_edit_exercise_norm_time">Norm Time</string>
+    <string name="add_edit_exercise_rest_time">Rest Time</string>
+    <string name="add_edit_exercise_prepare_time">Prepare Time</string>
+    <string name="add_edit_exercise_create">Create</string>
+    <string name="add_edit_exercise_update">Update</string>
+    <string name="add_edit_exercise_duplicate">Duplicate</string>
+    <string name="add_edit_exercise_delete">Delete</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_exercises_edit">Edit…</string>
     <string name="menu_exercises_done">Done edit</string>
 
-    <string name="title_activity_add_edit_exercise">AddEditExerciseActivity</string>
+    <string name="title_activity_add_edit_exercise">Edit Exercise</string>
 
     <string name="error_no_extra_found">Error Retrieving Workout Id</string>
 </resources>

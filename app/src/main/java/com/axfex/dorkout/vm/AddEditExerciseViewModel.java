@@ -51,10 +51,6 @@ public class AddEditExerciseViewModel extends ViewModel {
 //        LiveData<Long> longLiveData = new LiveData>();
 //        return new LiveData<>;
 
-
-
-
-
     }
 
     public LiveData<Exercise> getExercise(@NonNull final Long exerciseId) {
@@ -69,6 +65,8 @@ public class AddEditExerciseViewModel extends ViewModel {
     public void deleteExercise(final Exercise  exercise){
         new Thread(() -> workoutsRepository.deleteExercise(exercise)).start();
     }
+
+
 
 
 }

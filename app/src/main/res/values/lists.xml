@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="exercise_types">
+        <item>Pull-up</item>
+        <item>Push-up</item>
+        <item>Running</item>
+        <item>Walking</item>
+        <item>Plank</item>
+        <item>Bench dips</item>
+        <item>Sit-ups</item>
+        <item>Hanging Legs Lift</item>
+        <item>Hyperextensions</item>
+    </string-array>
+</resources>

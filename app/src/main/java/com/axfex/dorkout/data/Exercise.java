@@ -1,6 +1,7 @@
 package com.axfex.dorkout.data;
 
 import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
@@ -29,14 +30,26 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
     private Long workoutId;
     private String name;
     private String description;
+    @Embedded(prefix = "exercise_type")
+    private ExerciseType type;
     private Integer orderNumber;
-    private Integer setsCount;
+    private Integer normWeight;
+    private Integer normRepeats;
+    private Integer normDistance;
+    private Integer normTime;
+    private Integer restTime;
+    private Integer prepareTime;
+    private Integer factWeight;
+    private Integer factRepeats;
+    private Integer factDistance;
+    private Integer factTime;
+
+
     @Ignore
     private transient Boolean isChecked = false;
     @Ignore
     private transient Boolean isStarted = false;
-    @Ignore
-    private List<Eset> esets;
+
 
     public Exercise(String name, final Long workoutId) {
         this.name = name;
@@ -67,6 +80,14 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
         this.name = name;
     }
 
+    public ExerciseType getType() {
+        return type;
+    }
+
+    public void setType(ExerciseType type) {
+        this.type = type;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -83,20 +104,84 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
         this.orderNumber = orderNumber;
     }
 
-    public Integer getSetsCount() {
-        return setsCount;
+    public Integer getNormWeight() {
+        return normWeight;
     }
 
-    public void setSetsCount(Integer setsCount) {
-        this.setsCount = setsCount;
+    public void setNormWeight(Integer normWeight) {
+        this.normWeight = normWeight;
     }
 
-    public List<Eset> getEsets() {
-        return esets;
+    public Integer getNormRepeats() {
+        return normRepeats;
     }
 
-    public void setEsets(List<Eset> esets) {
-        this.esets = esets;
+    public void setNormRepeats(Integer normRepeats) {
+        this.normRepeats = normRepeats;
+    }
+
+    public Integer getNormDistance() {
+        return normDistance;
+    }
+
+    public void setNormDistance(Integer normDistance) {
+        this.normDistance = normDistance;
+    }
+
+    public Integer getNormTime() {
+        return normTime;
+    }
+
+    public void setNormTime(Integer normTime) {
+        this.normTime = normTime;
+    }
+
+    public Integer getRestTime() {
+        return restTime;
+    }
+
+    public void setRestTime(Integer restTime) {
+        this.restTime = restTime;
+    }
+
+    public Integer getPrepareTime() {
+        return prepareTime;
+    }
+
+    public void setPrepareTime(Integer prepareTime) {
+        this.prepareTime = prepareTime;
+    }
+
+    public Integer getFactWeight() {
+        return factWeight;
+    }
+
+    public void setFactWeight(Integer factWeight) {
+        this.factWeight = factWeight;
+    }
+
+    public Integer getFactRepeats() {
+        return factRepeats;
+    }
+
+    public void setFactRepeats(Integer fectRepeats) {
+        this.factRepeats = fectRepeats;
+    }
+
+    public Integer getFactDistance() {
+        return factDistance;
+    }
+
+    public void setFactDistance(Integer factDistance) {
+        this.factDistance = factDistance;
+    }
+
+    public Integer getFactTime() {
+        return factTime;
+    }
+
+    public void setFactTime(Integer factTime) {
+        this.factTime = factTime;
     }
 
     public Boolean getChecked() {
