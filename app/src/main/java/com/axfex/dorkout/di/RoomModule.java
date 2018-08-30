@@ -6,7 +6,6 @@ import android.arch.persistence.room.Room;
 
 import com.axfex.dorkout.data.source.WorkoutsRepository;
 import com.axfex.dorkout.data.source.local.ExercisesDao;
-import com.axfex.dorkout.data.source.local.SetsDao;
 import com.axfex.dorkout.data.source.local.WorkoutsDao;
 import com.axfex.dorkout.data.source.local.WorkoutsDatabase;
 import com.axfex.dorkout.vm.ViewModelFactory;
@@ -32,8 +31,8 @@ public class RoomModule {
 
     @Provides
     @Singleton
-    WorkoutsRepository providesWorkoutsRepository(WorkoutsDao workoutsDao, ExercisesDao exercisesDao, SetsDao setsDao){
-        return new WorkoutsRepository(workoutsDao,exercisesDao,setsDao);
+    WorkoutsRepository providesWorkoutsRepository(WorkoutsDao workoutsDao, ExercisesDao exercisesDao){
+        return new WorkoutsRepository(workoutsDao,exercisesDao);
     }
 
     @Provides
@@ -46,12 +45,6 @@ public class RoomModule {
     @Singleton
     ExercisesDao providesExercisesDao(WorkoutsDatabase workoutsDatabase){
         return workoutsDatabase.exercisesDao();
-    }
-
-    @Provides
-    @Singleton
-    SetsDao providesSetsDao(WorkoutsDatabase workoutsDatabase){
-        return workoutsDatabase.setsDao();
     }
 
     @Provides

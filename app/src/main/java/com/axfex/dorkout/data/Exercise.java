@@ -30,13 +30,18 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
     private String name;
     private String description;
     private Integer orderNumber;
-    private Integer setsCount;
+    private Integer normWeight;
+    private Integer normRepeats;
+    private Integer normTime;
+    private Integer restTime;
+    private Integer factWeight;
+    private Integer factRepeats;
+    private Integer factTime;
     @Ignore
     private transient Boolean isChecked = false;
     @Ignore
     private transient Boolean isStarted = false;
-    @Ignore
-    private List<Eset> esets;
+
 
     public Exercise(String name, final Long workoutId) {
         this.name = name;
@@ -83,25 +88,68 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
         this.orderNumber = orderNumber;
     }
 
-    public Integer getSetsCount() {
-        return setsCount;
+    public Integer getNormWeight() {
+        return normWeight;
     }
 
-    public void setSetsCount(Integer setsCount) {
-        this.setsCount = setsCount;
+    public void setNormWeight(Integer normWeight) {
+        this.normWeight = normWeight;
     }
 
-    public List<Eset> getEsets() {
-        return esets;
+    public Integer getNormRepeats() {
+        return normRepeats;
     }
 
-    public void setEsets(List<Eset> esets) {
-        this.esets = esets;
+    public void setNormRepeats(Integer normRepeats) {
+        this.normRepeats = normRepeats;
+    }
+
+    public Integer getNormTime() {
+        return normTime;
+    }
+
+    public void setNormTime(Integer normTime) {
+        this.normTime = normTime;
+    }
+
+    public Integer getRestTime() {
+        return restTime;
+    }
+
+    public void setRestTime(Integer restTime) {
+        this.restTime = restTime;
+    }
+
+    public Integer getFactWeight() {
+        return factWeight;
+    }
+
+    public void setFactWeight(Integer factWeight) {
+        this.factWeight = factWeight;
+    }
+
+    public Integer getFactRepeats() {
+        return factRepeats;
+    }
+
+    public void setFactRepeats(Integer factRepeats) {
+        this.factRepeats = factRepeats;
+    }
+
+    public Integer getFactTime() {
+        return factTime;
+    }
+
+    public void setFactTime(Integer factTime) {
+        this.factTime = factTime;
     }
 
     public Boolean getChecked() {
         return isChecked;
     }
+
+
+
 
     public void check(Boolean checked) {
         isChecked = true;

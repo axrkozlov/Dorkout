@@ -57,47 +57,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:text="Sets"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_exercise_desc" />
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_sets"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/bt_exercise_create"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lb_exercise_sets">
-
-    </android.support.v7.widget.RecyclerView>
-
-    <ImageButton
-        android:id="@+id/ib_addeditexercises_add_set"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rv_sets"
-        app:srcCompat="@drawable/ic_add_24dp" />
-
     <Button
         android:id="@+id/bt_exercise_create"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:background="@color/colorPrimary"
         android:text="@string/lb_exercise_create_button"
         android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Inverse"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/ib_addeditexercises_add_set"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
 

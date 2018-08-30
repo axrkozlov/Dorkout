@@ -20,7 +20,8 @@
             android:layout_height="18dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            app:srcCompat="@drawable/lamp_red" />
+            app:srcCompat="@drawable/lamp_red"
+            android:contentDescription="TODO" />
 
         <ImageView
             android:id="@+id/yellow_lamp"
@@ -28,7 +29,8 @@
             android:layout_height="18dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            app:srcCompat="@drawable/lamp_red" />
+            app:srcCompat="@drawable/lamp_red"
+            android:contentDescription="TODO" />
 
         <ImageView
             android:id="@+id/green_lamp"
@@ -36,7 +38,8 @@
             android:layout_height="18dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            app:srcCompat="@drawable/lamp_red" />
+            app:srcCompat="@drawable/lamp_red"
+            android:contentDescription="TODO" />
     </LinearLayout>
 
 
