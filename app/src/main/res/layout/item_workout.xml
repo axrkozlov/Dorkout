@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+<android.support.v7.widget.CardView xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/workout_card"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
@@ -8,10 +9,8 @@
     android:layout_marginLeft="4dp"
     android:layout_marginRight="4dp"
     android:layout_marginTop="6dp"
-    app:cardBackgroundColor="@color/workout_item">
+    app:cardBackgroundColor="@color/workout_selections">
 
-
-    android:background="@color/workout_item">
 <!--<android.support.v7.widget.CardView -->
     <!--xmlns:tools="http://schemas.android.com/tools"-->
     <!--android:layout_width="match_parent"-->
@@ -29,6 +28,7 @@
         android:paddingTop="14dp"
         android:paddingLeft="14dp"
         android:paddingRight="14dp"
+        android:paddingBottom="14dp"
 
         >
 
@@ -36,7 +36,8 @@
             android:id="@+id/workout_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="3dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
             android:text="@string/workout_title"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/title_text"
@@ -44,6 +45,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            app:srcCompat="@drawable/gray_borders"
+            android:layout_marginTop="2dp"
+            app:layout_constraintTop_toBottomOf="@+id/workout_title"/>
 
         <TextView
             android:id="@+id/workout_desc"
@@ -55,20 +64,21 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/workout_title" />
+            app:layout_constraintTop_toBottomOf="@+id/line" />
 
         <TextView
             android:id="@+id/lb_workout_desc_total_exercises"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="48dp"
-            android:layout_marginStart="48dp"
             android:layout_marginTop="4dp"
+            android:layout_marginLeft="4dp"
+
             android:text="@string/lb_workout_desc_exercises"
             android:textColor="@color/secondary_text"
             android:textSize="@dimen/small_label_text"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/workout_desc" />
+            app:layout_constraintTop_toBottomOf="@+id/workout_desc"
+            app:layout_constraintStart_toEndOf="@id/workout_icon"
+            tools:layout_editor_absoluteX="62dp" />
 
         <TextView
             android:id="@+id/workout_desc_exercises"
@@ -78,21 +88,19 @@
             android:textColor="@color/primary_text"
             android:textSize="@dimen/small_label_text"
             app:layout_constraintBaseline_toBaselineOf="@+id/lb_workout_desc_total_exercises"
-            app:layout_constraintEnd_toEndOf="parent"
+
             app:layout_constraintStart_toEndOf="@+id/lb_workout_desc_total_exercises" />
 
         <TextView
             android:id="@+id/lb_workout_desc_total_time"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="48dp"
-            android:layout_marginStart="48dp"
-            android:layout_marginTop="4dp"
+            android:layout_height="18dp"
             android:text="@string/lb_workout_desc_total_time"
             android:textColor="@color/secondary_text"
             android:textSize="@dimen/small_label_text"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lb_workout_desc_total_exercises" />
+            app:layout_constraintTop_toBottomOf="@+id/lb_workout_desc_total_exercises"
+            app:layout_constraintLeft_toLeftOf="@+id/lb_workout_desc_total_exercises"
+            tools:layout_editor_absoluteX="62dp" />
 
         <TextView
             android:id="@+id/workout_desc_total_time"
@@ -102,7 +110,6 @@
             android:textColor="@color/primary_text"
             android:textSize="@dimen/small_label_text"
             app:layout_constraintBaseline_toBaselineOf="@+id/lb_workout_desc_total_time"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/lb_workout_desc_total_time" />
 
         <TextView
@@ -125,14 +132,12 @@
             android:textColor="@color/primary_text"
             android:textSize="@dimen/small_label_text"
             app:layout_constraintBaseline_toBaselineOf="@+id/lb_workout_desc_days"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/lb_workout_desc_days" />
 
         <TextView
             android:id="@+id/lb_workout_start_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:text="@string/lb_workout_desc_start_time"
             android:textColor="@color/secondary_text"
             android:textSize="@dimen/small_label_text"
@@ -149,27 +154,34 @@
             android:textColor="@color/primary_text"
             android:textSize="@dimen/small_label_text"
             app:layout_constraintBaseline_toBaselineOf="@+id/lb_workout_start_time"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/lb_workout_start_time" />
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:srcCompat="@drawable/ic_content_paste_black_24dp"
 
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/workout_desc"
-            app:layout_constraintEnd_toStartOf="@+id/lb_workout_desc_total_time"
+        <ImageView
+            android:id="@+id/workout_icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
 
-            />
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            app:srcCompat="@drawable/gray_borders"
-            android:layout_marginTop="7dp"
-            app:layout_constraintTop_toBottomOf="@+id/lb_workout_start_time"
+            app:layout_constraintTop_toTopOf="@+id/lb_workout_desc_total_exercises"
+            app:srcCompat="@drawable/ic_content_paste_black_24dp" />
 
-/>
+        <ImageView
+            android:id="@+id/workout_mark_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginRight="14dp"
+            app:layout_constraintEnd_toEndOf="@+id/workout_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/workout_icon"
+            app:srcCompat="@drawable/ic_mark_24dp"
+            android:visibility="invisible"/>
+
+
+
     </android.support.constraint.ConstraintLayout>
 
 </android.support.v7.widget.CardView>

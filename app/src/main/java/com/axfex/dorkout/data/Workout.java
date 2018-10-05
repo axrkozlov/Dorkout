@@ -20,7 +20,7 @@ public class Workout {
     private Integer weekDaysComposed;
     private Integer exercisesCount;
     @Ignore
-    private transient Boolean isChecked = false;
+    private transient Boolean marked = false;
     @Ignore
     private transient Boolean isStarted = false;
 
@@ -105,15 +105,15 @@ public class Workout {
         this.exercisesCount = exercisesCount;
     }
 
-    public Boolean getChecked() {
-        return isChecked;
+    public Boolean isMarked() {
+        return marked;
     }
 
-    public void check(Boolean checked) {
-        isChecked = true;
+    public void mark() {
+        marked = true;
     }
-    public void uncheck(Boolean checked) {
-        isChecked = false;
+    public void unmark() {
+        marked = false;
     }
 
     public Boolean getStarted() {

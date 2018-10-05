@@ -1,5 +1,6 @@
 package com.axfex.dorkout.views.workouts.list;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 
@@ -17,7 +18,6 @@ public class WorkoutsActivity extends BaseActivity {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         WorkoutsFragment workoutsFragment = (WorkoutsFragment) fragmentManager.findFragmentByTag(WORKOUTS_FRAG);
-
 
         if (workoutsFragment == null) {
             workoutsFragment = WorkoutsFragment.newInstance();

@@ -1,4 +1,4 @@
-<android.support.design.widget.CoordinatorLayout
+<FrameLayout
 android:id="@+id/fragment_workouts"
 xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,15 +8,15 @@ xmlns:tools="http://schemas.android.com/tools"
 tools:context=".views.workouts.list.WorkoutsFragment"
 android:background="#666666">
 
-<android.support.design.widget.FloatingActionButton
-    android:id="@+id/fab_add_workout"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom|end"
-    android:layout_margin="@dimen/fab_margin"
-    app:layout_anchorGravity="bottom|right|end"
-    app:srcCompat="@drawable/ic_add_24dp"
-    />
+<!--<android.support.design.widget.FloatingActionButton-->
+    <!--android:id="@+id/fab_add_workout"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="bottom|end"-->
+    <!--android:layout_margin="@dimen/fab_margin"-->
+    <!--app:layout_anchorGravity="bottom|right|end"-->
+    <!--app:srcCompat="@drawable/ic_add_24dp"-->
+    <!--/>-->
 
 <!--<android.support.design.widget.AppBarLayout-->
 <!--android:layout_width="match_parent"-->
@@ -42,4 +42,4 @@ android:background="#666666">
 </android.support.v7.widget.RecyclerView>
 
 
-</android.support.design.widget.CoordinatorLayout>
+</FrameLayout>

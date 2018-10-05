@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -77,6 +80,7 @@ public class AddEditWorkoutFragment extends Fragment implements View.OnClickList
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
         addEditWorkoutViewModel= ViewModelProviders.of(this,viewModelFactory).get(AddEditWorkoutViewModel.class);
         addEditWorkoutViewModel.getWorkout(workoutId).observe(this, new Observer<Workout>() {
             @Override
@@ -119,16 +123,27 @@ public class AddEditWorkoutFragment extends Fragment implements View.OnClickList
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        getActivity().getMenuInflater().inflate(R.menu.menu_addeditworkout, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_addeditworkout_save: {
+                saveWorkout();
+                break;
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.bt_workout_create:
-                addWorkout();
-                break;
             case R.id.bt_workout_start_time:
                 showTimePickerDialog();
-                break;
-            case R.id.bt_workout_update:
-                updateWorkout();
                 break;
             case R.id.bt_workout_delete:
                 deleteWorkout();
@@ -167,15 +182,13 @@ public class AddEditWorkoutFragment extends Fragment implements View.OnClickList
 
         workout.setWeekDaysComposed(DateUtils.composeWeekDays(weekDays));
 
+        workout.setLastDate(Calendar.getInstance().getTimeInMillis());
+
         String startTimeText = mStartTime.getText().toString();
         if (!startTimeText.equals(getResources().getString(R.string.workout_id_tag))) {
             long startTimeLong = DateUtils.getTimeMillis(startTimeText);
             workout.setStartTime(startTimeLong);
         }
-
-
-
-
 
         return workout;
     }
@@ -205,7 +218,7 @@ public class AddEditWorkoutFragment extends Fragment implements View.OnClickList
 
     }
 
-    public void addWorkout(){
+    public void saveWorkout(){
         if (!checkNameField()){
             return;
         }
@@ -213,21 +226,14 @@ public class AddEditWorkoutFragment extends Fragment implements View.OnClickList
         if (newWorkout == null) {
             return;
         }
-        addEditWorkoutViewModel.addWorkout(newWorkout);
+        if (workoutId == 0) {
+            addEditWorkoutViewModel.addWorkout(newWorkout);
+        } else {
+            addEditWorkoutViewModel.updateWorkout(newWorkout);
+        }
         close();
     }
 
-    public void updateWorkout(){
-        if (!checkNameField()){
-            return;
-        }
-        Workout newWorkout = buildWorkout();
-        if (newWorkout == null) {
-            return;
-        }
-        addEditWorkoutViewModel.updateWorkout(newWorkout);
-        close();
-    }
 
     public void deleteWorkout(){
         addEditWorkoutViewModel.deleteWorkout(new Workout(workoutId));

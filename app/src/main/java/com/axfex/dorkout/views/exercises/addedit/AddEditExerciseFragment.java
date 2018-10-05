@@ -102,10 +102,7 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
         mName =v.findViewById(R.id.et_exercise_name);
         mDesc = v.findViewById(R.id.et_exercise_desc);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView = v.findViewById(R.id.rv_sets);
-        recyclerView.setLayoutManager(layoutManager);
         layoutInflater = getActivity().getLayoutInflater();
-        swapAdapter();
         //mDone=v.findViewById(R.id.fab_edit_exercise_done);
         //mDone.setOnClickListener(this);
         v.findViewById(R.id.bt_exercise_create).setOnClickListener(this);
@@ -159,11 +156,6 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
         getActivity().setResult(Activity.RESULT_OK);
         getActivity().finish();
     }
-
-    private void swapAdapter(){
-        recyclerView.setAdapter(adapter);
-    }
-
 
 //    private class SetsAdapter extends RecyclerView.Adapter<SetsViewHolder> implements View.OnClickListener {
 //

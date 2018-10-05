@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_workouts_add"
+        android:orderInCategory="100"
+        android:title="@string/menu_add"
+        android:icon="@drawable/ic_add_24dp"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_workouts_edit"
+        android:orderInCategory="100"
+        android:title="@string/menu_edit"
+        android:icon="@drawable/ic_edit_24dp"
+        app:showAsAction="ifRoom"
+        android:visible="false"/>
+    <item
+        android:id="@+id/menu_workouts_copy"
+        android:orderInCategory="100"
+        android:title="@string/menu_copy"
+        android:icon="@drawable/ic_copy_24dp"
+        app:showAsAction="ifRoom"
+        android:visible="false" />
+
+    <item
+        android:id="@+id/menu_workouts_delete"
+        android:orderInCategory="100"
+        android:title="@string/menu_delete"
+        android:icon="@drawable/ic_delete_24dp"
+        app:showAsAction="never"
+        android:visible="false" />
+
+    <item
+        android:id="@+id/menu_settings"
+        android:orderInCategory="100"
+        android:title="@string/menu_settings"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_about"
+        android:orderInCategory="100"
+        android:title="@string/menu_about"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_donate"
+        android:orderInCategory="100"
+        android:title="@string/menu_donate"
+        app:showAsAction="never" />
+
+</menu>

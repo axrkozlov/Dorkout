@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
 import com.axfex.dorkout.data.Exercise;
+import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.views.exercises.addedit.AddEditExerciseActivity;
 import com.axfex.dorkout.vm.ExercisesViewModel;
 import com.axfex.dorkout.vm.ViewModelFactory;
@@ -47,6 +48,7 @@ public class ExercisesFragment extends Fragment {
     private ExercisesViewModel exercisesViewModel;
     private RecyclerView rvExercises;
     private ExercisesAdapter mAdapter;
+    private Workout mWorkout;
     private List<Exercise> mExercises;
 
     private ItemTouchHelper mItemTouchHelper;
@@ -86,6 +88,8 @@ public class ExercisesFragment extends Fragment {
         setHasOptionsMenu(true);
         exercisesViewModel = ViewModelProviders.of(this, viewModelFactory).get(ExercisesViewModel.class);
         exercisesViewModel.getExercises(workoutId).observe(this, exercises -> setExercises(exercises));
+        exercisesViewModel.getWorkout(workoutId).observe(this, workout -> setWorkout(workout));
+
 //        exercisesViewModel.getExercisesWithSets(workoutId).observe(this, new Observer<List<ExerciseWithSets>>() {
 //            @Override
 //            public void onChanged(@Nullable List<ExerciseWithSets> exercises) {
@@ -100,6 +104,10 @@ public class ExercisesFragment extends Fragment {
         rvExercises.setAdapter(mAdapter);
     }
 
+    private void setWorkout(Workout workout) {
+        this.mWorkout = workout;
+        this.getActivity().setTitle(workout.getName());
+    }
 //    private void setmExercisesWithSets(List<ExerciseWithSets> exercises) {
 //        this.mExercisesWithSets = exercises;
 //        mAdapter = new ExercisesAdapter();
@@ -162,6 +170,7 @@ public class ExercisesFragment extends Fragment {
         i.putExtra(WORKOUT_ID, workoutId);
         i.putExtra(EXERCISE_ID, exerciseId);
         startActivityForResult(i, AddEditExerciseActivity.REQUEST_ADD_TASK);
+
     }
 
 
@@ -209,6 +218,7 @@ public class ExercisesFragment extends Fragment {
         public ExercisesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(getContext()).inflate(R.layout.item_exercise, parent, false);
             return new ExercisesViewHolder(view);
+
         }
 
         @Override
@@ -268,6 +278,7 @@ public class ExercisesFragment extends Fragment {
                 }
             }
             notifyItemMoved(base, target);
+
         }
 
 
@@ -294,6 +305,7 @@ public class ExercisesFragment extends Fragment {
             setsView = itemView.findViewById(R.id.exercise_sets);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
+
         }
 
         @Override
