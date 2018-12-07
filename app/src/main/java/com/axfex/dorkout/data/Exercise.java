@@ -1,7 +1,6 @@
 package com.axfex.dorkout.data;
 
 import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
@@ -30,21 +29,14 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
     private Long workoutId;
     private String name;
     private String description;
-    @Embedded(prefix = "exercise_type")
-    private ExerciseType type;
     private Integer orderNumber;
     private Integer normWeight;
     private Integer normRepeats;
-    private Integer normDistance;
     private Integer normTime;
     private Integer restTime;
-    private Integer prepareTime;
     private Integer factWeight;
     private Integer factRepeats;
-    private Integer factDistance;
     private Integer factTime;
-
-
     @Ignore
     private transient Boolean isChecked = false;
     @Ignore
@@ -80,14 +72,6 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
         this.name = name;
     }
 
-    public ExerciseType getType() {
-        return type;
-    }
-
-    public void setType(ExerciseType type) {
-        this.type = type;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -120,14 +104,6 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
         this.normRepeats = normRepeats;
     }
 
-    public Integer getNormDistance() {
-        return normDistance;
-    }
-
-    public void setNormDistance(Integer normDistance) {
-        this.normDistance = normDistance;
-    }
-
     public Integer getNormTime() {
         return normTime;
     }
@@ -144,14 +120,6 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
         this.restTime = restTime;
     }
 
-    public Integer getPrepareTime() {
-        return prepareTime;
-    }
-
-    public void setPrepareTime(Integer prepareTime) {
-        this.prepareTime = prepareTime;
-    }
-
     public Integer getFactWeight() {
         return factWeight;
     }
@@ -164,16 +132,8 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
         return factRepeats;
     }
 
-    public void setFactRepeats(Integer fectRepeats) {
-        this.factRepeats = fectRepeats;
-    }
-
-    public Integer getFactDistance() {
-        return factDistance;
-    }
-
-    public void setFactDistance(Integer factDistance) {
-        this.factDistance = factDistance;
+    public void setFactRepeats(Integer factRepeats) {
+        this.factRepeats = factRepeats;
     }
 
     public Integer getFactTime() {
@@ -187,6 +147,9 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
     public Boolean getChecked() {
         return isChecked;
     }
+
+
+
 
     public void check(Boolean checked) {
         isChecked = true;

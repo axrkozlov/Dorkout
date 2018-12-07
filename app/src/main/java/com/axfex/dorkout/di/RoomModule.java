@@ -2,17 +2,13 @@ package com.axfex.dorkout.di;
 
 import android.app.Application;
 import android.arch.lifecycle.ViewModelProvider;
-import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
-import android.support.annotation.NonNull;
 
-import com.axfex.dorkout.data.ExerciseType;
 import com.axfex.dorkout.data.source.WorkoutsRepository;
-import com.axfex.dorkout.data.source.local.ExerciseTypesDao;
 import com.axfex.dorkout.data.source.local.ExercisesDao;
 import com.axfex.dorkout.data.source.local.WorkoutsDao;
 import com.axfex.dorkout.data.source.local.WorkoutsDatabase;
+import com.axfex.dorkout.util.AppExecutors;
 import com.axfex.dorkout.vm.ViewModelFactory;
 
 import javax.inject.Singleton;
@@ -31,15 +27,13 @@ public class RoomModule {
 
 
     public RoomModule(Application application) {
-        this.workoutsDatabase = Room
-                .databaseBuilder(application,WorkoutsDatabase.class,"workouts.db")
-                .build();
+        this.workoutsDatabase = Room.databaseBuilder(application,WorkoutsDatabase.class,"workouts.db").build();
     }
 
     @Provides
     @Singleton
-    WorkoutsRepository providesWorkoutsRepository(WorkoutsDao workoutsDao, ExercisesDao exercisesDao, ExerciseTypesDao exerciseTypesDao){
-        return new WorkoutsRepository(workoutsDao,exercisesDao,exerciseTypesDao);
+    WorkoutsRepository providesWorkoutsRepository(WorkoutsDao workoutsDao, ExercisesDao exercisesDao, AppExecutors appExecutors){
+        return new WorkoutsRepository(workoutsDao,exercisesDao,appExecutors);
     }
 
     @Provides
@@ -54,11 +48,7 @@ public class RoomModule {
         return workoutsDatabase.exercisesDao();
     }
 
-    @Provides
-    @Singleton
-    ExerciseTypesDao providesExerciseTypesDao(WorkoutsDatabase workoutsDatabase){
-        return workoutsDatabase.exerciseTypesDao();
-    }
+
 
     @Provides
     @Singleton

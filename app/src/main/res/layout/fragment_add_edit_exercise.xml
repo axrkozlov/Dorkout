@@ -18,17 +18,13 @@
     <!--app:layout_constraintEnd_toEndOf="@+id/constraintLayout"-->
     <!--app:srcCompat="@drawable/ic_done_24dp" />-->
 
-    <AutoCompleteTextView
-        android:id="@+id/at_exercise_type"
-        android:layout_width="match_parent"
+
+    <EditText
+        android:id="@+id/et_exercise_name"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="6dp"
-        android:completionThreshold="0"
-        android:hint="@string/add_edit_exercise_type"
+        android:hint="@string/exercise_create_name"
+        android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -36,215 +32,36 @@
 
     <EditText
         android:id="@+id/et_exercise_desc"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:ems="10"
+        android:hint="@string/exercise_create_desc"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_exercise_name" />
+
+
+    <!--<TextView-->
+    <!--android:id="@+id/exercise_create_start_time"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="&#45;&#45;:&#45;&#45;"-->
+    <!--android:textAppearance="@style/TextAppearance.AppCompat.Display1"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/lb_exercise_create_start_time" />-->
+
+
+    <TextView
+        android:id="@+id/lb_exercise_sets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:hint="@string/add_edit_exercise_desc"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/cb_weight"
-        app:layout_constraintTop_toBottomOf="@+id/at_exercise_type" />
-
-
-    <!--<CheckBox-->
-        <!--android:id="@+id/cb_weight"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="16dp"-->
-        <!--android:layout_marginStart="16dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:text="@string/add_edit_exercise_weight"-->
-        <!--app:layout_constraintEnd_toEndOf="@id/cb_repeats"-->
-        <!--app:layout_constraintLeft_toLeftOf="parent"-->
-        <!--app:layout_constraintLeft_toRightOf="@id/cb_repeats"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/et_exercise_desc" />-->
-
-
-    <!--<CheckBox-->
-        <!--android:id="@+id/cb_repeats"-->
-        <!--tol-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="16dp"-->
-        <!--android:layout_marginStart="16dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:text="@string/add_edit_exercise_repeats"-->
-        <!--app:layout_constraintEnd_toStartOf="@id/cb_distance"-->
-        <!--app:layout_constraintLeft_toRightOf="@id/cb_weight"-->
-        <!--app:layout_constraintStart_toEndOf="@+id/cb_weight"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/et_exercise_desc" />-->
-
-    <!--<CheckBox-->
-        <!--android:id="@+id/cb_distance"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginEnd="24dp"-->
-        <!--android:layout_marginRight="24dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:text="@string/add_edit_exercise_distance"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toEndOf="@+id/cb_repeats"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/et_exercise_desc" />-->
-
-    <EditText
-        android:id="@+id/et_exercise_weight"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="24dp"
-        android:inputType="number"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toStartOf="@+id/et_exercise_repeats"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Sets"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_exercise_desc" />
-
-    <EditText
-        android:id="@+id/et_exercise_repeats"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="24dp"
-        android:inputType="number"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toStartOf="@+id/et_exercise_distance"
-        app:layout_constraintStart_toEndOf="@+id/et_exercise_weight"
-        app:layout_constraintTop_toBottomOf="@+id/et_exercise_desc" />
-
-
-    <EditText
-        android:id="@+id/et_exercise_distance"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="24dp"
-        android:inputType="number"
-        android:textAlignment="center"
-        app:layout_constraintStart_toEndOf="@+id/et_exercise_repeats"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_exercise_desc" />
-
-    <TextView
-        android:id="@+id/lb_weight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="@string/add_edit_exercise_weight"
-        android:textAppearance="@style/card_info_label"
-        app:layout_constraintBottom_toTopOf="@+id/et_exercise_weight"
-        app:layout_constraintEnd_toEndOf="@+id/et_exercise_weight" />
-
-    <TextView
-        android:id="@+id/lb_repeats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="@string/add_edit_exercise_repeats"
-        android:textAppearance="@style/card_info_label"
-        app:layout_constraintBottom_toTopOf="@+id/et_exercise_repeats"
-        app:layout_constraintEnd_toEndOf="@+id/et_exercise_repeats" />
-
-    <TextView
-        android:id="@+id/lb_distance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="@string/add_edit_exercise_distance"
-        android:textAppearance="@style/card_info_label"
-        app:layout_constraintBottom_toTopOf="@+id/et_exercise_distance"
-        app:layout_constraintEnd_toEndOf="@+id/et_exercise_distance" />
-
-
-
-    <EditText
-        android:id="@+id/et_exercise_norm_time"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="24dp"
-        android:inputType="number"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toStartOf="@+id/et_exercise_rest_time"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_exercise_weight" />
-
-    <EditText
-        android:id="@+id/et_exercise_rest_time"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="24dp"
-        android:inputType="number"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toStartOf="@+id/et_exercise_prepare_time"
-        app:layout_constraintStart_toEndOf="@+id/et_exercise_norm_time"
-        app:layout_constraintTop_toBottomOf="@+id/et_exercise_weight" />
-
-
-    <EditText
-        android:id="@+id/et_exercise_prepare_time"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="24dp"
-        android:inputType="number"
-        android:textAlignment="center"
-        app:layout_constraintStart_toEndOf="@+id/et_exercise_rest_time"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_exercise_weight" />
-
-    <TextView
-        android:id="@+id/lb_norm_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="@string/add_edit_exercise_norm_time"
-        android:textAppearance="@style/card_info_label"
-        app:layout_constraintBottom_toTopOf="@+id/et_exercise_norm_time"
-        app:layout_constraintEnd_toEndOf="@+id/et_exercise_weight" />
-
-    <TextView
-        android:id="@+id/lb_rest_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="@string/add_edit_exercise_rest_time"
-        android:textAppearance="@style/card_info_label"
-        app:layout_constraintBottom_toTopOf="@+id/et_exercise_rest_time"
-        app:layout_constraintEnd_toEndOf="@+id/et_exercise_repeats" />
-
-    <TextView
-        android:id="@+id/lb_prepare_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="@string/add_edit_exercise_prepare_time"
-        android:textAppearance="@style/card_info_label"
-        app:layout_constraintBottom_toTopOf="@+id/et_exercise_prepare_time"
-        app:layout_constraintEnd_toEndOf="@+id/et_exercise_distance" />
 
 
     <Button
@@ -256,21 +73,11 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:background="@color/colorPrimary"
-        android:text="@string/add_edit_exercise_create"
+        android:text="@string/lb_exercise_create_button"
         android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Inverse"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <!--<Spinner-->
-    <!--android:id="@+id/sp_exercise_type"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginTop="8dp"-->
-    <!--app:layout_constraintEnd_toEndOf="parent"-->
-    <!--app:layout_constraintStart_toStartOf="parent"-->
-    <!--app:layout_constraintTop_toBottomOf="@+id/et_exercise_desc" />-->
 
 
     <!--<Button-->

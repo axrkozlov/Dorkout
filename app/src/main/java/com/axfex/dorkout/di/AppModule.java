@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.axfex.dorkout.WorkoutApplication;
+import com.axfex.dorkout.util.AppExecutors;
 
 import javax.inject.Singleton;
 
@@ -33,6 +34,12 @@ public class AppModule {
     @Singleton
     WorkoutApplication provideWorkoutApplication(){
         return application;
+    }
+
+    @Provides
+    @Singleton
+    AppExecutors providesAppExecutors(){
+        return new AppExecutors();
     }
 
 }

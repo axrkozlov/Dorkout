@@ -3,7 +3,7 @@ package com.axfex.dorkout.di;
 import android.app.Application;
 
 import com.axfex.dorkout.views.exercises.addedit.AddEditExerciseFragment;
-import com.axfex.dorkout.views.workouts.addedit.AddEditWorkoutFragment;
+import com.axfex.dorkout.views.workouts.edit.EditWorkoutFragment;
 import com.axfex.dorkout.views.exercises.list.ExercisesFragment;
 import com.axfex.dorkout.views.workouts.list.WorkoutsFragment;
 
@@ -19,7 +19,7 @@ import dagger.Component;
 public interface AppComponent {
 
     void inject (WorkoutsFragment workoutsFragment);
-    void inject (AddEditWorkoutFragment addEditWorkoutFragment);
+    void inject (EditWorkoutFragment editWorkoutFragment);
     void inject (ExercisesFragment exercisesFragment);
     void inject (AddEditExerciseFragment addEditExerciseFragment);
 

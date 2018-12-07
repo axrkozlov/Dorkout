@@ -10,14 +10,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".views.workouts.list.WorkoutsActivity">
+        <activity android:name=".views.workouts.list.WorkoutsActivity"
+            android:label="@string/title_activity_workouts">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity android:name=".views.workouts.addedit.AddEditWorkoutActivity" />
+        <activity android:name=".views.workouts.edit.EditWorkoutActivity"/>
         <activity
             android:name=".views.exercises.list.ExercisesActivity"
             android:label="@string/title_activity_exercises"

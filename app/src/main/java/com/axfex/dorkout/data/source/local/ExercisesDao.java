@@ -26,6 +26,13 @@ public interface ExercisesDao {
     @Query("SELECT * from Exercise where workoutId = :workoutId order by orderNumber")
     LiveData<List<Exercise>> getExercises(final Long workoutId);
 
+
+    //@Query("SELECT * FROM colis INNER JOIN step ON colis.idColis= step.idColis ORDER BY date DESC")
+
+//    @Query("SELECT * from Exercise where workoutId = :workoutId order by orderNumber")
+//    //@Query("SELECT * from Exercise  INNER JOIN Eset  ON Exercise.id=Eset.exerciseId  where workoutId = :workoutId  ORDER BY Exercise.orderNumber ")
+//    LiveData<List<ExerciseWithSets>> getExercisesWithSets(final Long workoutId);
+
     @Query("SELECT COUNT(*) from Exercise  where workoutId = :workoutId")
     LiveData<Integer> getExercisesCount(final Long workoutId);
 
@@ -44,14 +51,5 @@ public interface ExercisesDao {
 
     @Query("DELETE from Exercise where id = :exerciseId")
     void deleteExercise(final Long exerciseId);
-
-
-
-    //@Query("SELECT * FROM colis INNER JOIN step ON colis.idColis= step.idColis ORDER BY date DESC")
-//
-//    @Query("SELECT * from Exercise where workoutId = :workoutId order by orderNumber")
-//    //@Query("SELECT * from Exercise  INNER JOIN Eset  ON Exercise.id=Eset.exerciseId  where workoutId = :workoutId  ORDER BY Exercise.orderNumber ")
-//    LiveData<List<ExerciseWithSets>> getExercisesWithSets(final Long workoutId);
-
 
 }

@@ -21,7 +21,7 @@
     <EditText
         android:id="@+id/et_workout_desc"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="51dp"
         android:ems="10"
         android:hint="@string/workout_create_desc"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,6 +32,8 @@
         android:id="@+id/tv_workout_days"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
         android:text="@string/lb_workout_create_days"
         android:textAppearance="@style/card_info_label"
         app:layout_constraintStart_toStartOf="parent"
@@ -126,6 +128,8 @@
         android:id="@+id/tv_workout_start_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
         android:text="@string/lb_workout_create_start_time"
         android:textAppearance="@style/card_info_label"
         app:layout_constraintEnd_toEndOf="parent"
@@ -152,60 +156,5 @@
     <!--app:layout_constraintEnd_toEndOf="parent"-->
     <!--app:layout_constraintTop_toBottomOf="@+id/lb_workout_create_start_time" />-->
 
-
-    <Button
-        android:id="@+id/bt_workout_create"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@color/colorPrimary"
-        android:text="@string/lb_workout_create_button"
-        android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Inverse"
-        app:layout_constraintTop_toBottomOf="@+id/bt_workout_start_time" />
-
-
-    <Button
-        android:id="@+id/bt_workout_delete"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginEnd="4dp"
-        android:background="@color/colorAccent"
-        android:text="@string/lb_workout_delete_button"
-        android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Inverse"
-        app:layout_constraintEnd_toStartOf="@+id/bt_workout_duplicate"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bt_workout_create"
-        android:visibility="gone"/>
-
-    <Button
-        android:id="@+id/bt_workout_duplicate"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
-        android:background="@color/colorPrimary"
-        android:text="@string/lb_workout_duplicate_button"
-        android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Inverse"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/bt_workout_delete"
-        app:layout_constraintTop_toBottomOf="@+id/bt_workout_create"
-        android:visibility="gone"
-        />
-
-    <Button
-        android:id="@+id/bt_workout_update"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@color/colorPrimary"
-        android:text="@string/lb_workout_update_button"
-        android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Inverse"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bt_workout_delete"
-        android:visibility="gone"/>
 
 </android.support.constraint.ConstraintLayout>

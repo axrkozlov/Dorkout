@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
 import com.axfex.dorkout.data.Exercise;
+import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.views.exercises.addedit.AddEditExerciseActivity;
 import com.axfex.dorkout.vm.ExercisesViewModel;
 import com.axfex.dorkout.vm.ViewModelFactory;
@@ -47,6 +48,7 @@ public class ExercisesFragment extends Fragment {
     private ExercisesViewModel exercisesViewModel;
     private RecyclerView rvExercises;
     private ExercisesAdapter mAdapter;
+    private Workout mWorkout;
     private List<Exercise> mExercises;
 
     private ItemTouchHelper mItemTouchHelper;
@@ -86,13 +88,31 @@ public class ExercisesFragment extends Fragment {
         setHasOptionsMenu(true);
         exercisesViewModel = ViewModelProviders.of(this, viewModelFactory).get(ExercisesViewModel.class);
         exercisesViewModel.getExercises(workoutId).observe(this, exercises -> setExercises(exercises));
+        exercisesViewModel.getWorkout(workoutId).observe(this, workout -> setWorkout(workout));
+
+//        exercisesViewModel.getExercisesWithSets(workoutId).observe(this, new Observer<List<ExerciseWithSets>>() {
+//            @Override
+//            public void onChanged(@Nullable List<ExerciseWithSets> exercises) {
+//                setmExercisesWithSets(exercises);
+//            }
+//        });
     }
+//
     private void setExercises(List<Exercise> exercises) {
         this.mExercises = exercises;
         mAdapter = new ExercisesAdapter();
         rvExercises.setAdapter(mAdapter);
     }
 
+    private void setWorkout(Workout workout) {
+        this.mWorkout = workout;
+        this.getActivity().setTitle(workout.getName());
+    }
+//    private void setmExercisesWithSets(List<ExerciseWithSets> exercises) {
+//        this.mExercisesWithSets = exercises;
+//        mAdapter = new ExercisesAdapter();
+//        rvExercises.setAdapter(mAdapter);
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -104,12 +124,8 @@ public class ExercisesFragment extends Fragment {
         mItemTouchHelper = new ItemTouchHelper(new TouchHelperCallback());
         mItemTouchHelper.attachToRecyclerView(rvExercises);
         mAddButton = v.findViewById(R.id.fab_add_exercise);
-        mAddButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startAddEditExerciseActivity();
-            }
-        });
+        mAddButton.setOnClickListener(v1 -> startAddEditExerciseActivity());
+        //mAddButton.hide();
         return v;
     }
 
@@ -154,6 +170,7 @@ public class ExercisesFragment extends Fragment {
         i.putExtra(WORKOUT_ID, workoutId);
         i.putExtra(EXERCISE_ID, exerciseId);
         startActivityForResult(i, AddEditExerciseActivity.REQUEST_ADD_TASK);
+
     }
 
 
@@ -201,6 +218,7 @@ public class ExercisesFragment extends Fragment {
         public ExercisesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(getContext()).inflate(R.layout.item_exercise, parent, false);
             return new ExercisesViewHolder(view);
+
         }
 
         @Override
@@ -209,9 +227,10 @@ public class ExercisesFragment extends Fragment {
                 return;
             }
             Exercise exercise = mExercises.get(position);
-            if (exercise == null) {
-                return;
-            }
+//            List<Eset> esets = mExercisesWithSets.get(position).esets;
+//            if (exercise == null) {
+//                return;
+//            }
             holder.collapseButton.setOnTouchListener(holder);
             final boolean isExpanded = position == holder.mExpandedPosition && !mEditMode;
             holder.collapseButton.setImageResource(isExpanded ? R.drawable.ic_collapse_24dp : R.drawable.ic_expand_24dp);
@@ -233,12 +252,20 @@ public class ExercisesFragment extends Fragment {
             holder.numberView.setText(Integer.toString(position + 1));
             holder.itemView.setTag(exercise.getId());
 
-        }
 
-        private void bindExercise(ExercisesViewHolder holder, Exercise exercise, Integer position) {
-
+            //bindExercise(holder,exercise,position);
 
         }
+
+        @Override
+        public int getItemCount() {
+            return mExercises.size();
+        }
+
+//        private void bindExercise(ExercisesViewHolder holder, Exercise exercise, Integer position) {
+//
+//
+//        }
 
         private void onItemMoved(int base, int target) {
             if (base < target) {
@@ -251,12 +278,9 @@ public class ExercisesFragment extends Fragment {
                 }
             }
             notifyItemMoved(base, target);
+
         }
 
-        @Override
-        public int getItemCount() {
-            return mExercises.size();
-        }
 
     }
 
@@ -281,6 +305,7 @@ public class ExercisesFragment extends Fragment {
             setsView = itemView.findViewById(R.id.exercise_sets);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
+
         }
 
         @Override
@@ -320,6 +345,7 @@ public class ExercisesFragment extends Fragment {
         public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
             mAdapter.onItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
             return true;
+
         }
 
         @Override
