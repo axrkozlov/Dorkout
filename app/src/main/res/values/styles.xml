@@ -1,12 +1,31 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
+        <!--<item name="android:textColorPrimary">#FFFF00</item>-->
+        <!--<item name="android:textColorPrimaryInverse">#FF00FF</item>-->
+        <!--<item name="android:textColorSecondary">#00FFFF</item>-->
+
+        <!--<item name="actionBarTheme">@style/ActionBar</item>-->
+        <!--<item name="android:windowBackground">@color/status_workout_run</item>-->
+    </style>
+
+    <style name="Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar"
+        ><item name="android:textColorPrimary">@color/colorToolbarElements</item>
+    </style>
+
+    <style name="ActionBar" parent="@style/Widget.AppCompat.ActionBar">
+        <item name="android:textColorPrimary">@color/status_workout_run</item>
+        <item name="android:textColorSecondary">#00FFFF</item>
+    </style>
+    
+    <style name="ActionBarTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/status_workout_run</item>
     </style>
 
     <style name="card_info_label">
@@ -42,8 +61,11 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    </style>
+
+
+    <!--<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />-->
 
 </resources>

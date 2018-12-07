@@ -116,12 +116,12 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
             case R.id.bt_exercise_create:
                 addExercise();
                 break;
-            case R.id.bt_workout_update:
-                updateExercise();
-                break;
-            case R.id.bt_workout_delete:
-                deleteExercise();
-                break;
+//            case R.id.bt_workout_update:
+//                updateExercise();
+//                break;
+//            case R.id.bt_workout_delete:
+//                deleteExercise();
+//                break;
         }
     }
 

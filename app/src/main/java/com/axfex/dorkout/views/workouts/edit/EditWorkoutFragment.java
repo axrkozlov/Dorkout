@@ -1,4 +1,4 @@
-package com.axfex.dorkout.views.workouts.addedit;
+package com.axfex.dorkout.views.workouts.edit;
 
 
 import android.app.Activity;
@@ -32,7 +32,7 @@ import java.util.Calendar;
 
 import javax.inject.Inject;
 
-public class AddEditWorkoutFragment extends Fragment implements View.OnClickListener, TimePickerDialog.OnTimeSetListener{
+public class EditWorkoutFragment extends Fragment implements View.OnClickListener, TimePickerDialog.OnTimeSetListener{
     private Button mCreate;
     private Button mUpdate;
     private Button mDuplicate;
@@ -55,8 +55,8 @@ public class AddEditWorkoutFragment extends Fragment implements View.OnClickList
     AddEditWorkoutViewModel addEditWorkoutViewModel;
 
 
-    public static AddEditWorkoutFragment newInstance(@Nullable Long workoutId) {
-        AddEditWorkoutFragment fragment = new AddEditWorkoutFragment();
+    public static EditWorkoutFragment newInstance(@Nullable Long workoutId) {
+        EditWorkoutFragment fragment = new EditWorkoutFragment();
         Bundle args = new Bundle();
         if (workoutId != null) {
             args.putLong(WORKOUT_ID, workoutId);
@@ -98,10 +98,10 @@ public class AddEditWorkoutFragment extends Fragment implements View.OnClickList
         View v =inflater.inflate(R.layout.fragment_add_edit_workout, container, false);
 
         mName =v.findViewById(R.id.et_exercise_name);
-        mCreate = v.findViewById(R.id.bt_workout_create);
-        mUpdate = v.findViewById(R.id.bt_workout_update);
-        mDuplicate = v.findViewById(R.id.bt_workout_duplicate);
-        mDelete = v.findViewById(R.id.bt_workout_delete);
+//        mCreate = v.findViewById(R.id.bt_workout_create);
+//        mUpdate = v.findViewById(R.id.bt_workout_update);
+//        mDuplicate = v.findViewById(R.id.bt_workout_duplicate);
+//        mDelete = v.findViewById(R.id.bt_workout_delete);
         mStartTime = v.findViewById(R.id.bt_workout_start_time);
         mName = v.findViewById(R.id.et_workout_name);
         mDesc = v.findViewById(R.id.et_workout_desc);
@@ -113,11 +113,11 @@ public class AddEditWorkoutFragment extends Fragment implements View.OnClickList
         mDay6 = v.findViewById(R.id.tb_workout_day6);
         mDay7 = v.findViewById(R.id.tb_workout_day7);
 
-        mCreate.setOnClickListener(this);
+//        mCreate.setOnClickListener(this);
         mStartTime.setOnClickListener(this);
-        mUpdate.setOnClickListener(this);
-        mDuplicate.setOnClickListener(this);
-        mDelete.setOnClickListener(this);
+//        mUpdate.setOnClickListener(this);
+//        mDuplicate.setOnClickListener(this);
+//        mDelete.setOnClickListener(this);
 
         return v;
     }
@@ -135,6 +135,9 @@ public class AddEditWorkoutFragment extends Fragment implements View.OnClickList
                 saveWorkout();
                 break;
             }
+            case R.id.homeAsUp: {
+                close();
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -145,9 +148,9 @@ public class AddEditWorkoutFragment extends Fragment implements View.OnClickList
             case R.id.bt_workout_start_time:
                 showTimePickerDialog();
                 break;
-            case R.id.bt_workout_delete:
-                deleteWorkout();
-                break;
+//            case R.id.bt_workout_delete:
+//                deleteWorkout();
+//                break;
         }
     }
 
@@ -199,10 +202,10 @@ public class AddEditWorkoutFragment extends Fragment implements View.OnClickList
             return;
         }
 
-        mCreate.setVisibility(View.GONE);
-        mUpdate.setVisibility(View.VISIBLE);
-        mDuplicate.setVisibility(View.VISIBLE);
-        mDelete.setVisibility(View.VISIBLE);
+//        mCreate.setVisibility(View.GONE);
+//        mUpdate.setVisibility(View.VISIBLE);
+//        mDuplicate.setVisibility(View.VISIBLE);
+//        mDelete.setVisibility(View.VISIBLE);
 
         mName.setText(workout.getName());
         mDesc.setText(workout.getDescription());
@@ -258,6 +261,9 @@ public class AddEditWorkoutFragment extends Fragment implements View.OnClickList
     private void close() {
         getActivity().setResult(Activity.RESULT_OK);
         getActivity().finish();
+
     }
+
+
 
 }

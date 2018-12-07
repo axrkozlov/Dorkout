@@ -1,12 +1,14 @@
 package com.axfex.dorkout.data.source;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 
 import com.axfex.dorkout.data.Exercise;
 import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.data.source.local.ExercisesDao;
 import com.axfex.dorkout.data.source.local.WorkoutsDao;
+import com.axfex.dorkout.util.AppExecutors;
 
 import java.util.List;
 
@@ -15,21 +17,25 @@ import java.util.List;
  */
 
 public class WorkoutsRepository  {
-
+    private AppExecutors mAppExecutors;
     private final WorkoutsDao workoutsDao;
     private final ExercisesDao exercisesDao;
 
 
 
-    public WorkoutsRepository(WorkoutsDao workoutsDao, ExercisesDao exercisesDao){
+    public WorkoutsRepository(WorkoutsDao workoutsDao, ExercisesDao exercisesDao,AppExecutors appExecutors){
         this.workoutsDao = workoutsDao;
         this.exercisesDao = exercisesDao;
+        this.mAppExecutors=appExecutors;
+
     }
 
     /**Workouts**/
 
-    public Long createWorkout(@NonNull Workout workout) {
-        return workoutsDao.insertWorkout(workout);
+    public LiveData<Long> createWorkout(@NonNull Workout workout) {
+        MutableLiveData<Long> newWorkoutId=new MutableLiveData<>();
+        mAppExecutors.diskIO().execute(()->newWorkoutId.postValue(workoutsDao.insertWorkout(workout)));
+        return newWorkoutId;
     }
 
     public LiveData<List<Workout>> getWorkouts() {
@@ -45,7 +51,7 @@ public class WorkoutsRepository  {
     }
 
     public void deleteWorkout(@NonNull Workout... workout) {
-        workoutsDao.deleteWorkout(workout);
+        mAppExecutors.diskIO().execute(()->workoutsDao.deleteWorkout(workout));
     }
 
     /**Exercises**/

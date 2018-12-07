@@ -33,12 +33,16 @@
     <string name="bt_start">START</string>
     <string name="bt_pause">PAUSE</string>
     <string name="bt_done">DONE</string>
+    <string name="bt_ok">OK</string>
+    <string name="bt_cancel">CANCEL</string>
 
     <string name="menu_add">Add</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_copy">Copy</string>
     <string name="menu_delete">Delete</string>
+    <string name="menu_duplicate">Duplicate</string>
     <string name="menu_save">Save</string>
+
 
     <string name="menu_settings">Settings</string>
     <string name="menu_about">About</string>
@@ -47,7 +51,6 @@
 
     <string name="total_time">1:15:18</string>
     <string name="rest_time">5:16</string>
-
 
     <string name="workout_title">Mourning workout</string>
     <string name="workout_desc">Horizontal bar, jump, run</string>
@@ -72,11 +75,10 @@
     <string name="eset">23</string>
     <string name="result_reps">222</string>
 
-
     <string name="last_result_time">1:24:86</string>
     <string name="last_result_reps">40</string>
 
-    <string name="lb_workout_create_days">workout Days</string>
+    <string name="lb_workout_create_days">Days</string>
     <string name="lb_workout_create_start_time">Start at</string>
     <string name="lb_workout_create_button">Create</string>
     <string name="lb_workout_update_button">Update</string>
@@ -96,16 +98,14 @@
     <string name="exercise_create_desc">Any description</string>
 
 
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_exercises_edit">Edit…</string>
     <string name="menu_exercises_done">Done edit</string>
 
-
-
     <string name="title_activity_workouts">Workouts</string>
-    <string name="title_activity_add_edit_workout">Edit Workout</string>
+    <string name="title_activity_edit_workout">Edit Workout</string>
+    <string name="title_activity_new_workout">New Workout</string>
     <string name="title_activity_add_edit_exercise">Edit Exercise</string>
 
     <string name="error_no_extra_found">Error Retrieving Workout Id</string>
