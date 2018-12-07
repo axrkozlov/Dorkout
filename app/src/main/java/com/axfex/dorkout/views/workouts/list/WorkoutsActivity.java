@@ -15,8 +15,9 @@ import com.axfex.dorkout.vm.WorkoutsViewModel;
 import javax.inject.Inject;
 
 public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator {
-    private static final String WORKOUTS_FRAG = "WORKOUTS_FRAG";
+    private static final String FRAGMENT_TAG = "FRAGMENT_TAG";
     private  WorkoutsViewModel workoutsViewModel;
+    private ActionBar mActionBar;
     //private WorkoutsFragment workoutsFragment;
 
     @Inject
@@ -31,34 +32,44 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
                 .getAppComponent()
                 .inject(this);
 
-        setupViewModel();
-        setupViewFragment();
+        workoutsViewModel=obtainViewModel();
+        setupViewFragment(workoutsViewModel);
         setupToolbar();
 
+        workoutsViewModel.onPickEvent().observe(this, isPicked->onSwitchEditMode(isPicked));
+
+
     }
 
-    private void setupViewFragment(){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        WorkoutsFragment workoutsFragment = (WorkoutsFragment) fragmentManager.findFragmentByTag(WORKOUTS_FRAG);
+    private void onSwitchEditMode(Boolean isEditMode) {
+        mActionBar.setDisplayHomeAsUpEnabled(isEditMode);
+    }
 
-        if (workoutsFragment == null) {
-            workoutsFragment = WorkoutsFragment.newInstance();
+    private void setupViewFragment(WorkoutsViewModel viewModel){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        WorkoutsFragment fragment = (WorkoutsFragment) fragmentManager.findFragmentByTag(FRAGMENT_TAG);
+
+        if (fragment == null) {
+            fragment = fragment.newInstance();
         }
         addFragmentToActivity(fragmentManager,
-                workoutsFragment,
+                fragment,
                 R.id.contentFrame,
-                WORKOUTS_FRAG);
-        workoutsFragment.attachViewmodel(workoutsViewModel);
-
+                FRAGMENT_TAG);
+        fragment.attachViewmodel(viewModel);
     }
 
-    private void setupViewModel(){
-        workoutsViewModel = ViewModelProviders.of(this, viewModelFactory).get(WorkoutsViewModel.class);
+    private WorkoutsViewModel obtainViewModel(){
+         return ViewModelProviders.of(this, viewModelFactory).get(WorkoutsViewModel.class);
     }
 
 
     @Override
     public void onBackPressed() {
+        if (workoutsViewModel.isPicked()){
+            workoutsViewModel.unPick();
+            return;
+        }
         super.onBackPressed();
     }
 
@@ -66,9 +77,14 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ActionBar ab = getSupportActionBar();
-        assert ab != null;
+        mActionBar = getSupportActionBar();
+        assert mActionBar != null;
     }
+
+    private void onEditMode(){
+
+    }
+
 
     @Override
     public void openEditWorkout(Long id) {

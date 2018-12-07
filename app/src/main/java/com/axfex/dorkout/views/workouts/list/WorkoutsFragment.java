@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
+import com.axfex.dorkout.util.BaseFragment;
 import com.axfex.dorkout.views.exercises.list.ExercisesActivity;
 import com.axfex.dorkout.util.DateUtils;
 import com.axfex.dorkout.vm.WorkoutsViewModel;
@@ -42,7 +43,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class WorkoutsFragment extends Fragment implements View.OnKeyListener {
+public class WorkoutsFragment extends Fragment {
 
 
 
@@ -60,10 +61,13 @@ public class WorkoutsFragment extends Fragment implements View.OnKeyListener {
         // Required empty public constructor
     }
 
+
     public static WorkoutsFragment newInstance() {
         WorkoutsFragment fragment = new WorkoutsFragment();
         return fragment;
     }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -89,33 +93,32 @@ public class WorkoutsFragment extends Fragment implements View.OnKeyListener {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView = v.findViewById(R.id.rv_workouts);
         recyclerView.setLayoutManager(layoutManager);
-        //setupActionBar(null);
         return v;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        view.setFocusableInTouchMode(true);
-        view.requestFocus();
-        view.setOnKeyListener(this::onKey);
+//        view.setFocusableInTouchMode(true);
+//        view.requestFocus();
+//        view.setOnKeyListener(this::onKey);
     }
 
-    @Override
-    public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-        //Toast.makeText(getContext(), keyCode, Toast.LENGTH_SHORT).show();
-        if (keyEvent.getAction() == KeyEvent.ACTION_UP) {
-            if (keyCode == KeyEvent.KEYCODE_BACK) {
-                if (mAdapter.isPicked) {
-                    mAdapter.clearSelection();
-                    return true;
-                } else  {
-                    getActivity().finish();
-                }
-            }
-        }
-        return false;
-    }
+//    @Override
+//    public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+//        //Toast.makeText(getContext(), keyCode, Toast.LENGTH_SHORT).show();
+//        if (keyEvent.getAction() == KeyEvent.ACTION_UP) {
+//            if (keyCode == KeyEvent.KEYCODE_BACK) {
+//                if (mAdapter.isPicked) {
+//                    mAdapter.clearSelection();
+//                    return true;
+//                } else  {
+//                    getActivity().finish();
+//                }
+//            }
+//        }
+//        return false;
+//    }
 
     public void attachViewmodel(WorkoutsViewModel workoutsViewmodel){
         this.workoutsViewModel=workoutsViewmodel;
@@ -123,19 +126,19 @@ public class WorkoutsFragment extends Fragment implements View.OnKeyListener {
     }
 
     private void setupActionBar(String workoutName) {
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (actionBar == null) {
-            return;
-        }
-        if (workoutName != null) {
-            actionBar.setTitle(workoutName);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            setupMenu(true);
-        } else {
-            actionBar.setTitle(R.string.title_activity_workouts);
-            actionBar.setDisplayHomeAsUpEnabled(false);
-            setupMenu(false);
-        }
+//        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+//        if (actionBar == null) {
+//            return;
+//        }
+//        if (workoutName != null) {
+//            actionBar.setTitle(workoutName);
+//            actionBar.setDisplayHomeAsUpEnabled(true);
+//            setupMenu(true);
+//        } else {
+//            actionBar.setTitle(R.string.title_activity_workouts);
+//            actionBar.setDisplayHomeAsUpEnabled(false);
+//            setupMenu(false);
+//        }
     }
 
     private void setupMenu(Boolean isEdit){
@@ -200,7 +203,7 @@ public class WorkoutsFragment extends Fragment implements View.OnKeyListener {
     }
 
     private void updateWorkout(Long id) {
-        Toast.makeText(getContext(), id.toString(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), id.toString(), Toast.LENGTH_SHORT).show();
         //swapAdapter();
     }
 
@@ -277,11 +280,12 @@ public class WorkoutsFragment extends Fragment implements View.OnKeyListener {
                 view.setSelected(true);
                 isPicked=true;
                 picked = view;
-//                setupActionBar(mWorkouts.get((Integer)view.getTag(VIEW_TAG_POSITION)).getName() );
                 TextView text = view.findViewById(R.id.workout_title);
-                setupActionBar(text.getText().toString());
+                //setupActionBar(text.getText().toString());
+                workoutsViewModel.pick(12L);
             } else {
-                setupActionBar(null);
+//                setupActionBar(null);
+                workoutsViewModel.unPick();
                 picked = null;
             }
         }
