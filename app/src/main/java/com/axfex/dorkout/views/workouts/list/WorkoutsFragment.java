@@ -1,11 +1,12 @@
 package com.axfex.dorkout.views.workouts.list;
 
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -14,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,32 +36,23 @@ import com.axfex.dorkout.views.workouts.edit.EditWorkoutActivity;
 import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.vm.ViewModelFactory;
 
-import org.w3c.dom.Text;
-
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-public class WorkoutsFragment extends Fragment {
+public class WorkoutsFragment extends Fragment implements View.OnKeyListener {
 
 
-    @Inject
-    ViewModelFactory viewModelFactory;
+
 
     private WorkoutsViewModel workoutsViewModel;
-    private View mWorkoutName;
     private RecyclerView recyclerView;
     private WorkoutsAdapter mAdapter;
     private List<Workout> mWorkouts;
     Menu mMenu;
-    private Workout markedWorkout;
-    private Long selectedWorkoutId;
-    private AppCompatActivity mActivity;
 
-    private Integer markedCardColor;
-    private Integer unmarkedCardColor;
 
     private static final String WORKOUT_ID = "workout_id";
 
@@ -75,30 +68,11 @@ public class WorkoutsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((WorkoutApplication) getActivity().getApplication())
-                .getAppComponent()
-                .inject(this);
-
-
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        //mActivity=(AppCompatActivity) getActivity();
-
-        markedCardColor = getResources().getColor(R.color.workout_item_marked);
-        unmarkedCardColor = getResources().getColor(R.color.workout_item);
-
-        workoutsViewModel = ViewModelProviders.of(this, viewModelFactory).get(WorkoutsViewModel.class);
-        workoutsViewModel.getWorkouts().observe(this, new Observer<List<Workout>>() {
-            @Override
-            public void onChanged(@Nullable List<Workout> workouts) {
-                setListData(workouts);
-            }
-        });
-
     }
 
     @Override
@@ -115,9 +89,37 @@ public class WorkoutsFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView = v.findViewById(R.id.rv_workouts);
         recyclerView.setLayoutManager(layoutManager);
-
         //setupActionBar(null);
         return v;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        view.setFocusableInTouchMode(true);
+        view.requestFocus();
+        view.setOnKeyListener(this::onKey);
+    }
+
+    @Override
+    public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+        //Toast.makeText(getContext(), keyCode, Toast.LENGTH_SHORT).show();
+        if (keyEvent.getAction() == KeyEvent.ACTION_UP) {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                if (mAdapter.isPicked) {
+                    mAdapter.clearSelection();
+                    return true;
+                } else  {
+                    getActivity().finish();
+                }
+            }
+        }
+        return false;
+    }
+
+    public void attachViewmodel(WorkoutsViewModel workoutsViewmodel){
+        this.workoutsViewModel=workoutsViewmodel;
+        workoutsViewModel.getWorkouts().observe(this, workouts -> setListData(workouts));
     }
 
     private void setupActionBar(String workoutName) {
@@ -179,12 +181,10 @@ public class WorkoutsFragment extends Fragment {
                 //showAddEditWorkoutActivity();
                 showNameWorkoutDialog();
                 break;
-
             }
             case android.R.id.home: {
-                mAdapter.onNonePicked();
+                mAdapter.clearSelection();
             }
-
         }
         return super.onOptionsItemSelected(item);
     }
@@ -204,8 +204,11 @@ public class WorkoutsFragment extends Fragment {
         //swapAdapter();
     }
 
+
+
     private class WorkoutsAdapter extends RecyclerView.Adapter<WorkoutsViewHolder> {
         private View picked;
+        private boolean isPicked;
 
         @Override
         public WorkoutsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -265,13 +268,14 @@ public class WorkoutsFragment extends Fragment {
         }
 
         private void onViewPicked(View view) {
-            unpick(picked);
+            unpick();
             pick(view);
         }
 
         private void pick(View view) {
             if (view != picked) {
                 view.setSelected(true);
+                isPicked=true;
                 picked = view;
 //                setupActionBar(mWorkouts.get((Integer)view.getTag(VIEW_TAG_POSITION)).getName() );
                 TextView text = view.findViewById(R.id.workout_title);
@@ -282,16 +286,15 @@ public class WorkoutsFragment extends Fragment {
             }
         }
 
-        private void unpick(View view) {
-            if (view != null) {
-                view.setSelected(false);
+        private void unpick() {
+            if (picked != null) {
+                picked.setSelected(false);
+                isPicked=false;
             }
         }
 
-        public void onNonePicked(){
-            if (picked != null) {
-                picked.setSelected(false);
-            }
+        public void clearSelection(){
+            unpick();
             setupActionBar(null);
         }
 
@@ -385,9 +388,8 @@ public class WorkoutsFragment extends Fragment {
     }
 
     private void checkOutDialog(int button, EditText workoutName) {
-        if (button == DialogInterface.BUTTON_NEGATIVE) return;
         String name = workoutName.getText().toString();
-        //workoutsViewModel.createWorkout(name).observe(this, id -> updateWorkout(id));
+        workoutsViewModel.createWorkout(name).observe(this, id -> updateWorkout(id));
 
     }
 }

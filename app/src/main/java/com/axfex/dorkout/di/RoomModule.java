@@ -48,8 +48,6 @@ public class RoomModule {
         return workoutsDatabase.exercisesDao();
     }
 
-
-
     @Provides
     @Singleton
     WorkoutsDatabase providesWorkoutsDatabase(){

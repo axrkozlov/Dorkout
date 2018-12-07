@@ -5,6 +5,7 @@ import android.app.Application;
 import com.axfex.dorkout.views.exercises.addedit.AddEditExerciseFragment;
 import com.axfex.dorkout.views.workouts.edit.EditWorkoutFragment;
 import com.axfex.dorkout.views.exercises.list.ExercisesFragment;
+import com.axfex.dorkout.views.workouts.list.WorkoutsActivity;
 import com.axfex.dorkout.views.workouts.list.WorkoutsFragment;
 
 import javax.inject.Singleton;
@@ -18,7 +19,8 @@ import dagger.Component;
 @Component(modules = {AppModule.class,RoomModule.class})
 public interface AppComponent {
 
-    void inject (WorkoutsFragment workoutsFragment);
+    void inject (WorkoutsActivity workoutsActivity);
+//    void inject (WorkoutsFragment workoutsFragment);
     void inject (EditWorkoutFragment editWorkoutFragment);
     void inject (ExercisesFragment exercisesFragment);
     void inject (AddEditExerciseFragment addEditExerciseFragment);
