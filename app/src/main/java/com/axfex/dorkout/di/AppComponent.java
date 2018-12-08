@@ -20,7 +20,7 @@ import dagger.Component;
 public interface AppComponent {
 
     void inject (WorkoutsActivity workoutsActivity);
-//    void inject (WorkoutsFragment workoutsFragment);
+    void inject (WorkoutsFragment workoutsFragment);
     void inject (EditWorkoutFragment editWorkoutFragment);
     void inject (ExercisesFragment exercisesFragment);
     void inject (AddEditExerciseFragment addEditExerciseFragment);

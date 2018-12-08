@@ -17,11 +17,11 @@ import java.util.List;
 
 public class WorkoutsViewModel extends ViewModel {
 
-    private final MutableLiveData<Boolean> mEditModeEvent= new MutableLiveData<>();
+    private final MutableLiveData<Boolean> pickedHolder = new MutableLiveData<>();
     private WorkoutsRepository workoutsRepository;
     private WeakReference<WorkoutsNavigator> mNavigator;
-    private Boolean picked=false;
     private Long pickedId;
+    private String pickedName;
 
     public WorkoutsViewModel(WorkoutsRepository workoutsRepository) {
         this.workoutsRepository = workoutsRepository;
@@ -35,29 +35,30 @@ public class WorkoutsViewModel extends ViewModel {
         return workoutsRepository.createWorkout(new Workout(name));
     }
 
-    public MutableLiveData<Boolean> onPickEvent(){
-        return mEditModeEvent;
+    public MutableLiveData<Boolean> onPick(){
+        return pickedHolder;
     }
 
-    public Boolean isPicked(){
-        return picked;
-    }
 
     public Long getPickedId(){
         return pickedId;
     }
 
-    public void pick(Long id){
-        pickedId=id;
-        if (!picked) mEditModeEvent.postValue(true);
-        picked=true;
+    public String getPickedName(){
+        return pickedName;
+    }
+
+    public void pick(Long id, String name){
+        pickedId =id;
+        pickedName =name;
+        pickedHolder.postValue(true);
 
     }
 
-    public void unPick(){
-        picked=false;
-        if (!picked) mEditModeEvent.postValue(false);
-        pickedId=0L;
+    public void unpick(){
+        pickedId =null;
+        pickedName =null;
+        pickedHolder.postValue(false);
     }
 
     public void deleteWorkout(final Workout workout){
