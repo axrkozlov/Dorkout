@@ -49,6 +49,10 @@ public class WorkoutsViewModel extends ViewModel {
     }
 
     public void pick(Long id, String name){
+        if (id==pickedId) {
+            unpick();
+            return;
+        }
         pickedId =id;
         pickedName =name;
         pickedHolder.postValue(true);
@@ -61,8 +65,16 @@ public class WorkoutsViewModel extends ViewModel {
         pickedHolder.postValue(false);
     }
 
+    public boolean isWorkoutPicked(){
+        return pickedId!=null;
+    }
+
     public void deleteWorkout(final Workout workout){
         workoutsRepository.deleteWorkout(workout);
+    }
+
+    public void openWorkoutExercises(Long wodkoutId){
+
     }
 
 

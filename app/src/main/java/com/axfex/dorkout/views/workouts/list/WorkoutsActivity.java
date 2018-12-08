@@ -1,6 +1,7 @@
 package com.axfex.dorkout.views.workouts.list;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
 import com.axfex.dorkout.util.BaseActivity;
+import com.axfex.dorkout.views.exercises.list.ExercisesActivity;
 import com.axfex.dorkout.vm.ViewModelFactory;
 import com.axfex.dorkout.vm.WorkoutsViewModel;
 
@@ -21,6 +23,8 @@ import javax.inject.Inject;
 
 public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator {
     private static final String FRAGMENT_TAG = "FRAGMENT_TAG";
+    private static final String WORKOUT_ID = "workout_id";
+
     private  WorkoutsViewModel workoutsViewModel;
     private ActionBar mActionBar;
     private Menu menu;
@@ -44,7 +48,7 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
         workoutsViewModel=obtainViewModel();
         setupViewFragment(workoutsViewModel);
         setupToolbar();
-        workoutsViewModel.onPick().observe(this, isPicked-> onPick(isPicked));
+        workoutsViewModel.onPick().observe(this, isPicked-> onPicked(isPicked));
 
     }
 
@@ -74,7 +78,7 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
         return super.onOptionsItemSelected(item);
     }
 
-    private void onPick(Boolean isPicked) {
+    private void onPicked(Boolean isPicked) {
         this.isPicked =isPicked;
         pickedName=workoutsViewModel.getPickedName();
         pickedId=workoutsViewModel.getPickedId();
@@ -173,6 +177,12 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
     @Override
     public void startWorkout(Long id) {
 
+    }
+
+    private void startExercisesActivity(Long workoutId) {
+        Intent i = new Intent(this, ExercisesActivity.class);
+        i.putExtra(WORKOUT_ID, workoutId);
+        startActivity(i);
     }
 
     @Override

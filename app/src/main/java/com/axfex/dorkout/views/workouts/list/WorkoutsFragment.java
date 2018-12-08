@@ -1,6 +1,5 @@
 package com.axfex.dorkout.views.workouts.list;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,26 +11,20 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.axfex.dorkout.R;
-import com.axfex.dorkout.WorkoutApplication;
-import com.axfex.dorkout.views.exercises.list.ExercisesActivity;
 import com.axfex.dorkout.util.DateUtils;
-import com.axfex.dorkout.vm.ViewModelFactory;
 import com.axfex.dorkout.vm.WorkoutsViewModel;
-import com.axfex.dorkout.views.workouts.edit.EditWorkoutActivity;
 import com.axfex.dorkout.data.Workout;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
 
 public class WorkoutsFragment extends Fragment {
 
@@ -39,10 +32,7 @@ public class WorkoutsFragment extends Fragment {
     private RecyclerView recyclerView;
     private WorkoutsAdapter mAdapter;
     private List<Workout> mWorkouts;
-    private Long pickedId;
 
-
-    private static final String WORKOUT_ID = "workout_id";
 
 
     public WorkoutsFragment() {
@@ -87,7 +77,7 @@ public class WorkoutsFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         sWorkoutsViewModel.getWorkouts().observe(this, workouts -> setListData(workouts));
-        pickedId=sWorkoutsViewModel.getPickedId();
+        //pickedId=sWorkoutsViewModel.getPickedId();
 
 
         return v;
@@ -129,22 +119,50 @@ public class WorkoutsFragment extends Fragment {
 
 
 
-    private class WorkoutsAdapter extends RecyclerView.Adapter<WorkoutsViewHolder> {
-        private View picked;
+    private class WorkoutsAdapter extends RecyclerView.Adapter<WorkoutsViewHolder> implements View.OnClickListener, View.OnLongClickListener {
+        private View pickedView;
+        private View newPickedView;
+        private Long pickedId;
+
+        @Override
+        public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+            super.onAttachedToRecyclerView(recyclerView);
+            sWorkoutsViewModel.onPick().observe(WorkoutsFragment.this, isPicked-> onWorkoutPicked(isPicked));
+        }
 
         @Override
         public WorkoutsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             View view = inflater.inflate(R.layout.item_workout, parent, false);
             WorkoutsViewHolder viewHolder = new WorkoutsViewHolder(view);
-            sWorkoutsViewModel.onPick().observe(WorkoutsFragment.this, isPicked-> onPick(isPicked));
+
             return viewHolder;
+        }
+
+        private void onWorkoutPicked(Boolean isPicked) {
+            unpickView(pickedView);
+            if (isPicked) {
+                pickedId = sWorkoutsViewModel.getPickedId();
+                pickView(newPickedView);
+            }
+        }
+
+        private void unpickView(View view){
+            if (view != null) {
+                view.setSelected(false);
+                pickedView=null;
+            }
+        }
+
+        private void pickView(View view){
+            if (view != null) {
+                view.setSelected(true);
+                pickedView= view;
+            }
         }
 
         @Override
         public void onBindViewHolder(WorkoutsViewHolder holder, int position) {
-
-
 
             if (mWorkouts.size() == 0) {
                 return;
@@ -180,12 +198,14 @@ public class WorkoutsFragment extends Fragment {
 
             holder.itemView.setTag(workout.getId());
 
-            if (pickedId==workout.getId()){pick(holder.itemView);}
-//            if (holder.selectedPosition == position) {
-//                holder.itemView.setSelected(true);
-//            } else {
-//                holder.itemView.setSelected(false);
-//            }
+            if (pickedId==workout.getId()){
+                pickView(holder.itemView);
+            }
+
+
+            holder.itemView.setOnClickListener(this);
+            holder.itemView.setOnLongClickListener(this);
+
         }
 
         @Override
@@ -193,40 +213,34 @@ public class WorkoutsFragment extends Fragment {
             return mWorkouts.size();
         }
 
-
-
-        private void onPick(Boolean isPicked) {
-            pickedId=sWorkoutsViewModel.getPickedId();
-            if (!isPicked) {unpick();}
+        private void setNewPickedView(View view){
+            newPickedView =view;
         }
 
-        private void onViewPicked(View view) {
-            unpick();
-            pick(view);
-        }
+        @Override
+        public void onClick(View v) {
 
-        private void pick(View view) {
-            if (view != picked) {
-                view.setSelected(true);
-                picked = view;
-                TextView text = view.findViewById(R.id.workout_title);
-                sWorkoutsViewModel.pick((Long)view.getTag(),text.getText().toString());
+            if (sWorkoutsViewModel.isWorkoutPicked()){
+                TextView name = v.findViewById(R.id.workout_title);
+                sWorkoutsViewModel.pick((Long)v.getTag(),name.getText().toString());
+                setNewPickedView(v);
+
             } else {
-                sWorkoutsViewModel.unpick();
-                picked = null;
+                sWorkoutsViewModel.openWorkoutExercises( (Long) v.getTag());
             }
+                //startExercisesActivity(mWorkouts.get(this.getAdapterPosition()).getId());
         }
 
-        private void unpick() {
-            if (picked != null) {
-                picked.setSelected(false);
-            }
+        @Override
+        public boolean onLongClick(View v) {
+            TextView name = v.findViewById(R.id.workout_title);
+            sWorkoutsViewModel.pick((Long)v.getTag(),name.getText().toString());
+            setNewPickedView(v);
+            return true;
         }
-
-
     }
 
-    private class WorkoutsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    private class WorkoutsViewHolder extends RecyclerView.ViewHolder  {
 
         TextView mName;
         TextView mDesc;
@@ -239,8 +253,8 @@ public class WorkoutsFragment extends Fragment {
 
         public WorkoutsViewHolder(View itemView) {
             super(itemView);
-            itemView.setOnLongClickListener(this);
-            itemView.setOnClickListener(this);
+//            itemView.setOnLongClickListener(this);
+//            itemView.setOnClickListener(this);
 
             mName = itemView.findViewById(R.id.workout_title);
             mDesc = itemView.findViewById(R.id.workout_desc);
@@ -254,52 +268,43 @@ public class WorkoutsFragment extends Fragment {
 
         }
 
-        @Override
-        public void onClick(View v) {
-
-            if (mAdapter.picked != null) {
-                mAdapter.onViewPicked(v);
-            } else {
-                startExercisesActivity(mWorkouts.get(this.getAdapterPosition()).getId());
-            }
-
-        }
-
-        @Override
-        public boolean onLongClick(View v) {
-
-            mAdapter.onViewPicked(v);
-
-//            oldSelectedPosition = getAdapterPosition();
-//            mAdapter.onViewPicked(selectedPosition,oldSelectedPosition);
-//            oldSelectedPosition=selectedPosition;
-
-//            mark(mWorkouts.get(getAdapterPosition()));
-//            mWorkouts.get(getAdapterPosition());
-//            mark(markedWorkout);
-//            swapAdapter();
-            //showAddEditWorkoutActivity(mWorkouts.get(this.getAdapterPosition()).getId());
-            return true;
-        }
+//        @Override
+//        public void onClick(View v) {
+//
+//
+//        }
+//
+//        @Override
+//        public boolean onLongClick(View v) {
+//
+//            mAdapter.onViewPicked(v);
+//
+////            oldSelectedPosition = getAdapterPosition();
+////            mAdapter.onViewPicked(selectedPosition,oldSelectedPosition);
+////            oldSelectedPosition=selectedPosition;
+//
+////            mark(mWorkouts.get(getAdapterPosition()));
+////            mWorkouts.get(getAdapterPosition());
+////            mark(markedWorkout);
+////            swapAdapter();
+//            //showAddEditWorkoutActivity(mWorkouts.get(this.getAdapterPosition()).getId());
+//            return true;
+//        }
 
     }
 
-    private void startExercisesActivity(Long workoutId) {
-        Intent i = new Intent(getActivity(), ExercisesActivity.class);
-        i.putExtra(WORKOUT_ID, workoutId);
-        startActivity(i);
-    }
 
-    public void showAddEditWorkoutActivity() {
-        startActivityForResult(
-                new Intent(getActivity(), EditWorkoutActivity.class), EditWorkoutActivity.REQUEST_ADD_TASK);
-    }
 
-    private void showAddEditWorkoutActivity(Long workoutId) {
-        Intent i = new Intent(getActivity(), EditWorkoutActivity.class);
-        i.putExtra(WORKOUT_ID, workoutId);
-        startActivityForResult(i, EditWorkoutActivity.REQUEST_ADD_TASK);
-    }
+//    public void showAddEditWorkoutActivity() {
+//        startActivityForResult(
+//                new Intent(getActivity(), EditWorkoutActivity.class), EditWorkoutActivity.REQUEST_ADD_TASK);
+//    }
+//
+//    private void showAddEditWorkoutActivity(Long workoutId) {
+//        Intent i = new Intent(getActivity(), EditWorkoutActivity.class);
+//        i.putExtra(WORKOUT_ID, workoutId);
+//        startActivityForResult(i, EditWorkoutActivity.REQUEST_ADD_TASK);
+//    }
 
 
 
