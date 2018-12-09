@@ -6,9 +6,7 @@ import android.arch.lifecycle.ViewModel;
 
 import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.data.source.WorkoutsRepository;
-import com.axfex.dorkout.views.workouts.list.WorkoutsNavigator;
-
-import java.lang.ref.WeakReference;
+import com.axfex.dorkout.util.LiveEvent;
 import java.util.List;
 
 /**
@@ -17,9 +15,10 @@ import java.util.List;
 
 public class WorkoutsViewModel extends ViewModel {
 
-    private final MutableLiveData<Boolean> pickedHolder = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> pickEvent = new MutableLiveData<>();
+    private final LiveEvent<Long> openWorkoutEvent = new LiveEvent<>();
+
     private WorkoutsRepository workoutsRepository;
-    private WeakReference<WorkoutsNavigator> mNavigator;
     private Long pickedId;
     private String pickedName;
 
@@ -35,9 +34,14 @@ public class WorkoutsViewModel extends ViewModel {
         return workoutsRepository.createWorkout(new Workout(name));
     }
 
-    public MutableLiveData<Boolean> onPick(){
-        return pickedHolder;
+    public MutableLiveData<Boolean> getPickEvent(){
+        return pickEvent;
     }
+
+    public LiveEvent<Long> getOpenWorkoutEvent(){
+        return openWorkoutEvent;
+    }
+
 
 
     public Long getPickedId(){
@@ -55,26 +59,30 @@ public class WorkoutsViewModel extends ViewModel {
         }
         pickedId =id;
         pickedName =name;
-        pickedHolder.postValue(true);
+        pickEvent.setValue(true);
 
     }
 
     public void unpick(){
         pickedId =null;
         pickedName =null;
-        pickedHolder.postValue(false);
+        pickEvent.setValue(false);
     }
 
     public boolean isWorkoutPicked(){
         return pickedId!=null;
     }
 
+    
+
     public void deleteWorkout(final Workout workout){
         workoutsRepository.deleteWorkout(workout);
     }
 
-    public void openWorkoutExercises(Long wodkoutId){
-
+    public void openWorkout(Long wodkoutId){
+        if (wodkoutId != null) {
+            openWorkoutEvent.setValue(wodkoutId);
+        }
     }
 
 

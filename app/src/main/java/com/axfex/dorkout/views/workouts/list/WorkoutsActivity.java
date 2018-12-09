@@ -1,7 +1,9 @@
 package com.axfex.dorkout.views.workouts.list;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -48,8 +50,16 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
         workoutsViewModel=obtainViewModel();
         setupViewFragment(workoutsViewModel);
         setupToolbar();
-        workoutsViewModel.onPick().observe(this, isPicked-> onPicked(isPicked));
+        workoutsViewModel.getPickEvent().observe(this, isPicked-> onPicked(isPicked));
+        workoutsViewModel.getOpenWorkoutEvent().observe(this,id->openWorkout(id));
 
+
+//        workoutsViewModel.getPickEvent().observe(this, new Observer<Boolean>() {
+//            @Override
+//            public void onChanged(@Nullable Boolean aBoolean) {
+//
+//            }
+//        });
     }
 
 
@@ -174,9 +184,11 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
         Toast.makeText(this, "Will be open Workout: "+id+" for edit!", Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void startWorkout(Long id) {
 
+
+    @Override
+    public void openWorkout(Long id) {
+        Toast.makeText(this, "Open Workout: "+id+"!", Toast.LENGTH_SHORT).show();
     }
 
     private void startExercisesActivity(Long workoutId) {
