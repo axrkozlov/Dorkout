@@ -50,7 +50,7 @@ public class WorkoutsRepository  {
         return workoutsDao.updateWorkout(workout);
     }
 
-    public void deleteWorkout(@NonNull Workout... workout) {
+    public void deleteWorkout(@NonNull Workout workout) {
         mAppExecutors.diskIO().execute(()->workoutsDao.deleteWorkout(workout));
     }
 

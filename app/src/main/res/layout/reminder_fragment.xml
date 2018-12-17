@@ -1,32 +1,21 @@
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/reminder"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="12dp"
+    tools:context=".views.reminder.ReminderFragment">
 
-    >
-
-    <EditText
-        android:id="@+id/et_workout_name"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/workout_create_name"
+        android:text="ReminderFragment"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-
-    <EditText
-        android:id="@+id/et_workout_desc"
-        android:layout_width="0dp"
-        android:layout_height="51dp"
-        android:ems="10"
-        android:hint="@string/workout_create_desc"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_workout_name" />
 
     <TextView
         android:id="@+id/tv_workout_days"
@@ -146,15 +135,6 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_workout_start_time" />
-
-    <!--<TextView-->
-    <!--android:id="@+id/workout_create_start_time"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="&#45;&#45;:&#45;&#45;"-->
-    <!--android:textAppearance="@style/TextAppearance.AppCompat.Display1"-->
-    <!--app:layout_constraintEnd_toEndOf="parent"-->
-    <!--app:layout_constraintTop_toBottomOf="@+id/lb_workout_create_start_time" />-->
 
 
 </android.support.constraint.ConstraintLayout>

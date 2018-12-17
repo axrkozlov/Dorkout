@@ -6,24 +6,34 @@ import android.arch.lifecycle.Observer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+//The Class with a condition, that prevent onChange method on observer starts
+
 public class LiveEvent<T> extends MutableLiveData<T> {
 
     @Override
     public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<T> observer) {
 
         super.observe(owner, new Observer<T>() {
-            private Boolean init=true;
+            private Boolean isNewObserver=true;
             @Override
             public void onChanged(@Nullable T t) {
-                if (!init) observer.onChanged(t);
-                init=false;
+                if (!isNewObserver) observer.onChanged(t);
+                isNewObserver=false;
             }
         });
 
     }
 
+    @Override
+    public void observeForever(@NonNull Observer<T> observer) {
+        super.observeForever(new Observer<T>() {
+            private Boolean isNewObserver=true;
+            @Override
+            public void onChanged(@Nullable T t) {
+                if (!isNewObserver) observer.onChanged(t);
+                isNewObserver=false;
+            }
+        });
 
-
-
-
+    }
 }

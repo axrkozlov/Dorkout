@@ -5,6 +5,8 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
 import com.axfex.dorkout.data.source.WorkoutsRepository;
+import com.axfex.dorkout.views.workouts.edit.EditWorkoutViewModel;
+import com.axfex.dorkout.views.workouts.list.WorkoutsViewModel;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -30,8 +32,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             return (T) new WorkoutsViewModel(workoutsRepository);
         }
         else
-        if (modelClass.isAssignableFrom(AddEditWorkoutViewModel.class))
-            return (T) new AddEditWorkoutViewModel(workoutsRepository);
+        if (modelClass.isAssignableFrom(EditWorkoutViewModel.class))
+            return (T) new EditWorkoutViewModel(workoutsRepository);
 
         else
         if (modelClass.isAssignableFrom(ExercisesViewModel.class))

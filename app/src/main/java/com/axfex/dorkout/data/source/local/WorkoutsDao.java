@@ -33,6 +33,6 @@ public interface WorkoutsDao {
     int updateWorkout(Workout workout);
 
     @Delete
-    void deleteWorkout(Workout... workout);
+    void deleteWorkout(Workout workout);
 
 }

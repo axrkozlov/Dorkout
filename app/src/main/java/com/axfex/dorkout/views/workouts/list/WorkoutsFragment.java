@@ -1,7 +1,5 @@
 package com.axfex.dorkout.views.workouts.list;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,7 +15,6 @@ import android.widget.TextView;
 
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.util.DateUtils;
-import com.axfex.dorkout.vm.WorkoutsViewModel;
 import com.axfex.dorkout.data.Workout;
 
 import java.text.DateFormatSymbols;
@@ -32,19 +29,10 @@ public class WorkoutsFragment extends Fragment {
     private WorkoutsAdapter mAdapter;
     private List<Workout> mWorkouts;
 
-
-
-    public WorkoutsFragment() {
-        // Required empty public constructor
-    }
-
-
     public static WorkoutsFragment newInstance() {
         WorkoutsFragment fragment = new WorkoutsFragment();
         return fragment;
     }
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,21 +44,9 @@ public class WorkoutsFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //super.onActivityResult(requestCode, resultCode, data);
-        //TODO:show message ok
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_workouts, container, false);
+        View v = inflater.inflate(R.layout.workouts_fragment, container, false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView = v.findViewById(R.id.rv_workouts);
         recyclerView.setLayoutManager(layoutManager);
@@ -83,16 +59,6 @@ public class WorkoutsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     public void setListData(List<Workout> listOfData) {
@@ -119,7 +85,7 @@ public class WorkoutsFragment extends Fragment {
         @Override
         public WorkoutsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            View view = inflater.inflate(R.layout.item_workout, parent, false);
+            View view = inflater.inflate(R.layout.workout_item, parent, false);
             WorkoutsViewHolder viewHolder = new WorkoutsViewHolder(view);
 
             return viewHolder;

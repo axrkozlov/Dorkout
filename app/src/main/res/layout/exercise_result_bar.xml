@@ -17,7 +17,7 @@
         app:srcCompat="@drawable/card_result" />
 
     <TextView
-        android:id="@+id/lb_info_sets"
+        android:id="@+id/lb_info_set"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -28,24 +28,16 @@
         app:layout_constraintTop_toTopOf="@+id/card_result_set"  />
 
     <TextView
-        android:id="@+id/eset"
+        android:id="@+id/set"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/eset"
+        android:text="@string/set"
         android:textAppearance="@style/result_text"
         app:layout_constraintBottom_toBottomOf="@+id/card_result_set"
-        app:layout_constraintEnd_toStartOf="@+id/lb_info_sets_u" />
-
-    <TextView
-        android:id="@+id/lb_info_sets_u"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="6dp"
-        android:layout_marginRight="6dp"
-        android:text="@string/lb_x"
-        android:textAppearance="@style/result_label"
         app:layout_constraintEnd_toEndOf="@+id/card_result_set"
-        app:layout_constraintBaseline_toBaselineOf="@+id/eset" />
+        />
+
+
 
     <ImageView
         android:id="@+id/card_result_reps"
@@ -79,18 +71,8 @@
         android:text="@string/result_reps"
         android:textAppearance="@style/result_text"
         app:layout_constraintBottom_toBottomOf="@+id/card_result_reps"
-        app:layout_constraintEnd_toStartOf="@+id/lb_info_reps"/>
+        app:layout_constraintEnd_toEndOf="@+id/card_result_reps"/>
 
-    <TextView
-        android:id="@+id/lb_info_reps"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="@string/lb_reps"
-        android:textAppearance="@style/result_label"
-        app:layout_constraintEnd_toEndOf="@+id/card_result_reps"
-        app:layout_constraintBaseline_toBaselineOf="@+id/result_reps" />
 
     <ImageView
         android:id="@+id/card_result_time"

@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.axfex.dorkout.R;
@@ -21,7 +20,6 @@ import com.axfex.dorkout.data.Exercise;
 import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.vm.AddEditExerciseViewModel;
 import com.axfex.dorkout.vm.ViewModelFactory;
-import com.axfex.dorkout.vm.AddEditWorkoutViewModel;
 
 import javax.inject.Inject;
 
@@ -98,7 +96,7 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v =inflater.inflate(R.layout.fragment_add_edit_exercise, container, false);
+        View v =inflater.inflate(R.layout.edit_exercise_fragment, container, false);
         mName =v.findViewById(R.id.et_exercise_name);
         mDesc = v.findViewById(R.id.et_exercise_desc);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());

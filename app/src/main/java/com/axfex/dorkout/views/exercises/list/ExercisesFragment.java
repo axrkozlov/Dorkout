@@ -1,6 +1,5 @@
 package com.axfex.dorkout.views.exercises.list;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
@@ -117,7 +116,7 @@ public class ExercisesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_exercises, container, false);
+        View v = inflater.inflate(R.layout.exercises_fragment, container, false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rvExercises = v.findViewById(R.id.rv_exercises);
         rvExercises.setLayoutManager(layoutManager);
@@ -216,7 +215,7 @@ public class ExercisesFragment extends Fragment {
 
         @Override
         public ExercisesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(getContext()).inflate(R.layout.item_exercise, parent, false);
+            View view = LayoutInflater.from(getContext()).inflate(R.layout.exercise_item, parent, false);
             return new ExercisesViewHolder(view);
 
         }

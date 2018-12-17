@@ -16,16 +16,15 @@
 
     <string name="lb_last_result">Last result</string>
     <string name="lb_norm_reps">Reps</string>
-    <string name="lb_norm_time">Norm time</string>
-    <string name="lb_sets">esets</string>
+    <string name="lb_time">Time</string>
+    <string name="lb_set">Set</string>
     <string name="lb_weight">Weight</string>
     <string name="lb_rest">Rest</string>
 
     <string name="lb_result_reps">Reps</string>
     <string name="lb_result_time">Result time</string>
-    <string name="lb_set">Eset</string>
     <string name="lb_kg">kg</string>
-    <string name="lb_x">x</string>
+    <string name="lb_th">th</string>
     <string name="lb_reps">r</string>
 
 
@@ -72,7 +71,7 @@
     <string name="rest">3:30</string>
     <string name="result_time">1:24:29</string>
     <string name="result_time_ms">59</string>
-    <string name="eset">23</string>
+    <string name="set">23</string>
     <string name="result_reps">222</string>
 
     <string name="last_result_time">1:24:86</string>
@@ -109,4 +108,5 @@
     <string name="title_activity_add_edit_exercise">Edit Exercise</string>
 
     <string name="error_no_extra_found">Error Retrieving Workout Id</string>
+    <string name="rename">Rename</string>
 </resources>

@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="@string/lb_sets"
+        android:text="@string/lb_set"
         android:textAppearance="@style/card_info_label"
         app:layout_constraintEnd_toEndOf="@+id/card_sets"
         app:layout_constraintTop_toTopOf="@+id/card_sets" />
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="6dp"
         android:layout_marginRight="6dp"
-        android:text="@string/lb_x"
+        android:text="@string/lb_th"
         android:textAppearance="@style/card_info_label"
         app:layout_constraintBaseline_toBaselineOf="@+id/mSets"
         app:layout_constraintEnd_toEndOf="@+id/card_sets" />
@@ -182,7 +182,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="@string/lb_norm_time"
+        android:text="@string/lb_time"
         android:textAppearance="@style/card_info_label"
         app:layout_constraintEnd_toEndOf="@+id/card_norm_time"
         app:layout_constraintTop_toTopOf="@+id/card_norm_time" />

@@ -1,4 +1,4 @@
-package com.axfex.dorkout.vm;
+package com.axfex.dorkout.views.workouts.list;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
@@ -42,16 +42,6 @@ public class WorkoutsViewModel extends ViewModel {
         return openWorkoutEvent;
     }
 
-
-
-    public Long getPickedId(){
-        return pickedId;
-    }
-
-    public String getPickedName(){
-        return pickedName;
-    }
-
     public void pick(Long id, String name){
         if (id==pickedId) {
             unpick();
@@ -69,21 +59,33 @@ public class WorkoutsViewModel extends ViewModel {
         pickEvent.setValue(false);
     }
 
+    public Long getPickedId(){
+        return pickedId;
+    }
+
+    public String getPickedName(){
+        return pickedName;
+    }
+
     public boolean isWorkoutPicked(){
         return pickedId!=null;
     }
 
-    
-
-    public void deleteWorkout(final Workout workout){
-        workoutsRepository.deleteWorkout(workout);
-    }
-
-    public void openWorkout(Long wodkoutId){
-        if (wodkoutId != null) {
-            openWorkoutEvent.setValue(wodkoutId);
+    public void deleteWorkout(final Long id){
+        if (id != null) {
+            workoutsRepository.deleteWorkout(new Workout(id));
         }
     }
 
+    public void openWorkout(final Long id){
+        if (id != null) {
+            openWorkoutEvent.setValue(id);
+        }
+    }
 
+    public void openEditWorkout(final Long id){
+        if (id != null) {
+            openWorkoutEvent.setValue(id);
+        }
+    }
 }

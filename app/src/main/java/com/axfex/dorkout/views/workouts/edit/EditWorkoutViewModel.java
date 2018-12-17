@@ -1,4 +1,4 @@
-package com.axfex.dorkout.vm;
+package com.axfex.dorkout.views.workouts.edit;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
@@ -12,11 +12,11 @@ import com.axfex.dorkout.data.source.WorkoutsRepository;
  * Created by alexanderkozlov on 1/7/18.
  */
 
-public class AddEditWorkoutViewModel extends ViewModel {
+public class EditWorkoutViewModel extends ViewModel {
 
     private WorkoutsRepository workoutsRepository;
 
-    public AddEditWorkoutViewModel(WorkoutsRepository workoutsRepository) {
+    public EditWorkoutViewModel(WorkoutsRepository workoutsRepository) {
         this.workoutsRepository = workoutsRepository;
     }
 
