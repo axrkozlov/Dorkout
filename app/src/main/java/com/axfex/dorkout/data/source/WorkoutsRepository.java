@@ -20,7 +20,7 @@ public class WorkoutsRepository  {
     private AppExecutors mAppExecutors;
     private final WorkoutsDao workoutsDao;
     private final ExercisesDao exercisesDao;
-
+    private LiveData<List<Workout>> mWorkoutsLiveData;
 
 
     public WorkoutsRepository(WorkoutsDao workoutsDao, ExercisesDao exercisesDao,AppExecutors appExecutors){
@@ -39,7 +39,11 @@ public class WorkoutsRepository  {
     }
 
     public LiveData<List<Workout>> getWorkouts() {
-        return workoutsDao.getWorkouts();
+//TODO: Make all like this
+        if (mWorkoutsLiveData == null) {
+            mWorkoutsLiveData=workoutsDao.getWorkouts();
+        }
+        return mWorkoutsLiveData;
     }
 
     public LiveData<Workout> getWorkout(@NonNull Long id) {

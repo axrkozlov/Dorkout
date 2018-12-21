@@ -2,7 +2,6 @@ package com.axfex.dorkout.views.workouts.list;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +19,7 @@ import com.axfex.dorkout.data.Workout;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class WorkoutsFragment extends Fragment {
@@ -28,6 +28,7 @@ public class WorkoutsFragment extends Fragment {
     private RecyclerView recyclerView;
     private WorkoutsAdapter mAdapter;
     private List<Workout> mWorkouts;
+    Workout mPickedWorkout;
 
     public static WorkoutsFragment newInstance() {
         WorkoutsFragment fragment = new WorkoutsFragment();
@@ -39,8 +40,8 @@ public class WorkoutsFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    public static void attachViewModel (WorkoutsViewModel workoutsViewModel){
-        sWorkoutsViewModel=workoutsViewModel;
+    public static void attachViewModel(WorkoutsViewModel workoutsViewModel) {
+        sWorkoutsViewModel = workoutsViewModel;
     }
 
     @Override
@@ -52,18 +53,35 @@ public class WorkoutsFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         sWorkoutsViewModel.getWorkouts().observe(this, workouts -> setListData(workouts));
+        sWorkoutsViewModel.getPickedWorkout().observe(WorkoutsFragment.this, workout -> onWorkoutPicked(workout));
 
         return v;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
 
     public void setListData(List<Workout> listOfData) {
         this.mWorkouts = listOfData;
         swapAdapter();
+    }
+
+    private void onWorkoutPicked(Workout pickedWorkout) {
+        mPickedWorkout = pickedWorkout;
+        if (mAdapter != null) {
+            mAdapter.notifyDataSetChanged();
+        }
+//
+//            if (pickedView != null) {
+//                pickedView.setSelected(false);
+//            }
+//            mPickedWorkout=pickedWorkout;
+////            if (mPickedPosition != null) {
+////                Objects.requireNonNull(recyclerView.findViewHolderForAdapterPosition(mPickedPosition)).itemView.setSelected(false);
+////            }
+////            if (position != null) {
+////                mPickedPosition = position;
+////                Objects.requireNonNull(recyclerView.findViewHolderForAdapterPosition(mPickedPosition)).itemView.setSelected(true);
+////            }
+
     }
 
     public void swapAdapter() {
@@ -72,69 +90,33 @@ public class WorkoutsFragment extends Fragment {
     }
 
     private class WorkoutsAdapter extends RecyclerView.Adapter<WorkoutsViewHolder> implements View.OnClickListener, View.OnLongClickListener {
-        private View pickedView;
-        private View newPickedView;
-        private Long pickedId;
-
-        @Override
-        public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
-            super.onAttachedToRecyclerView(recyclerView);
-            sWorkoutsViewModel.getPickEvent().observe(WorkoutsFragment.this, isPicked-> onWorkoutPicked(isPicked));
-        }
 
         @Override
         public WorkoutsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             View view = inflater.inflate(R.layout.workout_item, parent, false);
-            WorkoutsViewHolder viewHolder = new WorkoutsViewHolder(view);
 
-            return viewHolder;
+            return  new WorkoutsViewHolder(view);
         }
 
-        private void onWorkoutPicked(Boolean isPicked) {
-            unpickView(pickedView);
-            if (isPicked) {
-                pickedId = sWorkoutsViewModel.getPickedId();
-                pickView(newPickedView);
-            }
-        }
-
-        private void unpickView(View view){
-            if (view != null) {
-                view.setSelected(false);
-                pickedView=null;
-            }
-        }
-
-        private void pickView(View view){
-            if (view != null) {
-                view.setSelected(true);
-                pickedView= view;
-            }
-        }
-
-        private void setNewPickedView(View view){
-            newPickedView =view;
-        }
 
         @Override
         public void onBindViewHolder(WorkoutsViewHolder holder, int position) {
 
-            if (mWorkouts.size() == 0) {
-                return;
-            }
-            Workout workout = mWorkouts.get(position);
-            if (workout == null) {
+            if (mWorkouts.size() == 0 || mWorkouts.get(position) == null) {
                 return;
             }
 
+
+            Workout workout = mWorkouts.get(position);
+            holder.setWorkout(workout);
             holder.mName.setText(workout.getName());
             if (workout.getDescription() != null) {
                 holder.mDesc.setText(workout.getDescription());
             } else holder.mDesc.setVisibility(View.GONE);
             String[] weekDaysText = DateFormatSymbols.getInstance().getShortWeekdays();
             ArrayList<Boolean> weekDays = DateUtils.parseWeekDays(workout.getWeekDaysComposed());
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
 
             for (int i = 0; i < 7; i++) {
                 if (weekDays.get(i)) {
@@ -152,12 +134,13 @@ public class WorkoutsFragment extends Fragment {
             //holder.mCard.setCardBackgroundColor(workout.isMarked() ? markedCardColor : unmarkedCardColor);
             //holder.mMarkIcon.setVisibility(workout.isMarked() ? View.VISIBLE : View.INVISIBLE);
 
-            holder.itemView.setTag(workout.getId());
+            holder.itemView.setTag(position);
 
-            if (pickedId==workout.getId()){
-                pickView(holder.itemView);
+            if (workout == mPickedWorkout) {
+                holder.itemView.setSelected(true);
+            } else {
+                holder.itemView.setSelected(false);
             }
-
 
             holder.itemView.setOnClickListener(this);
             holder.itemView.setOnLongClickListener(this);
@@ -172,41 +155,39 @@ public class WorkoutsFragment extends Fragment {
         @Override
         public void onClick(View v) {
 
-            if (sWorkoutsViewModel.isWorkoutPicked()){
-                setNewPickedView(v);
-                TextView name = v.findViewById(R.id.workout_title);
-                sWorkoutsViewModel.pick((Long)v.getTag(),name.getText().toString());
-
-
-            } else {
-                sWorkoutsViewModel.openWorkout( (Long) v.getTag());
+            WorkoutsViewHolder viewHolder = (WorkoutsViewHolder) recyclerView.findViewHolderForAdapterPosition((Integer) v.getTag());
+            if (mPickedWorkout == null) {
+                sWorkoutsViewModel.openWorkout(viewHolder.getWorkout());
+                return;
             }
+            sWorkoutsViewModel.pickWorkout(viewHolder.getWorkout());
         }
 
         @Override
         public boolean onLongClick(View v) {
-            setNewPickedView(v);
-            TextView name = v.findViewById(R.id.workout_title);
-            sWorkoutsViewModel.pick((Long)v.getTag(),name.getText().toString());
+            WorkoutsViewHolder viewHolder = (WorkoutsViewHolder) recyclerView.findViewHolderForAdapterPosition((Integer) v.getTag());
+            if (viewHolder != null) {
+                sWorkoutsViewModel.pickWorkout(viewHolder.getWorkout());
+            }
             return true;
         }
     }
 
-    private class WorkoutsViewHolder extends RecyclerView.ViewHolder  {
+    private class WorkoutsViewHolder extends RecyclerView.ViewHolder {
 
-        TextView mName;
-        TextView mDesc;
-        TextView mExercises;
-        TextView mTotalTime;
-        TextView mDays;
-        TextView mStartTime;
-        CardView mCard;
-        ImageView mMarkIcon;
+
+        private Workout mWorkout;
+        private TextView mName;
+        private TextView mDesc;
+        private TextView mExercises;
+        private TextView mTotalTime;
+        private TextView mDays;
+        private TextView mStartTime;
+        private CardView mCard;
+        private ImageView mMarkIcon;
 
         public WorkoutsViewHolder(View itemView) {
             super(itemView);
-//            itemView.setOnLongClickListener(this);
-//            itemView.setOnClickListener(this);
 
             mName = itemView.findViewById(R.id.workout_title);
             mDesc = itemView.findViewById(R.id.workout_desc);
@@ -220,44 +201,13 @@ public class WorkoutsFragment extends Fragment {
 
         }
 
-//        @Override
-//        public void onClick(View v) {
-//
-//
-//        }
-//
-//        @Override
-//        public boolean onLongClick(View v) {
-//
-//            mAdapter.onViewPicked(v);
-//
-////            oldSelectedPosition = getAdapterPosition();
-////            mAdapter.onViewPicked(selectedPosition,oldSelectedPosition);
-////            oldSelectedPosition=selectedPosition;
-//
-////            mark(mWorkouts.get(getAdapterPosition()));
-////            mWorkouts.get(getAdapterPosition());
-////            mark(markedWorkout);
-////            swapAdapter();
-//            //showAddEditWorkoutActivity(mWorkouts.get(this.getAdapterPosition()).getId());
-//            return true;
-//        }
+        public Workout getWorkout() {
+            return mWorkout;
+        }
+
+        public void setWorkout(Workout workout) {
+            mWorkout = workout;
+        }
 
     }
-
-
-
-//    public void showAddEditWorkoutActivity() {
-//        startActivityForResult(
-//                new Intent(getActivity(), EditWorkoutActivity.class), EditWorkoutActivity.REQUEST_ADD_TASK);
-//    }
-//
-//    private void showAddEditWorkoutActivity(Long workoutId) {
-//        Intent i = new Intent(getActivity(), EditWorkoutActivity.class);
-//        i.putExtra(WORKOUT_ID, workoutId);
-//        startActivityForResult(i, EditWorkoutActivity.REQUEST_ADD_TASK);
-//    }
-
-
-
 }

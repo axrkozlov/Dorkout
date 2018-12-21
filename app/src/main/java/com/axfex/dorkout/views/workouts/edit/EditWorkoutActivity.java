@@ -13,6 +13,7 @@ import android.view.Menu;
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
 import com.axfex.dorkout.util.BaseActivity;
+import com.axfex.dorkout.views.workouts.list.EditWorkoutFragment;
 import com.axfex.dorkout.vm.ViewModelFactory;
 
 import javax.inject.Inject;
@@ -88,7 +89,8 @@ public class EditWorkoutActivity extends BaseActivity {
         addFragmentToActivity(fragmentManager,
                 fragment,
                 R.id.contentFrame,
-                FRAGMENT_TAG);
+                FRAGMENT_TAG,
+                true);
     }
 
     private EditWorkoutViewModel obtainViewModel(){

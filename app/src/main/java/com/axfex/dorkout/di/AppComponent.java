@@ -4,10 +4,8 @@ import android.app.Application;
 
 import com.axfex.dorkout.views.exercises.addedit.AddEditExerciseFragment;
 import com.axfex.dorkout.views.workouts.edit.EditWorkoutActivity;
-import com.axfex.dorkout.views.workouts.edit.EditWorkoutFragment;
 import com.axfex.dorkout.views.exercises.list.ExercisesFragment;
 import com.axfex.dorkout.views.workouts.list.WorkoutsActivity;
-import com.axfex.dorkout.views.workouts.list.WorkoutsFragment;
 
 import javax.inject.Singleton;
 

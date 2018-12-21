@@ -2,10 +2,8 @@ package com.axfex.dorkout.views.exercises.list;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.widget.Toast;
 
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.util.BaseActivity;
@@ -23,23 +21,23 @@ public class ExercisesActivity extends BaseActivity {
 
 
         Intent i = getIntent();
-        if (i.hasExtra(WORKOUT_ID)) {
-            Long workoutId = i.getLongExtra(WORKOUT_ID,0L);
-
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            mExercisesFragment  = (ExercisesFragment) fragmentManager.findFragmentByTag(EXERCISES_FRAG);
-
-            if (mExercisesFragment == null) {
-                mExercisesFragment = ExercisesFragment.newInstance(workoutId);
-            }
-            addFragmentToActivity(fragmentManager,
-                    mExercisesFragment,
-                    R.id.contentFrame,
-                    EXERCISES_FRAG);
-
-        } else {
-            Toast.makeText(this, R.string.error_no_extra_found, Toast.LENGTH_LONG).show();
-        }
+//        if (i.hasExtra(WORKOUT_ID)) {
+//            Long workoutId = i.getLongExtra(WORKOUT_ID,0L);
+//
+//            FragmentManager fragmentManager = getSupportFragmentManager();
+//            mExercisesFragment  = (ExercisesFragment) fragmentManager.findFragmentByTag(EXERCISES_FRAG);
+//
+//            if (mExercisesFragment == null) {
+//                mExercisesFragment = ExercisesFragment.newInstance(workoutId);
+//            }
+//            addFragmentToActivity(fragmentManager,
+//                    mExercisesFragment,
+//                    R.id.contentFrame,
+//                    EXERCISES_FRAG);
+//
+//        } else {
+//            Toast.makeText(this, R.string.error_no_extra_found, Toast.LENGTH_LONG).show();
+//        }
 
         setupToolbar();
 

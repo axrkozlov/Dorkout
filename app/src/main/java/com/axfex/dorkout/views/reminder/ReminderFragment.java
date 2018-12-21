@@ -50,13 +50,13 @@ public class ReminderFragment extends Fragment {
         View v =inflater.inflate(R.layout.reminder_fragment, container, false);
 
 
-        mName =v.findViewById(R.id.et_exercise_name);
+        //mName =v.findViewById(R.id.et_exercise_name);
 //        mCreate = v.findViewById(R.id.bt_workout_create);
 //        mUpdate = v.findViewById(R.id.bt_workout_update);
 //        mDuplicate = v.findViewById(R.id.bt_workout_duplicate);
 //        mDelete = v.findViewById(R.id.bt_workout_delete);
         mStartTime = v.findViewById(R.id.bt_workout_start_time);
-        mName = v.findViewById(R.id.et_workout_name);
+        //mName = v.findViewById(R.id.et_workout_name);
         mDesc = v.findViewById(R.id.et_workout_desc);
         mDay1 = v.findViewById(R.id.tb_workout_day1);
         mDay2 = v.findViewById(R.id.tb_workout_day2);

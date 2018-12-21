@@ -34,7 +34,8 @@ public class AddEditExerciseActivity extends BaseActivity {
             addFragmentToActivity(fragmentManager,
                     addEditExerciseFragment,
                     R.id.activity_add_edit_exercise,
-                    ADD_EDIT_FRAG);
+                    ADD_EDIT_FRAG,
+                    true);
         }
         else{
             Toast.makeText(this, R.string.error_no_extra_found, Toast.LENGTH_LONG).show();

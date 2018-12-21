@@ -1,12 +1,16 @@
 package com.axfex.dorkout.views.workouts.edit;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.axfex.dorkout.data.Exercise;
 import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.data.source.WorkoutsRepository;
+
+import java.util.List;
 
 /**
  * Created by alexanderkozlov on 1/7/18.
@@ -21,7 +25,7 @@ public class EditWorkoutViewModel extends ViewModel {
     }
 
     public void addWorkout(@NonNull final Workout workout) {
-        new Thread(()->workoutsRepository.createWorkout(workout)).start();
+        new Thread(() -> workoutsRepository.createWorkout(workout)).start();
     }
 
     public LiveData<Workout> getWorkout(@NonNull final Long workoutId) {
@@ -29,17 +33,29 @@ public class EditWorkoutViewModel extends ViewModel {
     }
 
     public void updateWorkout(@NonNull final Workout workout) {
-        new Thread(()->workoutsRepository.updateWorkout(workout)).start();
+        new Thread(() -> workoutsRepository.updateWorkout(workout)).start();
     }
 
-    public void deleteWorkout(final Workout workout){
+    public void deleteWorkout(@NonNull final Workout workout) {
         new Thread(() -> workoutsRepository.deleteWorkout(workout)).start();
-
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                workoutsRepository.deleteWorkout(workout);
-//            }
-//        }).start();
     }
+
+    public void addExercise(@NonNull final Exercise exercises) {
+        new Thread(() -> workoutsRepository.createExercise(exercises)).start();
+    }
+
+    public LiveData<List<Exercise>> getExercises(@NonNull final Long workoutId) {
+        return workoutsRepository.getExercises(workoutId);
+    }
+
+    public void updateExercise(@NonNull final Exercise exercise) {
+        new Thread(() -> workoutsRepository.updateExercise(exercise)).start();
+    }
+
+    public void deleteExercise(@NonNull final Exercise exercise) {
+        new Thread(() -> workoutsRepository.deleteExercise(exercise)).start();
+
+    }
+
+
 }

@@ -14,10 +14,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     public static void addFragmentToActivity(@NonNull FragmentManager fragmentManager,
                                              @NonNull Fragment fragment,
                                              Integer frameId,
-                                             String tag) {
+                                             String tag,
+                                             Boolean addToBackStack) {
 
         FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+
         fragmentTransaction.replace(frameId,fragment,tag);
+        if (addToBackStack)
+            fragmentTransaction.addToBackStack(tag);
         fragmentTransaction.commit();
 
     }

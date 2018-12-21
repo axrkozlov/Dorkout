@@ -1,4 +1,4 @@
-package com.axfex.dorkout.views.workouts.edit;
+package com.axfex.dorkout.views.workouts.list;
 
 
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.axfex.dorkout.R;
+import com.axfex.dorkout.views.workouts.edit.EditWorkoutViewModel;
 
 public class EditWorkoutFragment extends Fragment {
     private Button mCreate;

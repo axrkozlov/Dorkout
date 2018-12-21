@@ -5,7 +5,7 @@ import android.os.Bundle;
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.util.BaseActivity;
 
-public class Reminder extends BaseActivity {
+public class ReminderActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
