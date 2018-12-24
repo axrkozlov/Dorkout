@@ -1,6 +1,5 @@
 package com.axfex.dorkout.views.workouts.list;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,14 +10,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
 import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.util.BaseActivity;
 import com.axfex.dorkout.views.exercises.list.ExercisesActivity;
-import com.axfex.dorkout.views.workouts.edit.EditWorkoutActivity;
-import com.axfex.dorkout.vm.ViewModelFactory;
 
 import javax.inject.Inject;
 
@@ -27,14 +25,12 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
     private static final String EDIT_FRAGMENT_TAG = "EDIT_FRAGMENT";
     private static final String WORKOUT_ID = "workout_id";
 
-    private WorkoutsViewModel workoutsViewModel;
-    private ActionBar mActionBar;
-    private Menu menu;
-
-    private Workout mPickedWorkout;
 
     @Inject
-    ViewModelFactory viewModelFactory;
+    public WorkoutsViewModel workoutsViewModel;
+    private ActionBar mActionBar;
+    private Menu menu;
+    private Workout mPickedWorkout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,19 +41,28 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
                 .getAppComponent()
                 .inject(this);
 
-        workoutsViewModel = obtainViewModel();
-        WorkoutsFragment.attachViewModel(workoutsViewModel);
+        attachWorkoutsFragment();
 
-        setupViewFragment();
         setupToolbar();
-        workoutsViewModel.getPickedWorkout().observe(this, this::onPickedWorkout);
-        workoutsViewModel.getOpenWorkoutEvent().observe(this, this::openWorkout);
+        workoutsViewModel.getPickedWorkout().observe(this, this::onPickWorkout);
+        workoutsViewModel.getOpenWorkoutEvent().observe(this,this::sendMessage);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
     }
 
-    private void setupViewFragment() {
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    private void attachWorkoutsFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentByTag(WORKOUTS_FRAGMENT_TAG);
+        WorkoutsFragment fragment = (WorkoutsFragment) fragmentManager.findFragmentByTag(WORKOUTS_FRAGMENT_TAG);
         if (fragment == null) {
             fragment = WorkoutsFragment.newInstance();
         }
@@ -66,6 +71,7 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
                 R.id.contentFrame,
                 WORKOUTS_FRAGMENT_TAG,
                 false);
+        fragment.attachViewModel(workoutsViewModel);
 
     }
 
@@ -129,7 +135,7 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
 
     }
 
-    private void onPickedWorkout(Workout workout) {
+    private void onPickWorkout(Workout workout) {
         mPickedWorkout = workout;
         updateActionBar(workout);
         setupMenu(mPickedWorkout != null);
@@ -162,10 +168,10 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
         menu.findItem(R.id.menu_donate).setVisible(!isEdit);
     }
 
-
-    private WorkoutsViewModel obtainViewModel() {
-        return ViewModelProviders.of(this, viewModelFactory).get(WorkoutsViewModel.class);
-    }
+//
+//    private WorkoutsViewModel obtainViewModel() {
+//        return ViewModelProviders.of(this, viewModelFactory).get(WorkoutsViewModel.class);
+//    }
 
 
     @Override
@@ -193,6 +199,7 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
                 .setView(workoutName)
                 .setPositiveButton(R.string.bt_ok, (d, i) -> onNewWorkoutDialogOk(workoutName.getText().toString()))
                 .setNegativeButton(R.string.bt_cancel, (d, i) -> {
+                    workoutsViewModel.openWorkout(new Workout("kj") );
                 })
                 .create()
                 .show();
@@ -222,15 +229,25 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
 //        workoutsViewModel.unpick();
         attachEditFragment();
 //        workoutsViewModel.unpick();
+
     }
 
 
     @Override
-    public void openWorkout(Workout workout) {
+    public void onOpenWorkout(Workout workout) {
+//        Log.i("Activity", "onOpenWorkout: ");
         Intent i = new Intent(this, ExercisesActivity.class);
         i.putExtra(WORKOUT_ID, workout.getId());
         startActivity(i);
+//        mNavigator.onOpenWorkout(2L);
+
     }
+
+    public void sendMessage(Workout workout){
+        Toast.makeText(this, "Event!", Toast.LENGTH_SHORT).show();
+    }
+
+
 
     @Override
     public void openAbout() {

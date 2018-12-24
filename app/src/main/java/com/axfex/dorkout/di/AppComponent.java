@@ -2,10 +2,12 @@ package com.axfex.dorkout.di;
 
 import android.app.Application;
 
+import com.axfex.dorkout.Navigator;
 import com.axfex.dorkout.views.exercises.addedit.AddEditExerciseFragment;
 import com.axfex.dorkout.views.workouts.edit.EditWorkoutActivity;
 import com.axfex.dorkout.views.exercises.list.ExercisesFragment;
 import com.axfex.dorkout.views.workouts.list.WorkoutsActivity;
+import com.axfex.dorkout.views.workouts.list.WorkoutsFragment;
 
 import javax.inject.Singleton;
 
@@ -22,6 +24,8 @@ public interface AppComponent {
     void inject (EditWorkoutActivity editWorkoutActivity);
     void inject (ExercisesFragment exercisesFragment);
     void inject (AddEditExerciseFragment addEditExerciseFragment);
+    void inject (WorkoutsFragment workoutsFragment);
+
 
 
     //void inject (WorkoutsViewModel workoutsViewModel);

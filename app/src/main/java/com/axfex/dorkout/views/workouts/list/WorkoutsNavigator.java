@@ -6,7 +6,7 @@ public interface WorkoutsNavigator {
     void newWorkout();
     void deleteWorkout(Workout workout);
     void openEditWorkout(Workout workout);
-    void openWorkout(Workout workout);
+    void onOpenWorkout(Workout workout);
     void renameWorkout(Workout workout);
     void openAbout();
     void openSettings();

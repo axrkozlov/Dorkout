@@ -27,11 +27,11 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(WorkoutsViewModel.class)) {
-
-            return (T) new WorkoutsViewModel(workoutsRepository);
-        }
-        else
+//        if (modelClass.isAssignableFrom(WorkoutsViewModel.class)) {
+//
+//            return (T) new WorkoutsViewModel(workoutsRepository);
+//        }
+//        else
         if (modelClass.isAssignableFrom(EditWorkoutViewModel.class))
             return (T) new EditWorkoutViewModel(workoutsRepository);
 

@@ -4,12 +4,14 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
+import com.axfex.dorkout.Navigator;
 import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.data.source.WorkoutsRepository;
-import com.axfex.dorkout.util.LiveEvent;
+import com.axfex.dorkout.util.FreshMutableLiveData;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * Created by alexanderkozlov on 1/7/18.
@@ -19,23 +21,26 @@ public class WorkoutsViewModel extends ViewModel {
 
     private final MutableLiveData<Workout> pickedWorkout = new MutableLiveData<>();
 
-    private final LiveEvent<Workout> openWorkoutEvent = new LiveEvent<>();
+    private FreshMutableLiveData<Workout> openWorkoutEvent=new FreshMutableLiveData<>();
 
-    private WorkoutsRepository workoutsRepository;
+    private WorkoutsRepository mWorkoutsRepository;
+    private Navigator mNavigator;
 
-    public WorkoutsViewModel(WorkoutsRepository workoutsRepository) {
-        this.workoutsRepository = workoutsRepository;
+    @Inject
+    public WorkoutsViewModel(WorkoutsRepository workoutsRepository, Navigator navigator) {
+        this.mWorkoutsRepository = workoutsRepository;
+        this.mNavigator=navigator;
     }
 
     LiveData<List<Workout>> getWorkouts() {
-        return workoutsRepository.getWorkouts();
+        return mWorkoutsRepository.getWorkouts();
     }
 
     LiveData<Long> createWorkout(String name) {
-        return workoutsRepository.createWorkout(new Workout(name));
+        return mWorkoutsRepository.createWorkout(new Workout(name));
     }
 
-    LiveEvent<Workout> getOpenWorkoutEvent() {
+    LiveData<Workout> getOpenWorkoutEvent() {
         return openWorkoutEvent;
     }
 
@@ -52,11 +57,11 @@ public class WorkoutsViewModel extends ViewModel {
     }
 
     void deleteWorkout(final Workout workout) {
-        workoutsRepository.deleteWorkout(workout);
-
+        mWorkoutsRepository.deleteWorkout(workout);
     }
 
     void openWorkout(final Workout workout) {
+        //mNavigator.openWorkout(workout.getId());
         openWorkoutEvent.setValue(workout);
     }
 

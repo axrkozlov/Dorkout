@@ -57,7 +57,7 @@ public class ReminderFragment extends Fragment {
 //        mDelete = v.findViewById(R.id.bt_workout_delete);
         mStartTime = v.findViewById(R.id.bt_workout_start_time);
         //mName = v.findViewById(R.id.et_workout_name);
-        mDesc = v.findViewById(R.id.et_workout_desc);
+        //mDesc = v.findViewById(R.id.et_workout_desc);
         mDay1 = v.findViewById(R.id.tb_workout_day1);
         mDay2 = v.findViewById(R.id.tb_workout_day2);
         mDay3 = v.findViewById(R.id.tb_workout_day3);

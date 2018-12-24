@@ -45,7 +45,6 @@ public class EditWorkoutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v =inflater.inflate(R.layout.edit_workout_fragment, container, false);
-
         return v;
     }
 
@@ -65,6 +64,7 @@ public class EditWorkoutFragment extends Fragment {
             }
         }
         return super.onOptionsItemSelected(item);
+
     }
 
 //    @Override
