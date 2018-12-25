@@ -8,6 +8,7 @@ import com.axfex.dorkout.Navigator;
 import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.data.source.WorkoutsRepository;
 import com.axfex.dorkout.util.FreshMutableLiveData;
+import com.axfex.dorkout.util.SingleMutableLiveData;
 
 import java.util.List;
 
@@ -21,8 +22,7 @@ public class WorkoutsViewModel extends ViewModel {
 
     private final MutableLiveData<Workout> pickedWorkout = new MutableLiveData<>();
 
-    private FreshMutableLiveData<Workout> openWorkoutEvent=new FreshMutableLiveData<>();
-
+    private MutableLiveData<Workout> openWorkoutEvent=new SingleMutableLiveData<>();
     private WorkoutsRepository mWorkoutsRepository;
     private Navigator mNavigator;
 
@@ -52,7 +52,7 @@ public class WorkoutsViewModel extends ViewModel {
             pickedWorkout.postValue(workout);
     }
 
-    MutableLiveData<Workout> getPickedWorkout() {
+    MutableLiveData<Workout> getPickWorkoutEvent() {
         return pickedWorkout;
     }
 

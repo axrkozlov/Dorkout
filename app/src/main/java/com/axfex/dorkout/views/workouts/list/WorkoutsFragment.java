@@ -11,9 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.axfex.dorkout.Navigator;
 import com.axfex.dorkout.R;
-import com.axfex.dorkout.WorkoutApplication;
 import com.axfex.dorkout.util.DateUtils;
 import com.axfex.dorkout.data.Workout;
 
@@ -21,13 +19,8 @@ import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 
 public class WorkoutsFragment extends Fragment {
-
-//    @Inject
-//    public WorkoutsViewModel mWorkoutsViewModel;
 
     private WorkoutsViewModel mWorkoutsViewModel;
     private RecyclerView recyclerView;
@@ -62,9 +55,17 @@ public class WorkoutsFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         mWorkoutsViewModel.getWorkouts().observe(this, workouts -> setListData(workouts));
-        mWorkoutsViewModel.getPickedWorkout().observe(WorkoutsFragment.this, workout -> onWorkoutPicked(workout));
-
+        mWorkoutsViewModel.getPickWorkoutEvent().observe(WorkoutsFragment.this, workout -> onWorkoutPicked(workout));
+        mWorkoutsViewModel.getOpenWorkoutEvent().observe(this,this::sendMessage);
         return v;
+
+
+    }
+    int i;
+    void sendMessage(Workout workout){
+        i++;
+        recyclerView.findViewHolderForAdapterPosition(i).itemView.setSelected(true);
+        if (i>=2) mWorkoutsViewModel.getOpenWorkoutEvent().removeObservers(this);
     }
 
 

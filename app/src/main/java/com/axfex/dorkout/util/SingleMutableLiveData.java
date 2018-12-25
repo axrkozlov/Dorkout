@@ -3,27 +3,34 @@ package com.axfex.dorkout.util;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
-import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The Class provides a new data delivery only once per subscription
- * WrapperObserver class prevent onChange when fresh data has been delivered
+ * WrapperObserver class prevent onChange when fresh data has been delivered, then observer will be removed
  */
 
 public class SingleMutableLiveData<T> extends MutableLiveData<T> {
-
     private int version = -1;
-    private HashMap<Observer, WrapperObserver> mWrappers = new HashMap<>();
+    private HashMap<Observer<T>, WrapperObserver> mWrappers = new HashMap<>();
 
     @Override
     public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<T> observer) {
-        WrapperObserver wrapper = new WrapperObserver(observer);
+        WrapperObserver wrapper = new WrapperObserver(owner, observer);
         mWrappers.put(observer, wrapper);
         super.observe(owner, wrapper);
+    }
+
+    @Override
+    public void observeForever(@NonNull Observer<T> observer) {
+        WrapperObserver wrapper = new WrapperObserver(observer);
+        mWrappers.put(observer, wrapper);
+        super.observeForever(observer);
     }
 
     @Override
@@ -40,8 +47,10 @@ public class SingleMutableLiveData<T> extends MutableLiveData<T> {
 
     @Override
     public void removeObservers(@NonNull final LifecycleOwner owner) {
-        mWrappers.clear();
-        super.removeObservers(owner);
+        for (Map.Entry<Observer<T>, WrapperObserver> entry : mWrappers.entrySet()) {
+            if (entry.getValue().isAttachedTo(owner))
+                removeObserver(entry.getKey());
+        }
     }
 
     @Override
@@ -52,24 +61,33 @@ public class SingleMutableLiveData<T> extends MutableLiveData<T> {
         super.removeObserver(wrapper);
     }
 
-
     private class WrapperObserver implements Observer<T> {
-        private boolean isDelivered = false;
-        private Observer<T> innerObserver;
+        private Observer<T> mObserver;
+        WeakReference<LifecycleOwner> mLifecycleOwnerWeakReference;
         private int thisVersion;
 
-        WrapperObserver(Observer<T> innerObserver) {
-            this.innerObserver = innerObserver;
+        WrapperObserver(LifecycleOwner lifecycleOwner, Observer<T> observer) {
+            this.mObserver = observer;
+            mLifecycleOwnerWeakReference = new WeakReference<>(lifecycleOwner);
+            thisVersion = version;
+        }
+
+
+        WrapperObserver(Observer<T> observer) {
+            this.mObserver = observer;
             thisVersion = version;
         }
 
         @Override
         public void onChanged(@Nullable T t) {
-            if (thisVersion != version && !isDelivered) {
-                innerObserver.onChanged(t);
-                isDelivered = true;
+            if (thisVersion != version) {
+                mObserver.onChanged(t);
+                removeObserver(mObserver);
             }
-            thisVersion = version;
+        }
+
+        boolean isAttachedTo(LifecycleOwner lifecycleOwner) {
+            return mLifecycleOwnerWeakReference.get().equals(lifecycleOwner);
         }
     }
 }

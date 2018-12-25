@@ -28,7 +28,7 @@ public interface AppComponent {
 
 
 
-    //void inject (WorkoutsViewModel workoutsViewModel);
+    //void inject (WorkoutsViewModel mWorkoutsViewModel);
 
     Application application();
 }

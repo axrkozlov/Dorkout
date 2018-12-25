@@ -74,7 +74,7 @@ public final class DateUtils {
 
         try {
             Date date = new Date(time_ms);
-            return dateFormat.format(date).toString();
+            return dateFormat.format(date);
 
         } catch (Exception e) {
             e.printStackTrace();
