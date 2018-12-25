@@ -1,6 +1,7 @@
 package com.axfex.dorkout.views.workouts.list;
 
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
@@ -25,12 +26,11 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
     private static final String EDIT_FRAGMENT_TAG = "EDIT_FRAGMENT";
     private static final String WORKOUT_ID = "workout_id";
 
-
     @Inject
     public WorkoutsViewModel mWorkoutsViewModel;
     private ActionBar mActionBar;
-    private Menu menu;
-    private Workout mPickedWorkout;
+    private Menu mMenu;
+    private Workout mWorkout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,40 +40,58 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
         ((WorkoutApplication) getApplication())
                 .getAppComponent()
                 .inject(this);
-
-        attachWorkoutsFragment();
-
         setupToolbar();
-        mWorkoutsViewModel.getPickWorkoutEvent().observe(this, this::onPickWorkout);
 
+        mWorkoutsViewModel.getViewType().observe(this,this::onViewChange);
+    }
+
+    private void setupToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        mActionBar = getSupportActionBar();
+        assert mActionBar != null;
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        mWorkoutsViewModel.getOpenWorkoutEvent().observe(this,this::sendMessage);
+//        mWorkoutsViewModel.getPickWorkoutEvent().observe(this, this::onPickWorkout);
+//        mWorkoutsViewModel.getOpenWorkoutEvent().observe(this,this::onOpenWorkout);
     }
 
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mWorkoutsViewModel.getOpenWorkoutEvent().removeObservers(this);
+    private void onViewChange(WorkoutsViewModel.ViewType viewType){
+        Toast.makeText(this, viewType.toString(), Toast.LENGTH_SHORT).show();
+        switch(viewType){
+            case WORKOUTS: {
+                attachWorkoutsFragment();
+                break;
+            }
+            case WORKOUT_SELECTION: {
+                attachWorkoutsFragment();
+                break;
+            }
+            case WORKOUT_MODIFICATION: {
+                attachEditFragment();
+                break;
+            }
+        }
+        mWorkout=mWorkoutsViewModel.getWorkout();
+        updateActionBar();
     }
 
     private void attachWorkoutsFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
+        WorkoutsFragment.attachViewModel(mWorkoutsViewModel);
         WorkoutsFragment fragment = (WorkoutsFragment) fragmentManager.findFragmentByTag(WORKOUTS_FRAGMENT_TAG);
         if (fragment == null) {
             fragment = WorkoutsFragment.newInstance();
         }
+
         addFragmentToActivity(fragmentManager,
                 fragment,
                 R.id.contentFrame,
                 WORKOUTS_FRAGMENT_TAG,
                 false);
-        fragment.attachViewModel(mWorkoutsViewModel);
-
     }
 
     private void attachEditFragment() {
@@ -82,22 +100,21 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
         if (fragment == null) {
             fragment = EditWorkoutFragment.newInstance();
         }
-
         addFragmentToActivity(fragmentManager,
                 fragment,
                 R.id.contentFrame,
                 EDIT_FRAGMENT_TAG,
                 true);
+        //fragment.attachViewModel(mWorkoutsViewModel);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_workouts, menu);
-        this.menu = menu;
-        setupMenu(false);
+        this.mMenu = menu;
+        updateMenu();
         return super.onCreateOptionsMenu(menu);
-
     }
 
     @Override
@@ -108,20 +125,19 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
                 break;
             }
             case android.R.id.home: {
-
                 onBackPressed();
                 break;
             }
             case R.id.menu_workouts_edit: {
-                openEditWorkout(mPickedWorkout);
+                openEditWorkout(mWorkout);
                 break;
             }
             case R.id.menu_workouts_rename: {
-                renameWorkout(mPickedWorkout);
+                renameWorkout(mWorkout);
                 break;
             }
             case R.id.menu_workouts_delete: {
-                deleteWorkout(mPickedWorkout);
+                deleteWorkout(mWorkout);
                 break;
             }
 
@@ -133,47 +149,41 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
 
     @Override
     public void renameWorkout(Workout workout) {
-
+        showNameDialog(workout);
     }
 
-    private void onPickWorkout(Workout workout) {
-        mPickedWorkout = workout;
-        updateActionBar(workout);
-        setupMenu(mPickedWorkout != null);
+    private boolean isWorkoutMenuShown(){
+        return mWorkout !=null;
     }
 
     private boolean isWorkoutPicked() {
-        return mPickedWorkout != null;
+        return mWorkout != null;
     }
 
-    private void updateActionBar(Workout workout) {
+    private void updateActionBar() {
         if (isWorkoutPicked()) {
             mActionBar.setDisplayHomeAsUpEnabled(true);
-            mActionBar.setTitle(workout.getName());
+            mActionBar.setTitle(mWorkout.getName());
         } else {
             mActionBar.setDisplayHomeAsUpEnabled(false);
             mActionBar.setTitle(R.string.title_activity_workouts);
         }
+        if (mMenu!=null) updateMenu();
     }
 
-    private void setupMenu(Boolean isEdit) {
-        if (menu == null) {
+    private void updateMenu() {
+        if (mMenu == null) {
             return;
         }
-        menu.findItem(R.id.menu_workouts_add).setVisible(!isEdit);
-        menu.findItem(R.id.menu_workouts_copy).setVisible(isEdit);
-        menu.findItem(R.id.menu_workouts_edit).setVisible(isEdit);
-        menu.findItem(R.id.menu_workouts_delete).setVisible(isEdit);
-        menu.findItem(R.id.menu_settings).setVisible(!isEdit);
-        menu.findItem(R.id.menu_about).setVisible(!isEdit);
-        menu.findItem(R.id.menu_donate).setVisible(!isEdit);
+        mMenu.findItem(R.id.menu_workouts_add).setVisible(!isWorkoutMenuShown());
+        mMenu.findItem(R.id.menu_workouts_copy).setVisible(isWorkoutMenuShown());
+        mMenu.findItem(R.id.menu_workouts_edit).setVisible(isWorkoutMenuShown());
+        mMenu.findItem(R.id.menu_workouts_rename).setVisible(isWorkoutMenuShown());
+        mMenu.findItem(R.id.menu_workouts_delete).setVisible(isWorkoutMenuShown());
+        mMenu.findItem(R.id.menu_settings).setVisible(!isWorkoutMenuShown());
+        mMenu.findItem(R.id.menu_about).setVisible(!isWorkoutMenuShown());
+        mMenu.findItem(R.id.menu_donate).setVisible(!isWorkoutMenuShown());
     }
-
-//
-//    private WorkoutsViewModel obtainViewModel() {
-//        return ViewModelProviders.of(this, viewModelFactory).get(WorkoutsViewModel.class);
-//    }
-
 
     @Override
     public void onBackPressed() {
@@ -184,35 +194,46 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
         super.onBackPressed();
     }
 
-    private void setupToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        mActionBar = getSupportActionBar();
-        assert mActionBar != null;
-    }
-
 
     @Override
     public void newWorkout() {
-        EditText workoutName = new EditText(this);
+        showNameDialog(null);
+    }
+
+    private void showNameDialog(@Nullable Workout workout){
+
+        EditText workoutEditName = new EditText(this);
+        String dialogTitle;
+        //TODO: create resource
+        if (workout==null){
+            dialogTitle="New Workout";
+        } else {
+            workoutEditName.setText(workout.getName());
+            dialogTitle="Rename";
+        }
         new AlertDialog.Builder(this)
-                .setTitle("New Workout")
-                .setView(workoutName)
-                .setPositiveButton(R.string.bt_ok, (d, i) -> onNewWorkoutDialogOk(workoutName.getText().toString()))
-                .setNegativeButton(R.string.bt_cancel, (d, i) -> {
-                    mWorkoutsViewModel.openWorkout(new Workout("kj") );
-                })
+                .setTitle(dialogTitle)
+                .setView(workoutEditName)
+                .setPositiveButton(R.string.bt_ok, (d, i) -> onNameDialogOk(workoutEditName.getText().toString(),workout))
+                .setNegativeButton(R.string.bt_cancel, (d, i) -> {})
                 .create()
                 .show();
     }
 
-    private void onNewWorkoutDialogOk(String name) {
-        mWorkoutsViewModel.createWorkout(name);
+
+    private void onNameDialogOk(String name, Workout workout) {
+        if (workout == null) {
+            mWorkoutsViewModel.createWorkout(new Workout(name));
+        } else {
+            workout.setName(name);
+            mWorkoutsViewModel.updateWorkout(workout);
+        }
     }
 
     @Override
     public void deleteWorkout(Workout workout) {
         new AlertDialog.Builder(this)
+                //TODO:make resource
                 .setTitle("Delete " + workout.getName() + "?")
                 .setPositiveButton(R.string.bt_ok, (d, i) -> mWorkoutsViewModel.deleteWorkout(workout))
                 .setNegativeButton(R.string.bt_cancel, (d, i) -> {
@@ -228,9 +249,8 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
 //        i.putExtra(WORKOUT_ID, id);
 //        startActivity(i);
 //        mWorkoutsViewModel.unpick();
-        attachEditFragment();
+        mWorkoutsViewModel.editWorkout(workout);
 //        mWorkoutsViewModel.unpick();
-
     }
 
 

@@ -50,8 +50,8 @@ public class WorkoutsRepository  {
         return workoutsDao.getWorkout(id);
     }
 
-    public int updateWorkout(@NonNull Workout workout) {
-        return workoutsDao.updateWorkout(workout);
+    public void updateWorkout(@NonNull Workout workout) {
+        mAppExecutors.diskIO().execute(()->workoutsDao.updateWorkout(workout));
     }
 
     public void deleteWorkout(@NonNull Workout workout) {

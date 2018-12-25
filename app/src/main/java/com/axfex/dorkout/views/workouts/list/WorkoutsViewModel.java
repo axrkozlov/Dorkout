@@ -3,11 +3,11 @@ package com.axfex.dorkout.views.workouts.list;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.view.ViewGroup;
 
 import com.axfex.dorkout.Navigator;
 import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.data.source.WorkoutsRepository;
-import com.axfex.dorkout.util.FreshMutableLiveData;
 import com.axfex.dorkout.util.SingleMutableLiveData;
 
 import java.util.List;
@@ -20,9 +20,20 @@ import javax.inject.Inject;
 
 public class WorkoutsViewModel extends ViewModel {
 
-    private final MutableLiveData<Workout> pickedWorkout = new MutableLiveData<>();
+    //private final MutableLiveData<Workout> mWorkout = new MutableLiveData<>();
+    private Workout mWorkout;
+    public enum ViewType {
+        WORKOUTS,
+        WORKOUT_SELECTION,
+        WORKOUT_MODIFICATION,
+        WORKOUT_EXECUTION,
+    }
 
-    private MutableLiveData<Workout> openWorkoutEvent=new SingleMutableLiveData<>();
+
+    private ViewType mViewType = ViewType.WORKOUTS;
+
+    private MutableLiveData<Workout> mOpenWorkoutEvent = new SingleMutableLiveData<>();
+    private MutableLiveData<ViewType> mViewTypeEvent = new MutableLiveData<>();
     private WorkoutsRepository mWorkoutsRepository;
     private Navigator mNavigator;
 
@@ -30,39 +41,64 @@ public class WorkoutsViewModel extends ViewModel {
     public WorkoutsViewModel(WorkoutsRepository workoutsRepository, Navigator navigator) {
         this.mWorkoutsRepository = workoutsRepository;
         this.mNavigator=navigator;
+        setViewType(ViewType.WORKOUTS);
     }
 
     LiveData<List<Workout>> getWorkouts() {
         return mWorkoutsRepository.getWorkouts();
     }
 
-    LiveData<Long> createWorkout(String name) {
-        return mWorkoutsRepository.createWorkout(new Workout(name));
+    Workout getWorkout(){
+        return mWorkout;
     }
 
-    LiveData<Workout> getOpenWorkoutEvent() {
-        return openWorkoutEvent;
-    }
+    LiveData<Long> createWorkout(Workout workout) { return mWorkoutsRepository.createWorkout(workout); }
 
-    void pickWorkout(Workout workout) {
-        if (workout == null || workout == pickedWorkout.getValue()) {
-            pickedWorkout.postValue(null);
-            return;
-        }
-            pickedWorkout.postValue(workout);
-    }
-
-    MutableLiveData<Workout> getPickWorkoutEvent() {
-        return pickedWorkout;
-    }
+    void updateWorkout(final Workout workout){mWorkoutsRepository.updateWorkout(workout);}
 
     void deleteWorkout(final Workout workout) {
         mWorkoutsRepository.deleteWorkout(workout);
     }
 
-    void openWorkout(final Workout workout) {
-        //mNavigator.openWorkout(workout.getId());
-        openWorkoutEvent.setValue(workout);
+    LiveData<Workout> getOpenWorkoutEvent() {
+        return mOpenWorkoutEvent;
     }
+
+    LiveData<ViewType> getViewType() {
+        return mViewTypeEvent;
+    }
+
+    private void setViewType(ViewType viewType){
+        mViewTypeEvent.setValue(viewType);
+    }
+
+//    MutableLiveData<Workout> getPickWorkoutEvent() {
+//        return mWorkout;
+//    }
+
+    void pickWorkout(Workout workout) {
+        if (workout == null || workout == mWorkout) {
+            mWorkout=null;
+            setViewType(ViewType.WORKOUTS);
+            return;
+        }
+        mWorkout=workout;
+        setViewType(ViewType.WORKOUT_SELECTION);
+    }
+
+    void editWorkout(Workout workout){
+        mWorkout=workout;
+        setViewType(ViewType.WORKOUT_MODIFICATION);
+    }
+
+    ViewType getCurrentState(){
+        return mViewType;
+    }
+
+    void openWorkout(final Workout workout) {
+        //mOpenWorkoutEvent.setValue(workout);
+        setViewType(ViewType.WORKOUT_EXECUTION);
+    }
+
 
 }
