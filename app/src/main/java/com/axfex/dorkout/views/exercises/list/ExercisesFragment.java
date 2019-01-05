@@ -76,18 +76,18 @@ public class ExercisesFragment extends Fragment {
         if (getArguments() != null) {
             workoutId = getArguments().getLong(WORKOUT_ID);
         }
-        ((WorkoutApplication) getActivity().getApplication())
-                .getAppComponent()
-                .inject(this);
+//        ((WorkoutApplication) getActivity().getApplication())
+//                .getAppComponent()
+//                .inject(this);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
-        exercisesViewModel = ViewModelProviders.of(this, viewModelFactory).get(ExercisesViewModel.class);
-        exercisesViewModel.getExercises(workoutId).observe(this, exercises -> setExercises(exercises));
-        exercisesViewModel.getWorkout(workoutId).observe(this, workout -> setWorkout(workout));
+//        exercisesViewModel = ViewModelProviders.of(this, viewModelFactory).get(ExercisesViewModel.class);
+//        exercisesViewModel.getExercises(workoutId).observe(this, exercises -> setExercises(exercises));
+//        exercisesViewModel.getWorkout(workoutId).observe(this, workout -> setWorkout(workout));
 
 //        exercisesViewModel.getExercisesWithSets(workoutId).observe(this, new Observer<List<ExerciseWithSets>>() {
 //            @Override

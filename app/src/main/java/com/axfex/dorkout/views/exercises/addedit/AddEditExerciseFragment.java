@@ -68,9 +68,9 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
             workoutId = getArguments().getLong(WORKOUT_ID);
             exerciseId = getArguments().getLong(EXERCISE_ID);
         }
-        ((WorkoutApplication) getActivity().getApplication())
-                .getAppComponent()
-                .inject(this);
+//        ((WorkoutApplication) getActivity().getApplication())
+//                .getAppComponent()
+//                .inject(this);
     }
 
     @Override

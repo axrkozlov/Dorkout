@@ -1,5 +1,6 @@
 package com.axfex.dorkout.views.exercises.list;
 
+import android.arch.lifecycle.ViewModel;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -43,8 +44,14 @@ public class ExercisesActivity extends BaseActivity {
 
 
     }
+
+    @Override
+    public ViewModel getViewModel() {
+        return null;
+    }
+
     private void setupToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.workouts_toolbar);
         setSupportActionBar(toolbar);
 
         ActionBar ab = getSupportActionBar();

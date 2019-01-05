@@ -1,4 +1,4 @@
-package com.axfex.dorkout.views.workouts.list;
+package com.axfex.dorkout.views.workouts;
 
 
 import android.os.Bundle;
@@ -12,9 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.axfex.dorkout.R;
-import com.axfex.dorkout.views.workouts.edit.EditWorkoutViewModel;
 
-public class EditWorkoutFragment extends Fragment {
+public class ExecutionFragment extends Fragment {
     private Button mCreate;
     private Button mUpdate;
     private Button mDuplicate;
@@ -23,16 +22,16 @@ public class EditWorkoutFragment extends Fragment {
     private Long workoutId;
     private static final String WORKOUT_ID = "workout_id";
 
-    private static EditWorkoutViewModel sEditWorkoutViewModel;
+    private static MainViewModel sMainViewModel;
 
 
-    public static EditWorkoutFragment newInstance() {
-        EditWorkoutFragment fragment = new EditWorkoutFragment();
+    public static ExecutionFragment newInstance() {
+        ExecutionFragment fragment = new ExecutionFragment();
         return fragment;
     }
 
-    public static void attachViewModel(EditWorkoutViewModel editWorkoutViewModel) {
-        sEditWorkoutViewModel = editWorkoutViewModel;
+    public static void attachViewModel(MainViewModel mainViewModel) {
+        sMainViewModel = mainViewModel;
     }
 
     @Override
@@ -44,7 +43,7 @@ public class EditWorkoutFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v =inflater.inflate(R.layout.edit_workout_fragment, container, false);
+        View v =inflater.inflate(R.layout.execution_fragment, container, false);
         return v;
     }
 

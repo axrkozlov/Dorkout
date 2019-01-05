@@ -4,50 +4,28 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
-import com.axfex.dorkout.data.source.WorkoutsRepository;
-import com.axfex.dorkout.views.workouts.edit.EditWorkoutViewModel;
-import com.axfex.dorkout.views.workouts.list.WorkoutsViewModel;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import java.util.Objects;
 
 /**
- * Created by alexanderkozlov on 1/7/18.
+ * Created by RV on 19/07/17.
+ * <p>
+ * A provider factory that persists ViewModels {@link ViewModel}.
+ * Used if the view model has a parameterized constructor.
  */
-@Singleton
-public class ViewModelFactory implements ViewModelProvider.Factory {
+public class ViewModelFactory<V> implements ViewModelProvider.Factory {
 
-    private WorkoutsRepository workoutsRepository;
+    private V viewModel;
 
-    @Inject
-    public ViewModelFactory(WorkoutsRepository workoutsRepository) {
-        this.workoutsRepository = workoutsRepository;
+    public ViewModelFactory(V viewModel) {
+        this.viewModel = viewModel;
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-//        if (modelClass.isAssignableFrom(WorkoutsViewModel.class)) {
-//
-//            return (T) new WorkoutsViewModel(workoutsRepository);
-//        }
-//        else
-        if (modelClass.isAssignableFrom(EditWorkoutViewModel.class))
-            return (T) new EditWorkoutViewModel(workoutsRepository);
-
-        else
-        if (modelClass.isAssignableFrom(ExercisesViewModel.class))
-            return (T) new ExercisesViewModel(workoutsRepository);
-
-        else
-        if (modelClass.isAssignableFrom(AddEditExerciseViewModel.class))
-            return (T) new AddEditExerciseViewModel(workoutsRepository);
-
-        else {
-            throw new IllegalArgumentException("ViewModel Not Found");
+        if (modelClass.isAssignableFrom(viewModel.getClass())) {
+            return Objects.requireNonNull(modelClass.cast(viewModel));
         }
+        throw new IllegalArgumentException("Unknown class name");
     }
-
-
-
 }

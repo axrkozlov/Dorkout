@@ -1,5 +1,6 @@
-package com.axfex.dorkout.views.workouts.list;
+package com.axfex.dorkout.views.workouts;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,29 +9,36 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
 import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.util.BaseActivity;
 import com.axfex.dorkout.views.exercises.list.ExercisesActivity;
+import com.axfex.dorkout.vm.ViewModelFactory;
 
 import javax.inject.Inject;
 
-public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator {
+public class MainActivity extends BaseActivity implements WorkoutsNavigator {
     private static final String WORKOUTS_FRAGMENT_TAG = "WORKOUTS_FRAGMENT";
     private static final String EDIT_FRAGMENT_TAG = "EDIT_FRAGMENT";
+    private static final String EXECUTION_FRAGMENT_TAG = "EXECUTION_FRAGMENT";
+
     private static final String WORKOUT_ID = "workout_id";
 
     @Inject
-    public WorkoutsViewModel mWorkoutsViewModel;
+    public ViewModelFactory<MainViewModel> mViewModelFactory;
+
+    public MainViewModel mMainViewModel;
+
     private ActionBar mActionBar;
-    private Menu mMenu;
+//    private Menu mMenu;
     private Workout mWorkout;
+    private boolean isWorkoutMenuShown=false;
+    private boolean isHomeAsUpShown=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +49,8 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
                 .getAppComponent()
                 .inject(this);
         setupToolbar();
-
-        mWorkoutsViewModel.getViewType().observe(this,this::onViewChange);
+        mMainViewModel = ViewModelProviders.of(this, mViewModelFactory).get(MainViewModel.class);
+        mMainViewModel.getViewType().observe(this,this::onViewChange);
     }
 
     private void setupToolbar() {
@@ -53,69 +61,113 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-//        mWorkoutsViewModel.getPickWorkoutEvent().observe(this, this::onPickWorkout);
-//        mWorkoutsViewModel.getOpenWorkoutEvent().observe(this,this::onOpenWorkout);
+    public MainViewModel getViewModel() {
+        return mMainViewModel;
     }
 
-    private void onViewChange(WorkoutsViewModel.ViewType viewType){
-        Toast.makeText(this, viewType.toString(), Toast.LENGTH_SHORT).show();
-        switch(viewType){
-            case WORKOUTS: {
-                attachWorkoutsFragment();
+    private void onViewChange(MainViewModel.ViewState viewState){
+        //Toast.makeText(this, viewState.toString(), Toast.LENGTH_SHORT).show();
+//        WorkoutsFragment.attachViewModel(mMainViewModel);
+//        EditWorkoutFragment.attachViewModel(mMainViewModel);
+//        ExecutionFragment.attachViewModel(mMainViewModel);
+        Log.i("VIEW_TYPE", "onViewChange: " + viewState);
+        switch(viewState){
+            case OPEN_WORKOUTS: {
+                attachWorkoutsView();
+                break;
+            }
+            case WORKOUTS:{
+                isWorkoutMenuShown=false;
+                isHomeAsUpShown=false;
                 break;
             }
             case WORKOUT_SELECTION: {
-                attachWorkoutsFragment();
+                isWorkoutMenuShown=true;
+                isHomeAsUpShown=true;
                 break;
             }
-            case WORKOUT_MODIFICATION: {
-                attachEditFragment();
+            case OPEN_WORKOUT_MODIFICATION: {
+                attachEditWorkoutView();
+                isWorkoutMenuShown=true;
+                isHomeAsUpShown=true;
+                break;
+
+            }
+            case OPEN_EXECUTION:{
+                attachExecutionWorkoutView();
+                isWorkoutMenuShown=false;
+                isHomeAsUpShown=false;
                 break;
             }
         }
-        mWorkout=mWorkoutsViewModel.getWorkout();
-        updateActionBar();
+        mWorkout= mMainViewModel.getCurrentWorkout();
+        //updateActionBar();
+        //updateMenu();
     }
 
-    private void attachWorkoutsFragment() {
+    private void attachWorkoutsView() {
+
         FragmentManager fragmentManager = getSupportFragmentManager();
-        WorkoutsFragment.attachViewModel(mWorkoutsViewModel);
+//        WorkoutsFragment.attachViewModel(mMainViewModel);
         WorkoutsFragment fragment = (WorkoutsFragment) fragmentManager.findFragmentByTag(WORKOUTS_FRAGMENT_TAG);
         if (fragment == null) {
             fragment = WorkoutsFragment.newInstance();
         }
-
+        Log.i("ATTACH_WORKOUTS", "fragment.isAdded: " + fragment.isAdded());
+        if (fragment.isAdded()) return;
         addFragmentToActivity(fragmentManager,
                 fragment,
                 R.id.contentFrame,
                 WORKOUTS_FRAGMENT_TAG,
                 false);
+
     }
 
-    private void attachEditFragment() {
+    private void attachEditWorkoutView() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag(EDIT_FRAGMENT_TAG);
         if (fragment == null) {
             fragment = EditWorkoutFragment.newInstance();
         }
+        Log.i("ATTACH_EDIT_WORKOUT", "fragment.isAdded: " + fragment.isAdded());
+        if (fragment.isAdded()) return;
         addFragmentToActivity(fragmentManager,
                 fragment,
                 R.id.contentFrame,
                 EDIT_FRAGMENT_TAG,
                 true);
-        //fragment.attachViewModel(mWorkoutsViewModel);
+//        fragment.attachViewModel(mMainViewModel);
     }
 
+
+    private void attachExecutionWorkoutView() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag(EXECUTION_FRAGMENT_TAG);
+        if (fragment == null) {
+            fragment = ExecutionFragment.newInstance();
+        }
+        if (fragment.isAdded()) return;
+        addFragmentToActivity(fragmentManager,
+                fragment,
+                R.id.contentFrame,
+                EXECUTION_FRAGMENT_TAG,
+                true);
+    }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_workouts, menu);
-        this.mMenu = menu;
-        updateMenu();
-        return super.onCreateOptionsMenu(menu);
+    public void onBackPressed() {
+        if (mMainViewModel.getViewType().getValue()==MainViewModel.ViewState.WORKOUT_SELECTION)
+        mMainViewModel.pickWorkout(null); else
+            super.onBackPressed();
     }
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+////        getMenuInflater().inflate(R.menu.menu_workouts, menu);
+////        this.mMenu = menu;
+////        updateMenu();
+//        return super.onCreateOptionsMenu(menu);
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -140,7 +192,6 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
                 deleteWorkout(mWorkout);
                 break;
             }
-
         }
 
         return super.onOptionsItemSelected(item);
@@ -152,47 +203,26 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
         showNameDialog(workout);
     }
 
-    private boolean isWorkoutMenuShown(){
-        return mWorkout !=null;
-    }
-
-    private boolean isWorkoutPicked() {
-        return mWorkout != null;
-    }
-
     private void updateActionBar() {
-        if (isWorkoutPicked()) {
-            mActionBar.setDisplayHomeAsUpEnabled(true);
-            mActionBar.setTitle(mWorkout.getName());
-        } else {
-            mActionBar.setDisplayHomeAsUpEnabled(false);
-            mActionBar.setTitle(R.string.title_activity_workouts);
-        }
-        if (mMenu!=null) updateMenu();
+            mActionBar.setDisplayHomeAsUpEnabled(isHomeAsUpShown);
+            String title=mWorkout!=null? mWorkout.getName():getString(R.string.title_activity_workouts);
+            mActionBar.setTitle(title);
     }
 
     private void updateMenu() {
-        if (mMenu == null) {
-            return;
-        }
-        mMenu.findItem(R.id.menu_workouts_add).setVisible(!isWorkoutMenuShown());
-        mMenu.findItem(R.id.menu_workouts_copy).setVisible(isWorkoutMenuShown());
-        mMenu.findItem(R.id.menu_workouts_edit).setVisible(isWorkoutMenuShown());
-        mMenu.findItem(R.id.menu_workouts_rename).setVisible(isWorkoutMenuShown());
-        mMenu.findItem(R.id.menu_workouts_delete).setVisible(isWorkoutMenuShown());
-        mMenu.findItem(R.id.menu_settings).setVisible(!isWorkoutMenuShown());
-        mMenu.findItem(R.id.menu_about).setVisible(!isWorkoutMenuShown());
-        mMenu.findItem(R.id.menu_donate).setVisible(!isWorkoutMenuShown());
+//        if (mMenu == null) {
+//            return;
+//        }
+//        mMenu.findItem(R.id.menu_workouts_add).setVisible(!isWorkoutMenuShown);
+//        mMenu.findItem(R.id.menu_workouts_copy).setVisible(isWorkoutMenuShown);
+//        mMenu.findItem(R.id.menu_workouts_edit).setVisible(isWorkoutMenuShown);
+//        mMenu.findItem(R.id.menu_workouts_rename).setVisible(isWorkoutMenuShown);
+//        mMenu.findItem(R.id.menu_workouts_delete).setVisible(isWorkoutMenuShown);
+//        mMenu.findItem(R.id.menu_settings).setVisible(!isWorkoutMenuShown);
+//        mMenu.findItem(R.id.menu_about).setVisible(!isWorkoutMenuShown);
+//        mMenu.findItem(R.id.menu_donate).setVisible(!isWorkoutMenuShown);
     }
 
-    @Override
-    public void onBackPressed() {
-        if (isWorkoutPicked()) {
-            mWorkoutsViewModel.pickWorkout(null);
-            return;
-        }
-        super.onBackPressed();
-    }
 
 
     @Override
@@ -223,10 +253,10 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
 
     private void onNameDialogOk(String name, Workout workout) {
         if (workout == null) {
-            mWorkoutsViewModel.createWorkout(new Workout(name));
+            mMainViewModel.createWorkout(new Workout(name));
         } else {
             workout.setName(name);
-            mWorkoutsViewModel.updateWorkout(workout);
+            mMainViewModel.updateWorkout(workout);
         }
     }
 
@@ -235,7 +265,7 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
         new AlertDialog.Builder(this)
                 //TODO:make resource
                 .setTitle("Delete " + workout.getName() + "?")
-                .setPositiveButton(R.string.bt_ok, (d, i) -> mWorkoutsViewModel.deleteWorkout(workout))
+                .setPositiveButton(R.string.bt_ok, (d, i) -> mMainViewModel.deleteWorkout(workout))
                 .setNegativeButton(R.string.bt_cancel, (d, i) -> {
                 })
                 .create()
@@ -245,31 +275,16 @@ public class WorkoutsActivity extends BaseActivity implements WorkoutsNavigator 
 
     @Override
     public void openEditWorkout(Workout workout) {
-//        Intent i = new Intent(this, EditWorkoutActivity.class);
-//        i.putExtra(WORKOUT_ID, id);
-//        startActivity(i);
-//        mWorkoutsViewModel.unpick();
-        mWorkoutsViewModel.editWorkout(workout);
-//        mWorkoutsViewModel.unpick();
+        mMainViewModel.editWorkout(workout);
     }
-
 
     @Override
     public void onOpenWorkout(Workout workout) {
-//        Log.i("Activity", "onOpenWorkout: ");
         Intent i = new Intent(this, ExercisesActivity.class);
         i.putExtra(WORKOUT_ID, workout.getId());
         startActivity(i);
-//        mNavigator.onOpenWorkout(2L);
-
     }
 
-    int i;
-    void sendMessage(Workout workout){
-        i++;
-        Toast.makeText(this, "Event!", Toast.LENGTH_SHORT).show();
-        if (i>=1) mWorkoutsViewModel.getOpenWorkoutEvent().removeObservers(this);
-    }
 
     @Override
     public void openAbout() {

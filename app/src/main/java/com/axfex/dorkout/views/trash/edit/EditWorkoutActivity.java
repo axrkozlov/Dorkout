@@ -1,7 +1,7 @@
-package com.axfex.dorkout.views.workouts.edit;
+package com.axfex.dorkout.views.trash.edit;
 
 
-import android.arch.lifecycle.ViewModelProviders;
+import android.arch.lifecycle.ViewModel;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,9 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
 import com.axfex.dorkout.R;
-import com.axfex.dorkout.WorkoutApplication;
 import com.axfex.dorkout.util.BaseActivity;
-import com.axfex.dorkout.views.workouts.list.EditWorkoutFragment;
+import com.axfex.dorkout.views.workouts.EditWorkoutFragment;
 import com.axfex.dorkout.vm.ViewModelFactory;
 
 import javax.inject.Inject;
@@ -33,20 +32,26 @@ public class EditWorkoutActivity extends BaseActivity {
     ViewModelFactory viewModelFactory;
 
     @Override
+    public ViewModel getViewModel() {
+        return null;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_workout_activity);
 
-        ((WorkoutApplication) getApplication())
-                .getAppComponent()
-                .inject(this);
+//        ((WorkoutApplication) getApplication())
+//                .getAppComponent()
+//                .inject(this);
 
-        editWorkoutViewModel=obtainViewModel();
-        EditWorkoutFragment.attachViewModel(editWorkoutViewModel);
 
-        setupViewFragment();
-        workoutId=getWorkoutIdFromExtra();
-        setupToolbar(workoutId!=null);
+//        editWorkoutViewModel=obtainViewModel();
+//        EditWorkoutFragment.attachViewModel(editWorkoutViewModel);
+//
+//        setupViewFragment();
+//        workoutId=getWorkoutIdFromExtra();
+//        setupToolbar(workoutId!=null);
 
     }
 
@@ -65,7 +70,7 @@ public class EditWorkoutActivity extends BaseActivity {
     }
 
     private void setupToolbar(boolean isNewWorkout) {
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.workouts_toolbar);
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -93,8 +98,8 @@ public class EditWorkoutActivity extends BaseActivity {
                 true);
     }
 
-    private EditWorkoutViewModel obtainViewModel(){
-        return ViewModelProviders.of(this, viewModelFactory).get(EditWorkoutViewModel.class);
-    }
+//    private EditWorkoutViewModel obtainViewModel(){
+//        return ViewModelProviders.of(this, viewModelFactory).get(EditWorkoutViewModel.class);
+//    }
 
 }

@@ -54,10 +54,6 @@ public class RoomModule {
         return workoutsDatabase;
     }
 
-    @Provides
-    @Singleton
-    ViewModelProvider.Factory provideViewModelFactory(WorkoutsRepository workoutsRepository){
-        return new ViewModelFactory(workoutsRepository);
-    }
+
 
 }

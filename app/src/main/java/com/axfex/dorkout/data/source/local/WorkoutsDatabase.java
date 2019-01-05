@@ -10,7 +10,7 @@ import com.axfex.dorkout.data.Workout;
  * Created by alexanderkozlov on 1/2/18.
  */
 
-@Database(entities = {Workout.class, Exercise.class}, version = 1)
+@Database(entities = {Workout.class, Exercise.class}, version = 1,exportSchema = false)
 public abstract class WorkoutsDatabase extends RoomDatabase {
 
     public abstract WorkoutsDao workoutsDao();

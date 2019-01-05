@@ -1,4 +1,4 @@
-package com.axfex.dorkout.views.workouts.list;
+package com.axfex.dorkout.views.workouts;
 
 import com.axfex.dorkout.data.Workout;
 

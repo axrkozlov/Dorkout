@@ -11,22 +11,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".views.workouts.list.WorkoutsActivity"
+            android:name=".views.workouts.MainActivity"
             android:label="@string/title_activity_workouts">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".views.workouts.edit.EditWorkoutActivity" />
+        <activity android:name=".views.trash.edit.EditWorkoutActivity" />
         <activity
             android:name=".views.exercises.list.ExercisesActivity"
             android:label="@string/title_activity_exercises"
-            android:parentActivityName=".views.workouts.list.WorkoutsActivity">
+            android:parentActivityName=".views.workouts.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".views.workouts.list.WorkoutsActivity" />
+                android:value=".views.workouts.MainActivity" />
         </activity>
         <activity
             android:name=".views.exercises.addedit.AddEditExerciseActivity"

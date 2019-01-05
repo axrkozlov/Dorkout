@@ -1,5 +1,6 @@
 package com.axfex.dorkout.views.exercises.addedit;
 
+import android.arch.lifecycle.ViewModel;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -42,4 +43,8 @@ public class AddEditExerciseActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public ViewModel getViewModel() {
+        return null;
+    }
 }

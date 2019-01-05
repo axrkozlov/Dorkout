@@ -1,5 +1,6 @@
 package com.axfex.dorkout.views.reminder;
 
+import android.arch.lifecycle.ViewModel;
 import android.os.Bundle;
 
 import com.axfex.dorkout.R;
@@ -16,5 +17,10 @@ public class ReminderActivity extends BaseActivity {
                     .replace(R.id.container, ReminderFragment.newInstance())
                     .commitNow();
         }
+    }
+
+    @Override
+    public ViewModel getViewModel() {
+        return null;
     }
 }
