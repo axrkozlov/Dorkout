@@ -1,8 +1,8 @@
 package com.axfex.dorkout.vm;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModel;
-import android.support.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
+import androidx.annotation.NonNull;
 
 import com.axfex.dorkout.data.Exercise;
 import com.axfex.dorkout.data.Workout;

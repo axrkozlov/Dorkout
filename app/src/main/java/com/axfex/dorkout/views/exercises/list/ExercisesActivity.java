@@ -1,10 +1,10 @@
 package com.axfex.dorkout.views.exercises.list;
 
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModel;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.util.BaseActivity;

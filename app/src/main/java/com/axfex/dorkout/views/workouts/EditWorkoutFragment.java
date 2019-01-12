@@ -2,7 +2,7 @@ package com.axfex.dorkout.views.workouts;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +14,7 @@ import android.widget.Button;
 import com.axfex.dorkout.R;
 
 public class EditWorkoutFragment extends Fragment {
+    public static final String TAG = "EDIT_WORKOUT_FRAGMENT";
     private Button mCreate;
     private Button mUpdate;
     private Button mDuplicate;

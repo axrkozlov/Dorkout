@@ -1,10 +1,10 @@
 package com.axfex.dorkout.util;
 
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Observer;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -18,17 +18,17 @@ import java.util.Map;
 public class FreshMutableLiveData<T> extends MutableLiveData<T> {
 
     private int version = -1;
-    private HashMap<Observer<T>, WrapperObserver> mWrappers = new HashMap<>();
+    private HashMap<Observer<? super T>, WrapperObserver> mWrappers = new HashMap<>();
 
     @Override
-    public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<T> observer) {
+    public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super T> observer) {
         WrapperObserver wrapper = new WrapperObserver(owner, observer);
         mWrappers.put(observer, wrapper);
         super.observe(owner, wrapper);
     }
 
     @Override
-    public void observeForever(@NonNull Observer<T> observer) {
+    public void observeForever(@NonNull Observer<? super T> observer) {
         WrapperObserver wrapper = new WrapperObserver(observer);
         mWrappers.put(observer, wrapper);
         super.observeForever(observer);
@@ -48,14 +48,14 @@ public class FreshMutableLiveData<T> extends MutableLiveData<T> {
 
     @Override
     public void removeObservers(@NonNull final LifecycleOwner owner) {
-        for (Map.Entry<Observer<T>, WrapperObserver> entry : mWrappers.entrySet()) {
+        for (Map.Entry<Observer<? super T>, WrapperObserver> entry : mWrappers.entrySet()) {
             if (entry.getValue().isAttachedTo(owner))
                 removeObserver(entry.getKey());
         }
     }
 
     @Override
-    public void removeObserver(@NonNull final Observer<T> observer) {
+    public void removeObserver(@NonNull final Observer<? super T> observer) {
         WrapperObserver wrapper = mWrappers.get(observer);
         if (wrapper == null) return;
         mWrappers.remove(observer);
@@ -63,18 +63,18 @@ public class FreshMutableLiveData<T> extends MutableLiveData<T> {
     }
 
     private class WrapperObserver implements Observer<T> {
-        private Observer<T> mObserver;
+        private Observer<? super T> mObserver;
         WeakReference<LifecycleOwner> mLifecycleOwnerWeakReference;
         private int thisVersion;
 
-        WrapperObserver(LifecycleOwner lifecycleOwner, Observer<T> observer) {
+        WrapperObserver(LifecycleOwner lifecycleOwner, Observer<? super T> observer) {
             this.mObserver = observer;
             mLifecycleOwnerWeakReference = new WeakReference<>(lifecycleOwner);
             thisVersion = version;
         }
 
 
-        WrapperObserver(Observer<T> observer) {
+        WrapperObserver(Observer<? super T> observer) {
             this.mObserver = observer;
             thisVersion = version;
         }

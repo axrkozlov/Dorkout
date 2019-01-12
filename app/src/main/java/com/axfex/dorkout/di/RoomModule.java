@@ -1,18 +1,15 @@
 package com.axfex.dorkout.di;
 
 import android.app.Application;
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.persistence.room.Room;
-
 import com.axfex.dorkout.data.source.WorkoutsRepository;
 import com.axfex.dorkout.data.source.local.ExercisesDao;
 import com.axfex.dorkout.data.source.local.WorkoutsDao;
 import com.axfex.dorkout.data.source.local.WorkoutsDatabase;
 import com.axfex.dorkout.util.AppExecutors;
-import com.axfex.dorkout.vm.ViewModelFactory;
 
 import javax.inject.Singleton;
 
+import androidx.room.Room;
 import dagger.Module;
 import dagger.Provides;
 

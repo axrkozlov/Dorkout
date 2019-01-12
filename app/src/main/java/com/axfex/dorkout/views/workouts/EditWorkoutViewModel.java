@@ -1,6 +1,6 @@
 package com.axfex.dorkout.views.workouts;
 
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModel;
 
 public class EditWorkoutViewModel extends ViewModel {
 }

@@ -1,9 +1,9 @@
 package com.axfex.dorkout.views.exercises.addedit;
 
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModel;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 import android.widget.Toast;
 
 import com.axfex.dorkout.R;

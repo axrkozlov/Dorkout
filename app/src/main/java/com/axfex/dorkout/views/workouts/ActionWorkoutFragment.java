@@ -2,7 +2,7 @@ package com.axfex.dorkout.views.workouts;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,7 +13,8 @@ import android.widget.Button;
 
 import com.axfex.dorkout.R;
 
-public class ExecutionFragment extends Fragment {
+public class ActionWorkoutFragment extends Fragment {
+    public static final String TAG = "ACTION_WORKOUT_FRAGMENT";
     private Button mCreate;
     private Button mUpdate;
     private Button mDuplicate;
@@ -25,8 +26,8 @@ public class ExecutionFragment extends Fragment {
     private static MainViewModel sMainViewModel;
 
 
-    public static ExecutionFragment newInstance() {
-        ExecutionFragment fragment = new ExecutionFragment();
+    public static ActionWorkoutFragment newInstance() {
+        ActionWorkoutFragment fragment = new ActionWorkoutFragment();
         return fragment;
     }
 
@@ -43,7 +44,7 @@ public class ExecutionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v =inflater.inflate(R.layout.execution_fragment, container, false);
+        View v =inflater.inflate(R.layout.action_workout_fragment, container, false);
         return v;
     }
 

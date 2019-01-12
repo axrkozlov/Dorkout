@@ -1,16 +1,17 @@
 package com.axfex.dorkout.views.workouts;
 
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
+import androidx.lifecycle.ViewModelProviders;
+
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,6 +25,7 @@ import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
 import com.axfex.dorkout.util.DateUtils;
 import com.axfex.dorkout.data.Workout;
+import com.axfex.dorkout.util.Show;
 import com.axfex.dorkout.vm.ViewModelFactory;
 
 import java.text.DateFormatSymbols;
@@ -35,6 +37,7 @@ import javax.inject.Inject;
 
 
 public class WorkoutsFragment extends Fragment {
+    public static final String TAG = "WORKOUTS_FRAGMENT";
 
     @Inject
     public ViewModelFactory<WorkoutsViewModel> mViewModelFactory;
@@ -80,8 +83,8 @@ public class WorkoutsFragment extends Fragment {
         super.onStart();
         mMainViewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
         mMainViewModel.getWorkouts().observe(this, this::onListLoaded);
-        mMainViewModel.getViewType().observe(WorkoutsFragment.this, this::onViewTypeChange);
-        mMainViewModel.onWorkoutsViewOpened();
+        mMainViewModel.getShow().observe(WorkoutsFragment.this, this::onViewTypeChange);
+//        mMainViewModel.onShowOpened(TAG);
     }
 
     @Override
@@ -98,19 +101,19 @@ public class WorkoutsFragment extends Fragment {
     }
 
     private void updateMenu() {
-        ActionBar actionBar=((AppCompatActivity)Objects.requireNonNull(getActivity())).getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(isAnyWorkoutPicked);
-        String title=mPickedWorkout!=null? mPickedWorkout.getName():getString(R.string.title_activity_workouts);
-        actionBar.setTitle(title);
-        mMenu.findItem(R.id.menu_workouts_add).setVisible(!isWorkoutMenuShown);
-        mMenu.findItem(R.id.menu_workouts_copy).setVisible(isWorkoutMenuShown);
-        mMenu.findItem(R.id.menu_workouts_edit).setVisible(isWorkoutMenuShown);
-        mMenu.findItem(R.id.menu_workouts_rename).setVisible(isWorkoutMenuShown);
-        mMenu.findItem(R.id.menu_workouts_delete).setVisible(isWorkoutMenuShown);
-        mMenu.findItem(R.id.menu_settings).setVisible(!isWorkoutMenuShown);
-        mMenu.findItem(R.id.menu_about).setVisible(!isWorkoutMenuShown);
-        mMenu.findItem(R.id.menu_donate).setVisible(!isWorkoutMenuShown);
+//        ActionBar actionBar=((AppCompatActivity)Objects.requireNonNull(getActivity())).getSupportActionBar();
+//        assert actionBar != null;
+//        actionBar.setDisplayHomeAsUpEnabled(isAnyWorkoutPicked);
+//        String title=mPickedWorkout!=null? mPickedWorkout.getName():getString(R.string.title_activity_workouts);
+//        actionBar.setTitle(title);
+//        mMenu.findItem(R.id.menu_workouts_add).setVisible(!isWorkoutMenuShown);
+//        mMenu.findItem(R.id.menu_workouts_copy).setVisible(isWorkoutMenuShown);
+//        mMenu.findItem(R.id.menu_workouts_edit).setVisible(isWorkoutMenuShown);
+//        mMenu.findItem(R.id.menu_workouts_rename).setVisible(isWorkoutMenuShown);
+//        mMenu.findItem(R.id.menu_workouts_delete).setVisible(isWorkoutMenuShown);
+//        mMenu.findItem(R.id.menu_settings).setVisible(!isWorkoutMenuShown);
+//        mMenu.findItem(R.id.menu_about).setVisible(!isWorkoutMenuShown);
+//        mMenu.findItem(R.id.menu_donate).setVisible(!isWorkoutMenuShown);
     }
 
     private void onListLoaded(List<Workout> list) {
@@ -118,21 +121,22 @@ public class WorkoutsFragment extends Fragment {
         swapAdapter();
     }
 
-    private void onViewTypeChange(MainViewModel.ViewState viewState) {
-        isAnyWorkoutPicked=false;
-        isWorkoutMenuShown=false;
-        if (viewState == MainViewModel.ViewState.WORKOUT_SELECTION)
-        {
-            mPickedWorkout = mMainViewModel.getCurrentWorkout();
-            notifyAdapter();
-            isAnyWorkoutPicked=true;
-            isWorkoutMenuShown=true;
-            updateMenu();
-        } else if (mPickedWorkout!=null){
-            mPickedWorkout = null;
-            notifyAdapter();
-            updateMenu();
-        }
+    private void onViewTypeChange(Show show) {
+//        isAnyWorkoutPicked=false;
+//        isWorkoutMenuShown=false;
+//        if (show.is(TAG))
+//        {
+//            mPickedWorkout = (Workout) show.getItem();
+//            Log.i(TAG, "onViewTypeChange: "+show.getTag() + " and workout : " + mPickedWorkout);
+//            notifyAdapter();
+//            isAnyWorkoutPicked=true;
+//            isWorkoutMenuShown=true;
+//            updateMenu();
+//        } else if (mPickedWorkout!=null){
+//            mPickedWorkout = null;
+//            notifyAdapter();
+//            updateMenu();
+//        }
 
     }
 
@@ -261,6 +265,7 @@ public class WorkoutsFragment extends Fragment {
         @Override
         public boolean onLongClick(View v) {
             mMainViewModel.pickWorkout(getWorkout());
+            Log.i(TAG, "Pick workout : " + getWorkout());
             return true;
         }
     }

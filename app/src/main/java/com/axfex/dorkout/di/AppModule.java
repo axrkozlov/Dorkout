@@ -1,7 +1,7 @@
 package com.axfex.dorkout.di;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.axfex.dorkout.Navigator;
 import com.axfex.dorkout.WorkoutApplication;

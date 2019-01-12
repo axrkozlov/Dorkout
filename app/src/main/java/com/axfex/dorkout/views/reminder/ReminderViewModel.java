@@ -1,6 +1,6 @@
 package com.axfex.dorkout.views.reminder;
 
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModel;
 
 public class ReminderViewModel extends ViewModel {
     // TODO: Implement the ViewModel

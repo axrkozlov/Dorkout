@@ -1,8 +1,7 @@
 package com.axfex.dorkout.di;
 
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
-import android.os.MessageQueue;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 
 import com.axfex.dorkout.data.source.WorkoutsRepository;

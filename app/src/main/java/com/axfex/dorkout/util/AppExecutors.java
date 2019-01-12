@@ -18,8 +18,8 @@ package com.axfex.dorkout.util;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -40,20 +40,28 @@ public class AppExecutors {
 
     private final Executor mainThread;
 
+    private final Executor networkScheduledIO;
+
     @VisibleForTesting
-    AppExecutors(Executor diskIO, Executor networkIO, Executor mainThread) {
+    AppExecutors(Executor diskIO, Executor networkIO, Executor mainThread, Executor networkScheduledIO) {
         this.diskIO = diskIO;
         this.networkIO = networkIO;
         this.mainThread = mainThread;
+        this.networkScheduledIO = networkScheduledIO;
+
     }
 
     public AppExecutors() {
         this(new DiskIOThreadExecutor(), Executors.newFixedThreadPool(THREAD_COUNT),
-                new MainThreadExecutor());
+                new MainThreadExecutor(),Executors.newScheduledThreadPool(THREAD_COUNT));
     }
 
     public Executor diskIO() {
         return diskIO;
+    }
+
+    public Executor getNetworkScheduledIO() {
+        return networkScheduledIO;
     }
 
     public Executor networkIO() {

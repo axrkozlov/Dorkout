@@ -1,14 +1,15 @@
 package com.axfex.dorkout.views.workouts;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
-import android.support.annotation.NonNull;
-import android.support.v4.util.Pair;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+import androidx.annotation.NonNull;
 
 import com.axfex.dorkout.data.Exercise;
 import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.data.source.WorkoutsRepository;
+import com.axfex.dorkout.util.FreshMutableLiveData;
+import com.axfex.dorkout.util.Show;
 
 import java.util.List;
 
@@ -17,27 +18,75 @@ import java.util.List;
  */
 
 public class MainViewModel extends ViewModel {
+    private static final String TAG = "MAIN_VIEW_MODEL";
 
     private Workout mCurrentWorkout;
+    private Show mShow;
 
-    public enum ViewState {
-        WORKOUTS,
-        WORKOUT_SELECTION,
-        WORKOUT_MODIFICATION,
-        EXECUTION,
-        OPEN_WORKOUTS,
-        OPEN_WORKOUT_MODIFICATION,
-        OPEN_EXECUTION
-    }
-
-    private MutableLiveData<ViewState> mViewStateEvent = new MutableLiveData<>();
+//    private MutableLiveData<Show> mViewStateEvent = new MutableLiveData<>();
+    private final MutableLiveData<Show> mShowEvent = new FreshMutableLiveData<>();
     private WorkoutsRepository mWorkoutsRepository;
 
 
     public MainViewModel(WorkoutsRepository workoutsRepository) {
         this.mWorkoutsRepository = workoutsRepository;
-        setViewType(ViewState.OPEN_WORKOUTS);
+//        setShow(WorkoutsFragment.TAG);
+//        openShow();
     }
+
+    void setShow(String tag){
+        mShow=new Show(tag);
+    }
+
+    String getShowTag(Show show){
+        return show.getTag();
+    }
+
+    private void setShow(String string, Workout workout){
+        mShow=new Show<>(string,workout);
+    }
+
+    private void setShow(String string, Exercise exercise){
+        mShow=new Show<>(string,exercise);
+    }
+
+    void openShow(){
+        mShowEvent.setValue(mShow);
+    }
+
+    LiveData<Show> getShow() {
+        return mShowEvent;
+    }
+
+    void pickWorkout(Workout workout) {
+        if (workout == null || workout == mCurrentWorkout) {
+            mCurrentWorkout = null;
+            setShow(WorkoutsFragment.TAG);
+            openShow();
+            return;
+        }
+        mCurrentWorkout = workout;
+        setShow(WorkoutsFragment.TAG,workout);
+        openShow();
+    }
+
+    void editWorkout(Workout workout) {
+        mCurrentWorkout = workout;
+        setShow(EditWorkoutFragment.TAG,workout);
+        openShow();
+    }
+
+    void openWorkout(final Workout workout) {
+        mCurrentWorkout = workout;
+        setShow(ActionWorkoutFragment.TAG,workout);
+        openShow();
+    }
+
+//    void onShowOpened(java.lang.String showTag) {
+//        mCurrentWorkout = null;
+//        setShow(WORKOUTS_SHOW);
+//    }
+
 
     LiveData<List<Workout>> getWorkouts() {
         return mWorkoutsRepository.getWorkouts();
@@ -59,49 +108,10 @@ public class MainViewModel extends ViewModel {
         mWorkoutsRepository.deleteWorkout(workout);
     }
 
-    LiveData<ViewState> getViewType() {
-        return mViewStateEvent;
-    }
-
-    private void setViewType(ViewState viewState) {
-        mViewStateEvent.setValue(viewState);
-    }
-
-    void pickWorkout(Workout workout) {
-        if (workout == null || workout == mCurrentWorkout) {
-            mCurrentWorkout = null;
-            setViewType(ViewState.WORKOUTS);
-            return;
-        }
-        mCurrentWorkout = workout;
-        setViewType(ViewState.WORKOUT_SELECTION);
-    }
-
-    void editWorkout(Workout workout) {
-        mCurrentWorkout = workout;
-        setViewType(ViewState.OPEN_WORKOUT_MODIFICATION);
-    }
-
-    void openWorkout(final Workout workout) {
-        mCurrentWorkout = workout;
-        setViewType(ViewState.OPEN_EXECUTION);
-    }
-
-    void onWorkoutsViewOpened() {
-        mCurrentWorkout = null;
-        setViewType(ViewState.WORKOUTS);
-    }
-
     /*Exercises*/
 
     LiveData<List<Exercise>> getExercises(@NonNull Long workoutId) {
         return mWorkoutsRepository.getExercises(workoutId);
     }
-
-
-
-
-
-
 
 }

@@ -1,15 +1,11 @@
 package com.axfex.dorkout.util;
 
-import android.arch.lifecycle.ViewModel;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-
-import com.axfex.dorkout.WorkoutApplication;
+import androidx.lifecycle.ViewModel;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Created by alexanderkozlov on 1/4/18.
@@ -17,20 +13,17 @@ import com.axfex.dorkout.WorkoutApplication;
 
 public abstract class BaseActivity<V extends ViewModel> extends AppCompatActivity {
 
-    private V mViewModel;
-
     public static void addFragmentToActivity(@NonNull FragmentManager fragmentManager,
                                              @NonNull Fragment fragment,
                                              Integer frameId,
                                              String tag,
-                                             Boolean addToBackStack) {
+                                             Boolean isRootFragment) {
 
         FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 
         fragmentTransaction.replace(frameId,fragment,tag);
-        if (addToBackStack)
-            fragmentTransaction.addToBackStack(tag);
+        if (!isRootFragment) fragmentTransaction.addToBackStack(tag);
         fragmentTransaction.commit();
 
     }
