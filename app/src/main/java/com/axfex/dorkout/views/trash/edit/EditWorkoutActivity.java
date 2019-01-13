@@ -18,28 +18,35 @@ import com.axfex.dorkout.vm.ViewModelFactory;
 import javax.inject.Inject;
 
 public class EditWorkoutActivity extends BaseActivity {
-    private static final String FRAGMENT_TAG = "EDIT_WORKOUT_FRAGMENT";
-    private static final String WORKOUT_ID = "workout_id";
+//    private static final String FRAGMENT_TAG = "EDIT_WORKOUT_FRAGMENT";
+//    private static final String WORKOUT_ID = "workout_id";
+//
+//    private EditWorkoutViewModel editWorkoutViewModel;
+//    private ActionBar mActionBar;
+//    private Menu menu;
+//
+//    private Long workoutId;
+//
+//
+//    @Inject
+//    ViewModelFactory viewModelFactory;
+//
+//    @Override
+//    public ViewModel getViewModel() {
+//        return null;
+//    }
 
-    private EditWorkoutViewModel editWorkoutViewModel;
-    private ActionBar mActionBar;
-    private Menu menu;
-
-    private Long workoutId;
-
-
-    @Inject
-    ViewModelFactory viewModelFactory;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public ViewModel getViewModel() {
         return null;
     }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_workout_activity);
+}
+//        setContentView(R.layout.edit_workout_activity);
 
 //        ((WorkoutApplication) getApplication())
 //                .getAppComponent()
@@ -52,54 +59,54 @@ public class EditWorkoutActivity extends BaseActivity {
 //        setupViewFragment();
 //        workoutId=getWorkoutIdFromExtra();
 //        setupToolbar(workoutId!=null);
-
-    }
-
-    private Long getWorkoutIdFromExtra(){
-        Intent i = getIntent();
-        if (i.hasExtra(WORKOUT_ID)) {
-            return i.getLongExtra(WORKOUT_ID, 0L);
-        }
-        return null;
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
-
-    private void setupToolbar(boolean isNewWorkout) {
-        Toolbar toolbar = findViewById(R.id.workouts_toolbar);
-        setSupportActionBar(toolbar);
-
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_cancel_24dp);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-        if (isNewWorkout) {
-            actionBar.setTitle(R.string.title_activity_new_workout);
-        } else {
-            actionBar.setTitle(R.string.title_activity_edit_workout);
-        }
-    }
-
-    private void setupViewFragment(){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentByTag(FRAGMENT_TAG);
-        if (fragment == null) {
-            fragment = EditWorkoutFragment.newInstance();
-        }
-        addFragmentToActivity(fragmentManager,
-                fragment,
-                R.id.contentFrame,
-                FRAGMENT_TAG,
-                true);
-    }
+//
+//    }
+//
+//    private Long getWorkoutIdFromExtra(){
+//        Intent i = getIntent();
+//        if (i.hasExtra(WORKOUT_ID)) {
+//            return i.getLongExtra(WORKOUT_ID, 0L);
+//        }
+//        return null;
+//    }
+//
+//    @Override
+//    public boolean onSupportNavigateUp() {
+//        onBackPressed();
+//        return true;
+//    }
+//
+//    private void setupToolbar(boolean isNewWorkout) {
+//        Toolbar toolbar = findViewById(R.id.workouts_toolbar);
+//        setSupportActionBar(toolbar);
+//
+//        ActionBar actionBar = getSupportActionBar();
+//        assert actionBar != null;
+//        actionBar.setHomeAsUpIndicator(R.drawable.ic_cancel_24dp);
+//        actionBar.setDisplayHomeAsUpEnabled(true);
+//
+//        if (isNewWorkout) {
+//            actionBar.setTitle(R.string.title_activity_new_workout);
+//        } else {
+//            actionBar.setTitle(R.string.title_activity_edit_workout);
+//        }
+//    }
+//
+//    private void setupViewFragment(){
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        Fragment fragment = fragmentManager.findFragmentByTag(FRAGMENT_TAG);
+//        if (fragment == null) {
+//            fragment = EditWorkoutFragment.newInstance();
+//        }
+//        addFragmentToActivity(fragmentManager,
+//                fragment,
+//                R.id.contentFrame,
+//                FRAGMENT_TAG,
+//                true);
+//    }
 
 //    private EditWorkoutViewModel obtainViewModel(){
 //        return ViewModelProviders.of(this, viewModelFactory).get(EditWorkoutViewModel.class);
 //    }
-
-}
+//
+//}

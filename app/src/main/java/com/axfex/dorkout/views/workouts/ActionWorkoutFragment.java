@@ -51,15 +51,13 @@ public class ActionWorkoutFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        getActivity().getMenuInflater().inflate(R.menu.menu_addeditworkout, menu);
+        getActivity().getMenuInflater().inflate(R.menu.addeditworkout_menu, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_addeditworkout_save: {
-                break;
-            }
+
             case R.id.homeAsUp: {
             }
         }
@@ -73,7 +71,7 @@ public class ActionWorkoutFragment extends Fragment {
 //            case R.id.bt_workout_start_time:
 //                break;
 ////            case R.id.bt_workout_delete:
-////                deleteWorkout();
+////                onDeleteWorkout();
 ////                break;
 //        }
 //    }

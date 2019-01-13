@@ -21,10 +21,13 @@ import static androidx.room.OnConflictStrategy.REPLACE;
 public interface WorkoutsDao {
 
     @Query("SELECT * FROM Workout WHERE id = :id")
-    LiveData<Workout> getWorkout(Long id);
+    LiveData<Workout> getWorkoutLD(Long id);
+
+    @Query("SELECT * FROM Workout WHERE id = :id")
+    Workout getWorkout(Long id);
 
     @Query("SELECT * FROM Workout ORDER BY lastDate DESC")
-    LiveData<List<Workout>> getWorkouts();
+    LiveData<List<Workout>> getWorkoutsLD();
 
     @Insert(onConflict = REPLACE)
     Long insertWorkout(Workout workout);

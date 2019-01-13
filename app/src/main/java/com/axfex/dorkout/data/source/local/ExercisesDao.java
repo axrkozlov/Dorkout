@@ -20,10 +20,10 @@ import static androidx.room.OnConflictStrategy.REPLACE;
 public interface ExercisesDao {
 
     @Query("SELECT * FROM Exercise WHERE id = :id")
-    LiveData<Exercise> getExercise(Long id);
+    LiveData<Exercise> getExerciseLD(Long id);
 
     @Query("SELECT * from Exercise where workoutId = :workoutId order by orderNumber")
-    LiveData<List<Exercise>> getExercises(final Long workoutId);
+    LiveData<List<Exercise>> getExercisesLD(final Long workoutId);
 
 
     //@Query("SELECT * FROM colis INNER JOIN step ON colis.idColis= step.idColis ORDER BY date DESC")
@@ -33,7 +33,7 @@ public interface ExercisesDao {
 //    LiveData<List<ExerciseWithSets>> getExercisesWithSets(final Long workoutId);
 
     @Query("SELECT COUNT(*) from Exercise  where workoutId = :workoutId")
-    LiveData<Integer> getExercisesCount(final Long workoutId);
+    LiveData<Integer> getExercisesCountLD(final Long workoutId);
 
     //Test stuff
     @Query("SELECT * from Exercise")

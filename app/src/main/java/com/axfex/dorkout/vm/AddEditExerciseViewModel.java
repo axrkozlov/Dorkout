@@ -48,11 +48,11 @@ public class AddEditExerciseViewModel extends ViewModel {
     }
 
     public LiveData<Exercise> getExercise(@NonNull final Long exerciseId) {
-        return workoutsRepository.getExercise(exerciseId);
+        return workoutsRepository.getExerciseLD(exerciseId);
     }
 
     public LiveData<Integer> getExercisesCount(@NonNull final Long workoutId){
-        return workoutsRepository.getExercisesCount(workoutId);
+        return workoutsRepository.getExercisesCountLD(workoutId);
     }
 
 

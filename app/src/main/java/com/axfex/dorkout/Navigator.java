@@ -25,7 +25,7 @@ public class Navigator {
     }
 
     public void openWorkout(Long id){
-        Log.i(WORKOUT_ID, "onOpenWorkout: ");
+        Log.i(WORKOUT_ID, "onOpenActionWorkout: ");
         Intent i = new Intent(mWorkoutApplication.getApplicationContext(), ExercisesActivity.class);
         i.putExtra(WORKOUT_ID, id);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -23,11 +23,11 @@ public class EditWorkoutViewModel extends ViewModel {
     }
 
     public void addWorkout(@NonNull final Workout workout) {
-        new Thread(() -> workoutsRepository.createWorkout(workout)).start();
+        new Thread(() -> workoutsRepository.createWorkoutLD(workout)).start();
     }
 
     public LiveData<Workout> getWorkout(@NonNull final Long workoutId) {
-        return workoutsRepository.getWorkout(workoutId);
+        return workoutsRepository.getWorkoutLD(workoutId);
     }
 
     public void updateWorkout(@NonNull final Workout workout) {

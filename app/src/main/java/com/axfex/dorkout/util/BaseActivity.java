@@ -1,5 +1,7 @@
 package com.axfex.dorkout.util;
 
+import com.axfex.dorkout.R;
+
 import androidx.lifecycle.ViewModel;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
@@ -12,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
  */
 
 public abstract class BaseActivity<V extends ViewModel> extends AppCompatActivity {
-
     public static void addFragmentToActivity(@NonNull FragmentManager fragmentManager,
                                              @NonNull Fragment fragment,
                                              Integer frameId,

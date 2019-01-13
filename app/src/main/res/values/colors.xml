@@ -3,10 +3,10 @@
     <color name="colorPrimary">#404444</color>
     <color name="colorPrimaryDark">#252524</color>
     <color name="colorAccent">#ff012f</color>
-    <color name="colorToolbarElements">#2cb0dc</color>
+    <color name="colorToolbarElements">#ff012f</color>
     <color name="TextColor">#EEEE55</color>
     <color name="background">#303135</color>
-    <color name="menu_buttons">#2cb0dc</color>
+    <color name="menu_buttons">#ff012f</color>
 
     <color name="status_digit">#E5DE6E</color>
 
@@ -32,7 +32,7 @@
     <color name="info_label">#727272</color>
 
 
-    <color name="workout_item">#242944</color>
+    <color name="workout_item">#212121</color>
     <color name="workout_item_marked">#4a148c</color>
 
     <color name="exercise_item">#EFDFC4</color>
@@ -50,7 +50,7 @@
     <!-- card colors -->
     <color name="card_background">#ffffff</color>
     <color name="card_shadow_1">#d4d4d4</color>
-    <color name="card_shadow_2">#dddddd</color>
+    <color name="card_shadow_2">#888888</color>
     <color name="card_detailing">#eee</color>
 
 

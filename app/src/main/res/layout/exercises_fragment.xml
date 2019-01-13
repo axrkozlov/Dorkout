@@ -29,12 +29,12 @@
 
             <include android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:elevation="26dp"
-                layout="@layout/exercises_status_bar_activity"/>
+                android:elevation="26dp"
+                layout="@layout/action_status_bar"/>
 
             <include android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:elevation="26dp"
+                android:elevation="26dp"
                 layout="@layout/exercise_result_bar"
                 android:layout_margin="4dp"
                 />

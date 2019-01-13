@@ -89,22 +89,26 @@
 
     <ProgressBar
         android:id="@+id/pb_total_time"
-        style="?android:attr/progressBarStyle"
+        style="?android:progressBarStyleHorizontal"
         android:layout_width="20dp"
         android:layout_height="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lb_rest_time"
-        tools:layout_editor_absoluteY="16dp" />
+        tools:layout_editor_absoluteY="16dp"
+        android:progress="90"
+        android:progressDrawable="@drawable/progress_bar_ring"/>
 
     <ProgressBar
         android:id="@+id/pb_rest_time"
-        style="?android:attr/progressBarStyle"
+        style="?android:progressBarStyleHorizontal"
         android:layout_width="20dp"
         android:layout_height="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lb_rest_time"
-        tools:layout_editor_absoluteY="16dp" />
+        tools:layout_editor_absoluteY="16dp"
+        android:progress="80"
+        android:progressDrawable="@drawable/progress_bar_ring"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

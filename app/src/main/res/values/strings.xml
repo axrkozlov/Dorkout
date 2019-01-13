@@ -7,7 +7,7 @@
 
     <string name="lb_total_time">time</string>
     <string name="lb_rest_time">rest</string>
-    
+
 
     <string name="lb_workout_desc_exercises">Exercises:</string>
     <string name="lb_workout_desc_total_time">Total time:</string>
@@ -109,4 +109,6 @@
 
     <string name="error_no_extra_found">Error Retrieving Workout Id</string>
     <string name="rename">Rename</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="action_settings">Settings</string>
 </resources>

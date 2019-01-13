@@ -77,7 +77,7 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
         super.onActivityCreated(savedInstanceState);
         addEditExerciseViewModel= ViewModelProviders.of(this,viewModelFactory).get(AddEditExerciseViewModel.class);
 
-        //addEditExerciseViewModel.getExercisesCount(workoutId).observe(this, exercisesCount ->  setExercisesCount(exercisesCount));
+        //addEditExerciseViewModel.getExercisesCountLD(workoutId).observe(this, exercisesCount ->  setExercisesCount(exercisesCount));
 
         if (exerciseId!=0) {
             addEditExerciseViewModel.getExercise(exerciseId).observe(this, exercise -> bindExercise(exercise));
@@ -205,7 +205,7 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
 //    }
 //
 //    //
-////    private void setWorkout(Workout workout){
+////    private void setExercise(Workout workout){
 ////        this.mWorkout=workout;
 ////    }
 //

@@ -1,6 +1,6 @@
 package com.axfex.dorkout.util;
 
-public class Show<T> {
+public class ShowEvent {
 //    public enum String {
 //        WORKOUTS_SHOW,
 //        WORKOUT_PICK_SHOW,
@@ -9,15 +9,15 @@ public class Show<T> {
 //    }
 
     private String mTag;
-    private T t;
+    private Long mId;
 
-    public Show(String tag) {
+    public ShowEvent(String tag) {
         mTag = tag;
     }
 
-    public Show(String tag, T t) {
+    public ShowEvent(String tag, Long id) {
         mTag = tag;
-        this.t=t;
+        this.mId=id;
     }
 
     public boolean is(String tag){
@@ -28,11 +28,11 @@ public class Show<T> {
         return mTag;
     }
 
-    public T getItem() {
-        return t;
+    public Long getId() {
+        return mId;
     }
 
-    public void setItem(T t) {
-        this.t = t;
+    public void setId(Long id) {
+        this.mId = id;
     }
 }

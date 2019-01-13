@@ -27,12 +27,8 @@ public class ExercisesViewModel extends ViewModel {
     }
 
     public LiveData<Workout> getWorkout(@NonNull final Long workoutId) {
-        return workoutsRepository.getWorkout(workoutId);
+        return workoutsRepository.getWorkoutLD(workoutId);
     }
-
-//    public LiveData<List<ExerciseWithSets>> getExercisesWithSets(@NonNull Long workoutId){
-//        return workoutsRepository.getExercisesWithSets(workoutId);
-//    }
 
     public void deleteExercise(final Long  exerciseId){
         new Thread(() -> workoutsRepository.deleteExercise(exerciseId)).start();
@@ -42,7 +38,7 @@ public class ExercisesViewModel extends ViewModel {
         new Thread(()->workoutsRepository.updateExercise(exercise)).start();
     }
 
-//
+
     public void updateExercises(@NonNull final List<Exercise> exercises) {
         new Thread(()->workoutsRepository.updateExercises(exercises)).start();
     }

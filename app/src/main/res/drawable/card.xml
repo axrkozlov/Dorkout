@@ -19,7 +19,7 @@
     <item>
         <shape>
             <padding android:top="0dp" android:right="1dp" android:bottom="1dp" android:left="0dp" />
-            <solid android:color="@color/cardview_shadow_start_color" />
+            <solid android:color="@color/card_shadow_2" />
             <corners android:radius="8dp" />
         </shape>
     </item>

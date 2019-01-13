@@ -1,5 +1,7 @@
 package com.axfex.dorkout.data.source;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.annotation.NonNull;
@@ -17,10 +19,10 @@ import java.util.List;
  */
 
 public class WorkoutsRepository  {
+    private static final String TAG = "WORKOUTS_REPOSITORY";
     private AppExecutors mAppExecutors;
     private final WorkoutsDao workoutsDao;
     private final ExercisesDao exercisesDao;
-    private LiveData<List<Workout>> mWorkoutsLiveData;
 
 
     public WorkoutsRepository(WorkoutsDao workoutsDao, ExercisesDao exercisesDao,AppExecutors appExecutors){
@@ -32,22 +34,18 @@ public class WorkoutsRepository  {
 
     /**Workouts**/
 
-    public LiveData<Long> createWorkout(@NonNull Workout workout) {
+    public LiveData<Long> createWorkoutLD(@NonNull Workout workout) {
         MutableLiveData<Long> newWorkoutId=new MutableLiveData<>();
         mAppExecutors.diskIO().execute(()->newWorkoutId.postValue(workoutsDao.insertWorkout(workout)));
         return newWorkoutId;
     }
 
-    public LiveData<List<Workout>> getWorkouts() {
-//TODO: Make all like this
-        if (mWorkoutsLiveData == null) {
-            mWorkoutsLiveData=workoutsDao.getWorkouts();
-        }
-        return mWorkoutsLiveData;
+    public LiveData<List<Workout>> getWorkoutsLD() {
+        return workoutsDao.getWorkoutsLD();
     }
 
-    public LiveData<Workout> getWorkout(@NonNull Long id) {
-        return workoutsDao.getWorkout(id);
+    public LiveData<Workout> getWorkoutLD(@NonNull Long id) {
+        return workoutsDao.getWorkoutLD(id);
     }
 
     public void updateWorkout(@NonNull Workout workout) {
@@ -75,7 +73,7 @@ public class WorkoutsRepository  {
     }
 
     public LiveData<List<Exercise>> getExercises(@NonNull final Long workoutId) {
-        return exercisesDao.getExercises(workoutId);
+        return exercisesDao.getExercisesLD(workoutId);
         //return exercisesDao.getAllExercises();
     }
 //
@@ -84,12 +82,12 @@ public class WorkoutsRepository  {
 //        //return exercisesDao.getAllExercises();
 //    }
 
-    public LiveData<Exercise> getExercise(@NonNull Long id) {
-        return exercisesDao.getExercise(id);
+    public LiveData<Exercise> getExerciseLD(@NonNull Long id) {
+        return exercisesDao.getExerciseLD(id);
     }
 
-    public LiveData<Integer> getExercisesCount(@NonNull final Long workoutId) {
-        return exercisesDao.getExercisesCount(workoutId);
+    public LiveData<Integer> getExercisesCountLD(@NonNull final Long workoutId) {
+        return exercisesDao.getExercisesCountLD(workoutId);
     }
 
     public int updateExercise(@NonNull Exercise... exercise) {

@@ -3,13 +3,13 @@ package com.axfex.dorkout.views.workouts;
 import com.axfex.dorkout.data.Workout;
 
 public interface WorkoutsNavigator {
-    void newWorkout();
-    void deleteWorkout(Workout workout);
-    void openEditWorkout(Workout workout);
-    void onOpenWorkout(Workout workout);
-    void renameWorkout(Workout workout);
-    void openAbout();
-    void openSettings();
-    void openDonate();
+    void onNewWorkout();
+    void onRenameWorkout(Workout workout);
+    void onOpenEditWorkout(Workout workout);
+    void onDeleteWorkout(Workout workout);
+    void onOpenActionWorkout(Workout workout);
+
+
+
 
 }

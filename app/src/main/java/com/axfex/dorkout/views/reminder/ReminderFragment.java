@@ -146,21 +146,21 @@ public class ReminderFragment extends Fragment {
 //        if (!checkNameField()){
 //            return;
 //        }
-//        Workout newWorkout = buildWorkout();
-//        if (newWorkout == null) {
+//        Workout onNewWorkout = buildWorkout();
+//        if (onNewWorkout == null) {
 //            return;
 //        }
 //        if (workoutId == 0) {
-//            sEditWorkoutViewModel.addWorkout(newWorkout);
+//            sEditWorkoutViewModel.addWorkout(onNewWorkout);
 //        } else {
-//            sEditWorkoutViewModel.updateWorkout(newWorkout);
+//            sEditWorkoutViewModel.updateWorkout(onNewWorkout);
 //        }
 //        close();
 //    }
 //
 //
-//    public void deleteWorkout(){
-//        sEditWorkoutViewModel.deleteWorkout(new Workout(workoutId));
+//    public void onDeleteWorkout(){
+//        sEditWorkoutViewModel.onDeleteWorkout(new Workout(workoutId));
 //        close();
 //    }
 //

@@ -15,15 +15,15 @@
         <!--<item name="android:windowBackground">@color/status_workout_run</item>-->
     </style>
 
-    <style name="Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar"
-        ><item name="android:textColorPrimary">@color/colorToolbarElements</item>
+    <style name="Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@color/colorToolbarElements</item>
     </style>
 
     <style name="ActionBar" parent="@style/Widget.AppCompat.ActionBar">
         <item name="android:textColorPrimary">@color/status_workout_run</item>
         <item name="android:textColorSecondary">#00FFFF</item>
     </style>
-    
+
     <style name="ActionBarTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textColor">@color/status_workout_run</item>
     </style>
@@ -64,6 +64,8 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
 
     </style>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
     <!--<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />-->

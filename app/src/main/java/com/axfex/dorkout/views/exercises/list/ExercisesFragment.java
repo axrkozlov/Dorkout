@@ -1,6 +1,5 @@
 package com.axfex.dorkout.views.exercises.list;
 
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,11 +33,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class ExercisesFragment extends Fragment {
-    private static final int TAG_EXERCISE_ID = 503;
-
-
     @Inject
-    ViewModelFactory viewModelFactory;
+    ViewModelFactory mViewModelFactory;
 
     private MenuItem mEditMenu;
     private FloatingActionButton mAddButton;
@@ -84,9 +80,9 @@ public class ExercisesFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
-//        exercisesViewModel = ViewModelProviders.of(this, viewModelFactory).get(ExercisesViewModel.class);
-//        exercisesViewModel.getExercises(workoutId).observe(this, exercises -> setExercises(exercises));
-//        exercisesViewModel.getWorkout(workoutId).observe(this, workout -> setWorkout(workout));
+//        exercisesViewModel = ViewModelProviders.of(this, mViewModelFactory).get(ExercisesViewModel.class);
+//        exercisesViewModel.getExercisesLD(workoutId).observe(this, exercises -> setExercises(exercises));
+//        exercisesViewModel.getWorkoutLD(workoutId).observe(this, workout -> setExercise(workout));
 
 //        exercisesViewModel.getExercisesWithSets(workoutId).observe(this, new Observer<List<ExerciseWithSets>>() {
 //            @Override
@@ -131,7 +127,7 @@ public class ExercisesFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        getActivity().getMenuInflater().inflate(R.menu.menu_exercises, menu);
+        inflater.inflate(R.menu.exercises_menu, menu);
     }
 
     @Override
@@ -145,16 +141,6 @@ public class ExercisesFragment extends Fragment {
             }
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     private void startAddEditExerciseActivity() {

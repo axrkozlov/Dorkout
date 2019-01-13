@@ -10,6 +10,7 @@ import com.axfex.dorkout.R;
 import com.axfex.dorkout.util.BaseActivity;
 
 public class ExercisesActivity extends BaseActivity {
+
     private static final String EXERCISES_FRAG = "EXERCISES_FRAG";
     private static final String WORKOUT_ID = "workout_id";
     private static final String WORKOUT_NAME = "workout_name";
