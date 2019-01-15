@@ -1,4 +1,4 @@
-package com.axfex.dorkout.views.exercises.addedit;
+package com.axfex.dorkout.views.trash.edit.exercises.addedit;
 
 import android.app.Activity;
 import androidx.lifecycle.ViewModelProviders;

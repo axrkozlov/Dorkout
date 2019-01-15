@@ -1,4 +1,4 @@
-package com.axfex.dorkout.views.exercises.list;
+package com.axfex.dorkout.views.trash.edit.exercises.list;
 
 import androidx.lifecycle.ViewModel;
 import android.content.Intent;

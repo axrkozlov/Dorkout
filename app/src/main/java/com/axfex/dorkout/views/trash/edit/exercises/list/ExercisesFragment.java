@@ -1,6 +1,5 @@
-package com.axfex.dorkout.views.exercises.list;
+package com.axfex.dorkout.views.trash.edit.exercises.list;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -23,7 +22,7 @@ import android.widget.TextView;
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.data.Exercise;
 import com.axfex.dorkout.data.Workout;
-import com.axfex.dorkout.views.exercises.addedit.AddEditExerciseActivity;
+import com.axfex.dorkout.views.trash.edit.exercises.addedit.AddEditExerciseActivity;
 import com.axfex.dorkout.vm.ExercisesViewModel;
 import com.axfex.dorkout.vm.ViewModelFactory;
 
@@ -154,7 +153,6 @@ public class ExercisesFragment extends Fragment {
         i.putExtra(WORKOUT_ID, workoutId);
         i.putExtra(EXERCISE_ID, exerciseId);
         startActivityForResult(i, AddEditExerciseActivity.REQUEST_ADD_TASK);
-
     }
 
 

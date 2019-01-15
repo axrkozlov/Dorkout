@@ -51,7 +51,7 @@ public class ActionWorkoutFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        getActivity().getMenuInflater().inflate(R.menu.addeditworkout_menu, menu);
+        getActivity().getMenuInflater().inflate(R.menu.edit_workout_menu, menu);
     }
 
     @Override

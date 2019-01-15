@@ -333,11 +333,13 @@ public class WorkoutsFragment extends Fragment implements WorkoutsNavigator {
 
         @Override
         public void onClick(View v) {
-            if (!isAnyWorkoutPicked) {
-                mMainViewModel.openActionWorkout(mWorkout.getId());
-                return;
-            }
-            mWorkoutsViewModel.pickWorkout(mWorkout);
+//            if (!isAnyWorkoutPicked) {
+//                mMainViewModel.openActionWorkout(mWorkout.getId());
+//                return;
+//            }
+//            mWorkoutsViewModel.pickWorkout(mWorkout);
+            //For Tests
+            onOpenEditWorkout(mWorkout);
         }
 
         @Override

@@ -43,7 +43,7 @@ public class EditWorkoutViewModel extends ViewModel {
     }
 
     public LiveData<List<Exercise>> getExercises(@NonNull final Long workoutId) {
-        return workoutsRepository.getExercises(workoutId);
+        return workoutsRepository.getExercisesLD(workoutId);
     }
 
     public void updateExercise(@NonNull final Exercise exercise) {

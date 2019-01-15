@@ -1,12 +1,7 @@
-package com.axfex.dorkout.views.exercises.addedit;
+package com.axfex.dorkout.views.trash.edit.exercises.addedit;
 
 import androidx.lifecycle.ViewModel;
-import android.content.Intent;
-import android.os.Bundle;
-import androidx.fragment.app.FragmentManager;
-import android.widget.Toast;
 
-import com.axfex.dorkout.R;
 import com.axfex.dorkout.util.BaseActivity;
 
 public class AddEditExerciseActivity extends BaseActivity {

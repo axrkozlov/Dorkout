@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.axfex.dorkout.views.exercises.list.ExercisesActivity;
+import com.axfex.dorkout.views.trash.edit.exercises.list.ExercisesActivity;
 
 import javax.inject.Inject;
 

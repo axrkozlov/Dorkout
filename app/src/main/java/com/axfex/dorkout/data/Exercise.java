@@ -1,12 +1,17 @@
 package com.axfex.dorkout.data;
 
 
+import com.axfex.dorkout.data.source.local.TimestampConverter;
+
+import java.util.Date;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 import static androidx.room.ForeignKey.CASCADE;
 
@@ -36,11 +41,13 @@ import static androidx.room.ForeignKey.CASCADE;
     private Integer factWeight;
     private Integer factRepeats;
     private Integer factTime;
-    @Ignore
-    private transient Boolean isChecked = false;
+    @TypeConverters({TimestampConverter.class})
+//    private Date creationDate;
+//    @ColumnInfo(name = "creation_date")
+    private Date creationDate = new Date(System.currentTimeMillis());
+
     @Ignore
     private transient Boolean isStarted = false;
-
 
     public Exercise(String name, final Long workoutId) {
         this.name = name;
@@ -143,21 +150,15 @@ import static androidx.room.ForeignKey.CASCADE;
         this.factTime = factTime;
     }
 
-    public Boolean getChecked() {
-        return isChecked;
+    public Date getCreationDate() {
+        return creationDate;
     }
 
-
-
-
-    public void check(Boolean checked) {
-        isChecked = true;
-    }
-    public void uncheck(Boolean checked) {
-        isChecked = false;
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 
-    public Boolean getStarted() {
+    public Boolean isStarted() {
         return isStarted;
     }
 

@@ -25,6 +25,10 @@ public interface ExercisesDao {
     @Query("SELECT * from Exercise where workoutId = :workoutId order by orderNumber")
     LiveData<List<Exercise>> getExercisesLD(final Long workoutId);
 
+    @Query("SELECT DISTINCT name from Exercise order by creationDate DESC")
+    LiveData<List<String>> getAllExerciseNamesLD();
+
+
 
     //@Query("SELECT * FROM colis INNER JOIN step ON colis.idColis= step.idColis ORDER BY date DESC")
 

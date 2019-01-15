@@ -59,9 +59,7 @@ public class WorkoutsRepository  {
     /**Exercises**/
 
     public void createExercise(@NonNull Exercise exercise) {
-
-        Long exerciseId=
-                exercisesDao.insertExercise(exercise);
+        mAppExecutors.diskIO().execute(()-> exercisesDao.insertExercise(exercise));
 //
 //        List<Eset> esets =exercise.getEsets();
 //        for (Eset eset : esets) {
@@ -72,7 +70,7 @@ public class WorkoutsRepository  {
 
     }
 
-    public LiveData<List<Exercise>> getExercises(@NonNull final Long workoutId) {
+    public LiveData<List<Exercise>> getExercisesLD(@NonNull final Long workoutId) {
         return exercisesDao.getExercisesLD(workoutId);
         //return exercisesDao.getAllExercises();
     }
@@ -88,6 +86,10 @@ public class WorkoutsRepository  {
 
     public LiveData<Integer> getExercisesCountLD(@NonNull final Long workoutId) {
         return exercisesDao.getExercisesCountLD(workoutId);
+    }
+
+    public LiveData<List<String>> getAllExerciseNamesLD() {
+        return exercisesDao.getAllExerciseNamesLD();
     }
 
     public int updateExercise(@NonNull Exercise... exercise) {

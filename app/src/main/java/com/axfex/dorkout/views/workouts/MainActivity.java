@@ -15,7 +15,6 @@ import android.view.MenuItem;
 
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
-import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.util.BaseActivity;
 import com.axfex.dorkout.util.ShowEvent;
 import com.axfex.dorkout.views.settings.SettingsActivity;
@@ -33,7 +32,8 @@ public class MainActivity extends BaseActivity implements MainNavigator {
 
     public MainViewModel mMainViewModel;
 
-    //    private boolean mIsMainMenuShown = false;
+    private boolean mIsMainMenuShown = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,9 +43,11 @@ public class MainActivity extends BaseActivity implements MainNavigator {
                 .getAppComponent()
                 .inject(this);
         setupToolbar();
+        attachRootShowIfEmpty();
+        showMainMenuIfRoot();
+        getSupportFragmentManager().addOnBackStackChangedListener(this::onBackStackChanged);
         mMainViewModel = ViewModelProviders.of(this, mViewModelFactory).get(MainViewModel.class);
         mMainViewModel.getShowEvent().observe(this, this::onShowEvent);
-        attachRootShow();
     }
 
     private void setupToolbar() {
@@ -62,8 +64,20 @@ public class MainActivity extends BaseActivity implements MainNavigator {
         return mMainViewModel;
     }
 
-    private void attachRootShow() {
-        if (getCurrentShow() == null) attachShow(WorkoutsFragment.TAG, null);
+
+    private void onBackStackChanged() {
+         showMainMenuIfRoot();
+    }
+
+    private void attachRootShowIfEmpty() {
+        if (getCurrentShow() == null) {
+            attachShow(WorkoutsFragment.TAG, null);
+            mIsMainMenuShown=true;
+        }
+    }
+
+    private void showMainMenuIfRoot(){
+        if (getCurrentShow()!=null) mIsMainMenuShown = WorkoutsFragment.TAG.equals(getCurrentShow().getTag());
     }
 
     private Fragment getCurrentShow() {
@@ -73,7 +87,6 @@ public class MainActivity extends BaseActivity implements MainNavigator {
     private void attachShow(String tag, @Nullable Long id) {
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
         boolean isRootFragment = false;
-
         switch (tag) {
             case WorkoutsFragment.TAG: {
                 if (fragment == null)
@@ -101,13 +114,12 @@ public class MainActivity extends BaseActivity implements MainNavigator {
                 CONTENT_FRAME,
                 tag,
                 isRootFragment);
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
-//        menu.findItem(R.id.main_menu).setVisible(mIsMainMenuShown);
+        menu.setGroupVisible(R.id.main_menu, mIsMainMenuShown);
         return super.onCreateOptionsMenu(menu);
     }
 
