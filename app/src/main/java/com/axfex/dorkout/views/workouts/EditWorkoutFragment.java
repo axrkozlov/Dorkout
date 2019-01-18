@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,6 +29,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+
+
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -40,10 +41,10 @@ import com.axfex.dorkout.data.Exercise;
 import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.vm.ViewModelFactory;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -67,12 +68,14 @@ public class EditWorkoutFragment extends Fragment {
     private List<String> mExerciseNames = new ArrayList<>();
     private boolean whenExerciseAddedScrollDown = false;
     private ItemTouchHelper mItemTouchHelper;
+
     private Button mButtonOk;
     ArrayAdapter<String> mAdapterExerciseName;
     private AutoCompleteTextView mExerciseName;
     private Spinner mSpinnerExerciseNames;
-    private boolean isSecondExerciseNameClick = false;
-    private NumberPicker mExerciseTime;
+
+    private NumberPicker mEditNormTime;
+    private NumberPicker mEditRestTime;
 
     public static EditWorkoutFragment newInstance() {
         return new EditWorkoutFragment();
@@ -106,58 +109,7 @@ public class EditWorkoutFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.edit_workout_fragment, container, false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mExerciseEditLayout = v.findViewById(R.id.layout_edit_exercise);
-        mButtonOk = v.findViewById(R.id.button_ok);
-        mButtonOk.setOnClickListener(this::onNewExerciseOk);
-        mExerciseName = v.findViewById(R.id.et_exercise_type);
-//        mExerciseName.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mExerciseName.showDropDown();
-//            }
-//        });
-
-
-        mExerciseName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (!hasFocus) {
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                    mExerciseName.setVisibility(View.GONE);
-                    mSpinnerExerciseNames.setVisibility(View.VISIBLE);
-                } else {
-                    imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);}
-            }
-        });
-
-
-
-        mSpinnerExerciseNames = v.findViewById(R.id.sp_exercise_type);
-        mSpinnerExerciseNames.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (mSpinnerExerciseNames.getSelectedItem().toString().equals("New name...")) {
-                    mExerciseName.setVisibility(View.VISIBLE);
-                    mExerciseName.requestFocus();
-                    mSpinnerExerciseNames.setVisibility(View.GONE);
-                    mAdapterExerciseName.remove("New name...");
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-
-        });
-
-        mExerciseTime=v.findViewById(R.id.np_exercise_time);
-
-        mExerciseTime.setMinValue(0);
-        mExerciseTime.setMaxValue(59);
-
+        setupEditWidgets(v);
         mRecyclerView = v.findViewById(R.id.rv_exercises);
         mRecyclerView.setLayoutManager(layoutManager);
         mItemTouchHelper = new ItemTouchHelper(new TouchHelperCallback());
@@ -171,51 +123,100 @@ public class EditWorkoutFragment extends Fragment {
         mEditWorkoutViewModel = ViewModelProviders.of(this, mViewModelFactory).get(EditWorkoutViewModel.class);
         mMainViewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
         mEditWorkoutViewModel.getWorkout(mWorkoutId).observe(this, this::onWorkoutLoaded);
-        mEditWorkoutViewModel.getExercises(mWorkoutId).observe(this, this::onListLoaded);
+        mEditWorkoutViewModel.getExercises(mWorkoutId).observe(this, this::onExerciseListLoaded);
         mEditWorkoutViewModel.getAllExerciseNames().observe(this, this::onExerciseNamesListLoaded);
+    }
+
+    private void setupEditWidgets(View v){
+        mExerciseEditLayout = v.findViewById(R.id.layout_edit_exercise);
+        mButtonOk = v.findViewById(R.id.button_ok);
+
+        mExerciseName = v.findViewById(R.id.et_exercise_type);
+        mSpinnerExerciseNames = v.findViewById(R.id.sp_exercise_type);
+        mEditNormTime =v.findViewById(R.id.np_norm_time);
+        mEditRestTime =v.findViewById(R.id.np_rest_time);
+
+        mButtonOk.setOnClickListener(this::onNewExerciseOk);
+
+        mExerciseName.setOnFocusChangeListener((v1, hasFocus) -> {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (!hasFocus) {
+                imm.hideSoftInputFromWindow(v1.getWindowToken(), 0);
+                mExerciseName.setVisibility(View.GONE);
+                mSpinnerExerciseNames.setVisibility(View.VISIBLE);
+            } else {
+                imm.showSoftInput(v1, InputMethodManager.SHOW_IMPLICIT);}
+        });
+
+        mSpinnerExerciseNames.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (mSpinnerExerciseNames.getSelectedItem().toString().equals("New name...")) {
+                    mExerciseName.setVisibility(View.VISIBLE);
+                    mExerciseName.requestFocus();
+                    mSpinnerExerciseNames.setVisibility(View.GONE);
+                    mAdapterExerciseName.remove("New name...");
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        mEditNormTime.setMinValue(0);
+        mEditNormTime.setMaxValue(99);
+        mEditRestTime.setMinValue(0);
+        mEditRestTime.setMaxValue(99);
+
     }
 
     private void onExerciseNamesListLoaded(List<String> names) {
         mExerciseNames = names;
         mExerciseNames.add("New name...");
-        //Delete later
+        //Delete later!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         onNewExercise();
         Log.i(TAG, "onExerciseNamesListLoaded: ");
     }
 
     private void onNewExercise() {
         mExerciseEditLayout.setVisibility(View.VISIBLE);
-        Log.i(TAG, "onNewExercise: " + mExerciseNames.get(0));
-
-
         mAdapterExerciseName = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_item, mExerciseNames);
         mAdapterExerciseName.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mExerciseName.setAdapter(mAdapterExerciseName);
         mSpinnerExerciseNames.setAdapter(mAdapterExerciseName);
-
-
-
     }
 
     private void onNewExerciseOk(View v) {
-//        mExerciseName.showDropDown();
-
 //        Exercise exercise=new Exercise(mSpinnerExerciseNames.getSelectedItem().toString(),mWorkoutId);
-        String newName = mExerciseName.getText().toString();
+
+        String newName;
+        if (mSpinnerExerciseNames.getVisibility()==View.VISIBLE){
+            newName = mSpinnerExerciseNames.getSelectedItem().toString();
+        } else  {
+            newName=mExerciseName.getText().toString();
+        }
         newName = newName.trim()
                 .replaceAll("\\s+", " ")
                 .replaceAll("\\.+|\\s\\.", ".")
                 .replaceAll(",+|\\s,", ",")
                 ;
 
-        mExerciseNames.set(0,newName);
+        int time= mEditNormTime.getValue();
+        int restTime= mEditRestTime.getValue();
+
         Exercise exercise = new Exercise(newName, mWorkoutId);
+        exercise.setTime(time);
+        exercise.setRestTime(restTime);
+
         exercise.setOrderNumber(mExercises != null ? mExercises.size() + 1 : 0);
         mEditWorkoutViewModel.createExercise(exercise);
         mExerciseEditLayout.setVisibility(View.GONE);
         whenExerciseAddedScrollDown = true;
     }
+
+
 
     //STOP
     //------------------------------------------------------------------
@@ -231,19 +232,11 @@ public class EditWorkoutFragment extends Fragment {
     }
 
     private void updateActionBar() {
-//        if (mWorkout != null)
-//            Log.i(TAG, "updateActionBar: " + mWorkout.getName());
         ActionBar actionBar = ((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         if (mWorkout != null) actionBar.setTitle(mWorkout.getName());
-
-//        mMenu.findItem(R.id.menu_workouts_add).setVisible(!isWorkoutMenuShown);
-//        mMenu.findItem(R.id.menu_workouts_copy).setVisible(isWorkoutMenuShown);
-//        mMenu.findItem(R.id.menu_workouts_edit).setVisible(isWorkoutMenuShown);
-//        mMenu.findItem(R.id.menu_workouts_rename).setVisible(isWorkoutMenuShown);
-//        mMenu.findItem(R.id.menu_workouts_delete).setVisible(isWorkoutMenuShown);
-    }
+}
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -262,19 +255,18 @@ public class EditWorkoutFragment extends Fragment {
 
 
     private void onWorkoutLoaded(Workout workout) {
-        Log.i(TAG, "onWorkoutLoaded: " + workout + workout.getName());
         mWorkout = workout;
         Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
     }
 
-    private void onListLoaded(List<Exercise> exercises) {
+    private void onExerciseListLoaded(List<Exercise> exercises) {
         this.mExercises = exercises;
-        if (mAdapter == null) swapAdapter();
+        if (mAdapter == null) setupAdapter();
         else notifyAdapter();
         if (whenExerciseAddedScrollDown) ScrollToEnd();
     }
 
-    private void swapAdapter() {
+    private void setupAdapter() {
         mAdapter = new ExercisesAdapter();
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -292,7 +284,7 @@ public class EditWorkoutFragment extends Fragment {
         @NonNull
         @Override
         public ExerciseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(getContext()).inflate(R.layout.exercise_item, parent, false);
+            View view = LayoutInflater.from(getContext()).inflate(R.layout.edit_workout_exercise_item, parent, false);
             return new ExerciseViewHolder(view);
         }
 
@@ -320,34 +312,35 @@ public class EditWorkoutFragment extends Fragment {
                 }
             }
             notifyItemMoved(base, target);
-
         }
 
     }
 
     private class ExerciseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener, View.OnTouchListener {
-        TextView nameView;
-        TextView descView;
-        TextView numberView;
-        ImageButton collapseButton;
-        TextView setsView;
-        Exercise mExercise;
-        Integer mExpandedPosition = -1;
-        int mPosition;
-        private boolean mEditMode;
+        TextView mName;
+        TextView mDesc;
 
+        View mInfoBar;
+        TextView mNormTime;
+        TextView mRestTime;
+        TextView mOrderNumber;
+        ImageButton mOrderButton;
+        Exercise mExercise;
+        int mPosition;
+        TextView setsView;
 
         public ExerciseViewHolder(@NonNull View itemView) {
             super(itemView);
-            nameView = itemView.findViewById(R.id.exercise_title);
-            descView = itemView.findViewById(R.id.exercise_desc);
-            numberView = itemView.findViewById(R.id.exercise_number);
-            collapseButton = itemView.findViewById(R.id.exercise_collapse);
+            mName = itemView.findViewById(R.id.exercise_name);
+            mDesc = itemView.findViewById(R.id.exercise_desc);
+            mInfoBar=itemView.findViewById(R.id.exercise_info_bar);
+            mNormTime = mInfoBar.findViewById(R.id.norm_time);
+            mRestTime = mInfoBar.findViewById(R.id.rest_time);
+            mOrderNumber = itemView.findViewById(R.id.exercise_order);
+            mOrderButton = itemView.findViewById(R.id.exercise_collapse);
             setsView = itemView.findViewById(R.id.exercise_sets);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
-
-
         }
 
         public void setExercise(Exercise exercise, int position) {
@@ -357,11 +350,11 @@ public class EditWorkoutFragment extends Fragment {
         }
 
         void bindData() {
-            collapseButton.setOnTouchListener(this);
-            final boolean isExpanded = mPosition == mExpandedPosition && !mEditMode;
-            collapseButton.setImageResource(isExpanded ? R.drawable.ic_collapse_24dp : R.drawable.ic_expand_24dp);
-            itemView.setActivated(isExpanded);
-            setsView.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+            mOrderButton.setOnTouchListener(this);
+//            final boolean isExpanded = mPosition == mExpandedPosition ;
+//            mOrderButton.setImageResource(isExpanded ? R.drawable.ic_collapse_24dp : R.drawable.ic_expand_24dp);
+//            itemView.setActivated(isExpanded);
+//            setsView.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
 
             itemView.setOnClickListener(view -> {
 //                mExpandedPosition = isExpanded ? -1 : mPosition;
@@ -369,9 +362,19 @@ public class EditWorkoutFragment extends Fragment {
 //                notifyDataSetChanged();
             });
 
-            nameView.setText(mExercise.getName());
-            descView.setText(mExercise.getDescription());
-            numberView.setText(Integer.toString(mPosition + 1));
+
+            mName.setText(mExercise.getName());
+            if (mExercise.getDescription()!=null) mDesc.setText(mExercise.getDescription());
+            else mDesc.setVisibility(View.GONE);
+
+            if (mExercise.getTime() != null) {
+                mNormTime.setText(String.format(Locale.getDefault(),"%d",mExercise.getTime()));
+            }
+            if (mExercise.getRestTime() != null) {
+                mRestTime.setText(String.format(Locale.getDefault(),"%d",mExercise.getRestTime()));
+            }
+            mOrderNumber.setText(String.format(Locale.getDefault(),"%d",mPosition+1));
+//            mOrderNumber.setVisibility(View.GONE);
             itemView.setTag(mExercise.getId());
         }
 
@@ -392,7 +395,13 @@ public class EditWorkoutFragment extends Fragment {
             return false;
         }
 
+
+
     }
+
+
+    /**====================Helpers==================================================*/
+
 
     private class TouchHelperCallback extends ItemTouchHelper.Callback {
 
@@ -433,16 +442,6 @@ public class EditWorkoutFragment extends Fragment {
 
 
     }
-//    @Override
-//    public void onClick(View v) {
-//        switch (v.getId()) {
-//            case R.id.bt_workout_start_time:
-//                break;
-////            case R.id.bt_workout_delete:
-////                onDeleteWorkout();
-////                break;
-//        }
-//    }
 
     public static class KeyboardHelper {
 

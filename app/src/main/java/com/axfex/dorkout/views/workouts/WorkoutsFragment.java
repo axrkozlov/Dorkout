@@ -152,7 +152,6 @@ public class WorkoutsFragment extends Fragment implements WorkoutsNavigator {
         isWorkoutMenuShown = workout != null;
         isAnyWorkoutPicked = workout != null;
         Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
-
     }
 
     private void swapAdapter() {
@@ -333,19 +332,19 @@ public class WorkoutsFragment extends Fragment implements WorkoutsNavigator {
 
         @Override
         public void onClick(View v) {
-//            if (!isAnyWorkoutPicked) {
-//                mMainViewModel.openActionWorkout(mWorkout.getId());
-//                return;
-//            }
-//            mWorkoutsViewModel.pickWorkout(mWorkout);
+            if (!isAnyWorkoutPicked) {
+                mMainViewModel.openActionWorkout(mWorkout.getId());
+                return;
+            }
+            mWorkoutsViewModel.pickWorkout(mWorkout);
             //For Tests
-            onOpenEditWorkout(mWorkout);
+//            onOpenEditWorkout(mWorkout);
         }
 
         @Override
         public boolean onLongClick(View v) {
-            mWorkoutsViewModel.pickWorkout(mWorkout);
-            Log.i(TAG, "Pick workout : " + mWorkout.getName());
+//            mWorkoutsViewModel.pickWorkout(mWorkout);
+            onOpenEditWorkout(mWorkout);
             return true;
         }
     }

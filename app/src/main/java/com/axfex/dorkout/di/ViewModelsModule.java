@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 
 import com.axfex.dorkout.data.source.WorkoutsRepository;
+import com.axfex.dorkout.services.ActionWorkoutManager;
+import com.axfex.dorkout.views.workouts.ActionWorkoutViewModel;
 import com.axfex.dorkout.views.workouts.EditWorkoutViewModel;
 import com.axfex.dorkout.views.workouts.MainViewModel;
 import com.axfex.dorkout.views.workouts.WorkoutsViewModel;
@@ -46,5 +48,21 @@ class ViewModelsModule {
     EditWorkoutViewModel providesEditWorkoutViewModel(WorkoutsRepository workoutsRepository){
         return new EditWorkoutViewModel(workoutsRepository);
     }
+
+    @Provides
+    ViewModelFactory<ActionWorkoutViewModel> provideActionWorkoutViewModelFactory(ActionWorkoutViewModel actionWorkoutViewModel){
+        return new ViewModelFactory<>(actionWorkoutViewModel);
+    }
+
+    @Provides
+    ActionWorkoutManager providesActionWorkoutManager(){
+        return new ActionWorkoutManager();
+    }
+
+    @Provides
+    ActionWorkoutViewModel providesActionWorkoutViewModel(WorkoutsRepository workoutsRepository,ActionWorkoutManager actionWorkoutManager){
+        return new ActionWorkoutViewModel(workoutsRepository,actionWorkoutManager);
+    }
+
 
 }

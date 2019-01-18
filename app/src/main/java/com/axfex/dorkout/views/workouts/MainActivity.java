@@ -37,7 +37,7 @@ public class MainActivity extends BaseActivity implements MainNavigator {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.workouts_activity);
+        setContentView(R.layout.main_activity);
 
         ((WorkoutApplication) getApplication())
                 .getAppComponent()
@@ -103,6 +103,7 @@ public class MainActivity extends BaseActivity implements MainNavigator {
             case ActionWorkoutFragment.TAG: {
                 if (fragment == null)
                     fragment = ActionWorkoutFragment.newInstance();
+                ((ActionWorkoutFragment) fragment).setWorkoutId(id);
                 break;
             }
             default:
@@ -237,7 +238,6 @@ public class MainActivity extends BaseActivity implements MainNavigator {
 //
 //        EditText workoutEditName = new EditText(this);
 //        String dialogTitle;
-//        //TODO: create resource
 //        if (workout == null) {
 //            dialogTitle = "New Workout";
 //        } else {
@@ -267,7 +267,6 @@ public class MainActivity extends BaseActivity implements MainNavigator {
 //    @Override
 //    public void onDeleteWorkout(Workout workout) {
 //        new AlertDialog.Builder(this)
-//                //TODO:make resource
 //                .setTitle("Delete " + workout.getName() + "?")
 //                .setPositiveButton(R.string.bt_ok, (d, i) -> mMainViewModel.onDeleteWorkout(workout))
 //                .setNegativeButton(R.string.bt_cancel, (d, i) -> {

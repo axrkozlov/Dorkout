@@ -174,8 +174,8 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
 ////
 ////            holder.bt_set_add.setOnClickListener(this);
 ////
-////            if (eset.getNormWeight() != null) {
-////                holder.et_set_weight.setText(eset.getNormWeight().toString());
+////            if (eset.getWeight() != null) {
+////                holder.et_set_weight.setText(eset.getWeight().toString());
 ////            }
 //
 //        }

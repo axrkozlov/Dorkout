@@ -14,16 +14,20 @@ public class Workout {
     private Long id;
     private String name;
     private String description;
-    private Long startTime;
     private Long totalTime;
     private Long lastDate;
     private Integer order;
-    private Integer weekDaysComposed;
     private Integer exercisesCount;
+
+    //Remove later, add Reminder instead
+    private Long startTime;
+    private Integer weekDaysComposed;
+
     @Ignore
-    private transient Boolean marked = false;
+    private transient Boolean mDone = false;
     @Ignore
-    private transient Boolean isStarted = false;
+    private transient Boolean mActive = false;
+
 
     @Ignore
     public Workout(String name) {
@@ -106,26 +110,22 @@ public class Workout {
         this.exercisesCount = exercisesCount;
     }
 
-    public Boolean isMarked() {
-        return marked;
+    public Boolean isDone() {
+        return mDone;
     }
 
-    public void mark() {
-        marked = true;
-    }
-    public void unmark() {
-        marked = false;
+    public void finish() {
+        mActive=false;
+        mDone = true;
     }
 
-    public Boolean getStarted() {
-        return isStarted;
+    public Boolean isActive() {
+        return mActive;
     }
 
     public void start() {
-        isStarted = true;
+        mActive = true;
     }
-    public void stop() {
-        isStarted = false;
-    }
+
 
 }

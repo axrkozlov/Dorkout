@@ -3,7 +3,7 @@
     <color name="colorPrimary">#404444</color>
     <color name="colorPrimaryDark">#252524</color>
     <color name="colorAccent">#ff012f</color>
-    <color name="colorToolbarElements">#ff012f</color>
+    <color name="colorToolbarElements">#42fa05</color>
     <color name="TextColor">#EEEE55</color>
     <color name="background">#303135</color>
     <color name="menu_buttons">#ff012f</color>
@@ -27,9 +27,9 @@
     <color name="result_label">#EEEEEE</color>
 
     <color name="info_digit">#212121</color>
-    <color name="info_background">#D8D8D8</color>
+    <color name="info_background">#292626</color>
     <color name="info_borders">#979797</color>
-    <color name="info_label">#727272</color>
+    <color name="info_label">#fcf6e8</color>
 
 
     <color name="workout_item">#212121</color>
@@ -41,9 +41,10 @@
     <color name="exercise_button_text">#2D2D56</color>
 
 
-    <color name="primary_text">#fffce5</color>
-    <color name="secondary_text">#ddfaf6</color>
+    <color name="primary_text">#fff8c6</color>
+    <color name="secondary_text">#e6e497</color>
     <color name="secondary_white_text">#EEEEEE</color>
+    <color name="picker_text">#FFAC11</color>
 
 
     <color name="transparent">#00000000</color>

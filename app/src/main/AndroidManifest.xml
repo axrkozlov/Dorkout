@@ -11,12 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".views.workouts.MainActivity"
-            android:label="@string/title_activity_workouts">
+            android:name=".views.workouts.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -36,7 +34,9 @@
         <activity
             android:name=".views.settings.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme"/>
+        <service android:name=".services.ActionWorkoutService"
+            android:exported="false"/>
     </application>
 
 </manifest>

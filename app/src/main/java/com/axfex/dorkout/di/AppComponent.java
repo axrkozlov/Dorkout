@@ -2,6 +2,7 @@ package com.axfex.dorkout.di;
 
 import android.app.Application;
 
+import com.axfex.dorkout.views.workouts.ActionWorkoutFragment;
 import com.axfex.dorkout.views.workouts.EditWorkoutFragment;
 import com.axfex.dorkout.views.workouts.MainActivity;
 import com.axfex.dorkout.views.workouts.WorkoutsFragment;
@@ -20,6 +21,7 @@ public interface AppComponent {
     void inject (MainActivity mainActivity);
     void inject (WorkoutsFragment workoutsFragment);
     void inject (EditWorkoutFragment editWorkoutFragment);
+    void inject (ActionWorkoutFragment actionWorkoutFragment);
 //    void inject (EditWorkoutActivity editWorkoutActivity);
 //    void inject (ExercisesFragment exercisesFragment);
 //    void inject (AddEditExerciseFragment addEditExerciseFragment);

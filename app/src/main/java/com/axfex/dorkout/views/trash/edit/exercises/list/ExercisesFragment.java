@@ -107,26 +107,26 @@ public class ExercisesFragment extends Fragment {
 //        rvExercises.setAdapter(mAdapter);
 //    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.exercises_fragment, container, false);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        rvExercises = v.findViewById(R.id.rv_exercises);
-        rvExercises.setLayoutManager(layoutManager);
-        mItemTouchHelper = new ItemTouchHelper(new TouchHelperCallback());
-        mItemTouchHelper.attachToRecyclerView(rvExercises);
-        mAddButton = v.findViewById(R.id.fab_add_exercise);
-        mAddButton.setOnClickListener(v1 -> startAddEditExerciseActivity());
-        //mAddButton.hide();
-        return v;
-    }
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                             Bundle savedInstanceState) {
+////        View v = inflater.inflate(R.layout.exercises_fragment, container, false);
+////        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+////        rvExercises = v.findViewById(R.id.rv_exercises);
+////        rvExercises.setLayoutManager(layoutManager);
+////        mItemTouchHelper = new ItemTouchHelper(new TouchHelperCallback());
+////        mItemTouchHelper.attachToRecyclerView(rvExercises);
+////        mAddButton = v.findViewById(R.id.fab_add_exercise);
+////        mAddButton.setOnClickListener(v1 -> startAddEditExerciseActivity());
+////        //mAddButton.hide();
+////        return v;
+//    }
 
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.exercises_menu, menu);
+        inflater.inflate(R.menu.action_menu, menu);
     }
 
     @Override
@@ -280,9 +280,9 @@ public class ExercisesFragment extends Fragment {
 
         public ExercisesViewHolder(View itemView) {
             super(itemView);
-            nameView = itemView.findViewById(R.id.exercise_title);
+            nameView = itemView.findViewById(R.id.exercise_name);
             descView = itemView.findViewById(R.id.exercise_desc);
-            numberView = itemView.findViewById(R.id.exercise_number);
+            numberView = itemView.findViewById(R.id.exercise_order);
             collapseButton = itemView.findViewById(R.id.exercise_collapse);
             setsView = itemView.findViewById(R.id.exercise_sets);
             itemView.setOnClickListener(this);

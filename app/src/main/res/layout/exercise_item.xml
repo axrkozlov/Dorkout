@@ -15,7 +15,7 @@
 
 
         <TextView
-            android:id="@+id/exercise_number"
+            android:id="@+id/exercise_order"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
@@ -27,7 +27,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/exercise_title"
+            android:id="@+id/exercise_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="2dp"
@@ -35,7 +35,7 @@
             android:text="@string/exercise_title"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/title_big_text"
-            app:layout_constraintStart_toEndOf="@+id/exercise_number"
+            app:layout_constraintStart_toEndOf="@+id/exercise_order"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -48,7 +48,7 @@
             android:textColor="@color/secondary_text"
             android:textSize="@dimen/small_label_text"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/exercise_title" />
+            app:layout_constraintTop_toBottomOf="@+id/exercise_name" />
 
         <ImageButton
             android:id="@+id/exercise_collapse"
@@ -83,7 +83,7 @@
             android:layout_marginTop="8dp"
             android:text="TextView"
             app:layout_constraintRight_toRightOf="@id/exercise_desc"
-            app:layout_constraintStart_toStartOf="@+id/exercise_number"
+            app:layout_constraintStart_toStartOf="@+id/exercise_order"
             app:layout_constraintTop_toBottomOf="@id/exercise_desc" />
 
         <ImageView
