@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item>
+    <item
+        android:state_enabled="false">
         <shape android:shape="oval">
+
             <solid android:color="@color/status_light_off"/>
             <stroke
                 android:color="@color/status_light_borders"
@@ -9,7 +11,8 @@
         </shape>
 
     </item>
-    <item>
+    <item
+        android:state_enabled="true">
         <shape android:shape="oval">
             <solid android:color="@color/status_light_red"/>
             <stroke

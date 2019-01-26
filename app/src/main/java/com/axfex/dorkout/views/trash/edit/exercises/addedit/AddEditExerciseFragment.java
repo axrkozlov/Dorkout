@@ -88,38 +88,38 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
     private void bindExercise(Exercise exercise) {
 
         mName.setText(exercise.getName());
-        mDesc.setText(exercise.getDescription());
+        mDesc.setText(exercise.getNote());
     }
 
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View v =inflater.inflate(R.layout.edit_exercise_fragment, container, false);
-        mName =v.findViewById(R.id.et_exercise_name);
-        mDesc = v.findViewById(R.id.et_exercise_desc);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        layoutInflater = getActivity().getLayoutInflater();
-        //mDone=v.findViewById(R.id.fab_edit_exercise_done);
-        //mDone.setOnClickListener(this);
-        v.findViewById(R.id.bt_exercise_create).setOnClickListener(this);
-
-        return v;
-    }
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                             Bundle savedInstanceState) {
+////        View v =inflater.inflate(R.layout.edit_exercise_fragment, container, false);
+////        mName =v.findViewById(R.id.et_exercise_name);
+////        mDesc = v.findViewById(R.id.et_exercise_desc);
+////        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+////        layoutInflater = getActivity().getLayoutInflater();
+////        //mDone=v.findViewById(R.id.fab_edit_exercise_done);
+////        //mDone.setOnClickListener(this);
+////        v.findViewById(R.id.bt_exercise_create).setOnClickListener(this);
+//
+//        return v;
+//    }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.bt_exercise_create:
-                addExercise();
-                break;
+//        switch (v.getId()) {
+//            case R.id.bt_exercise_create:
+//                addExercise();
+//                break;
 //            case R.id.bt_workout_update:
 //                updateExercise();
 //                break;
 //            case R.id.bt_workout_delete:
 //                deleteExercise();
 //                break;
-        }
+//        }
     }
 
     private boolean checkNameField(){

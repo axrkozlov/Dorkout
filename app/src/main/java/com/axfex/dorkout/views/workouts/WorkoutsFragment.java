@@ -27,12 +27,10 @@ import android.widget.TextView;
 
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
-import com.axfex.dorkout.util.DateUtils;
 import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.vm.ViewModelFactory;
 
 import java.text.DateFormatSymbols;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -272,7 +270,7 @@ public class WorkoutsFragment extends Fragment implements WorkoutsNavigator {
         private TextView mDays;
         private TextView mStartTime;
         private CardView mCard;
-        private ImageView mMarkIcon;
+        private ImageView mActiveIcon;
 
         private WorkoutViewHolder(View itemView) {
             super(itemView);
@@ -284,34 +282,34 @@ public class WorkoutsFragment extends Fragment implements WorkoutsNavigator {
             mDays = itemView.findViewById(R.id.workout_desc_days);
             mStartTime = itemView.findViewById(R.id.workout_desc_start_time);
             mCard = itemView.findViewById(R.id.workout_card);
-            mMarkIcon = itemView.findViewById(R.id.workout_mark_icon);
+            mActiveIcon = itemView.findViewById(R.id.workout_active_icon);
 
         }
 
         private void bindData() {
             mName.setText(mWorkout.getName());
-            if (mWorkout.getDescription() != null) {
-                mDesc.setText(mWorkout.getDescription());
+            if (mWorkout.getNote() != null) {
+                mDesc.setText(mWorkout.getNote());
             } else mDesc.setVisibility(View.GONE);
             String[] weekDaysText = DateFormatSymbols.getInstance().getShortWeekdays();
-            ArrayList<Boolean> weekDays = DateUtils.parseWeekDays(mWorkout.getWeekDaysComposed());
-            StringBuilder sb = new StringBuilder();
-
-            for (int i = 0; i < 7; i++) {
-                if (weekDays.get(i)) {
-                    sb.append(weekDaysText[i + 1] + " ");
-                }
-            }
+//            ArrayList<Boolean> weekDays = DateUtils.parseWeekDays(mWorkout.getWeekDaysComposed());
+//            StringBuilder sb = new StringBuilder();
+//
+//            for (int i = 0; i < 7; i++) {
+//                if (weekDays.get(i)) {
+//                    sb.append(weekDaysText[i + 1] + " ");
+//                }
+//            }
             Integer exercisesCount = mWorkout.getExercisesCount();
             if (exercisesCount != null) {
                 mExercises.setText(exercisesCount.toString());
             }
 
-            mDays.setText(sb.toString());
-            mStartTime.setText(DateUtils.getTimeString(mWorkout.getStartTime()));
-            mTotalTime.setText(DateUtils.getTimeString(mWorkout.getTotalTime()));
+//            mDays.setText(sb.toString());
+//            mStartTime.setText(mWorkout.getStartTime().toString());
+//            mTotalTime.setText(DateUtils.getTimeString(mWorkout.getTotalTime()));
             //holder.mCard.setCardBackgroundColor(workout.isMarked() ? markedCardColor : unmarkedCardColor);
-            //holder.mMarkIcon.setVisibility(workout.isMarked() ? View.VISIBLE : View.INVISIBLE);
+            //holder.mActiveIcon.setVisibility(workout.isMarked() ? View.VISIBLE : View.INVISIBLE);
 
             itemView.setTag(mWorkout.getId());
             itemView.setSelected(false);

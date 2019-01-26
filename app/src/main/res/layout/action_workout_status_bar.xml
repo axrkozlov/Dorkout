@@ -16,29 +16,30 @@
 
         <ImageView
             android:id="@+id/red_lamp"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
             app:srcCompat="@drawable/lamp_red"
-            android:contentDescription="TODO" />
+            android:contentDescription="TODO"
+            />
 
         <ImageView
             android:id="@+id/yellow_lamp"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            app:srcCompat="@drawable/lamp_red"
+            app:srcCompat="@drawable/lamp_yellow"
             android:contentDescription="TODO" />
 
         <ImageView
             android:id="@+id/green_lamp"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            app:srcCompat="@drawable/lamp_red"
+            app:srcCompat="@drawable/lamp_green"
             android:contentDescription="TODO" />
     </LinearLayout>
 
@@ -59,11 +60,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:gravity="right"
+        android:gravity="end"
         android:text="@string/lb_total_time"
         android:textColor="@color/secondary_white_text"
         android:textSize="@dimen/small_label_text"
-        app:layout_constraintEnd_toStartOf="@+id/pb_total_time" />
+        app:layout_constraintEnd_toStartOf="@+id/pb_total_time"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/rest_time"

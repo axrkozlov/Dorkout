@@ -23,10 +23,10 @@ public interface WorkoutsDao {
     @Query("SELECT * FROM Workout WHERE id = :id")
     LiveData<Workout> getWorkoutLD(Long id);
 
-    @Query("SELECT * FROM Workout WHERE id = :id")
-    Workout getWorkout(Long id);
+    @Query("SELECT * FROM Workout WHERE active")
+    LiveData<Workout> getActiveWorkoutLD();
 
-    @Query("SELECT * FROM Workout ORDER BY lastDate DESC")
+    @Query("SELECT * FROM Workout ORDER BY lastStartTime DESC")
     LiveData<List<Workout>> getWorkoutsLD();
 
     @Insert(onConflict = REPLACE)

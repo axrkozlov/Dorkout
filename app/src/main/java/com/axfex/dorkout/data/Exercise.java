@@ -32,30 +32,30 @@ import static androidx.room.ForeignKey.CASCADE;
     @ColumnInfo(name = "workoutId")
     private Long workoutId;
     private String name;
-    private String description;
+    private String note;
     private Integer orderNumber;
     private Integer weight;
     private Integer repeats;
     private Integer time;
     private Integer restTime;
-
-
-//    private Integer factWeight;
-//    private Integer factRepeats;
-//    private Integer factTime;
     @TypeConverters({TimestampConverter.class})
     private Date creationDate = new Date(System.currentTimeMillis());
 
-    @Ignore
-    private transient Boolean mDone = false;
-    @Ignore
-    private transient Boolean mActive = false;
-    @Ignore
-    private transient Boolean mSkipped = false;
-    @Ignore
-    private transient Boolean mPaused = false;
+    private Integer weightFact;
+    private Integer repeatsFact;
+    private Integer timeFact;
+    private Integer restTimeFact;
+
+    private Boolean mDone = false;
+    private Boolean mActive = false;
+    private Boolean mSkipped = false;
+    private Boolean mPaused = false;
 
 
+    public Exercise() {
+    }
+
+    @Ignore
     public Exercise(String name, final Long workoutId) {
         this.name = name;
         this.workoutId=workoutId;
@@ -85,12 +85,12 @@ import static androidx.room.ForeignKey.CASCADE;
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getNote() {
+        return note;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public Integer getOrderNumber() {
@@ -141,40 +141,68 @@ import static androidx.room.ForeignKey.CASCADE;
         this.creationDate = creationDate;
     }
 
-    public Boolean isDone() {
+    public Integer getWeightFact() {
+        return weightFact;
+    }
+
+    public void setWeightFact(Integer weightFact) {
+        this.weightFact = weightFact;
+    }
+
+    public Integer getRepeatsFact() {
+        return repeatsFact;
+    }
+
+    public void setRepeatsFact(Integer repeatsFact) {
+        this.repeatsFact = repeatsFact;
+    }
+
+    public Integer getTimeFact() {
+        return timeFact;
+    }
+
+    public void setTimeFact(Integer timeFact) {
+        this.timeFact = timeFact;
+    }
+
+    public Integer getRestTimeFact() {
+        return restTimeFact;
+    }
+
+    public void setRestTimeFact(Integer restTimeFact) {
+        this.restTimeFact = restTimeFact;
+    }
+
+    public Boolean getDone() {
         return mDone;
     }
 
-    public void finish() {
-        mActive=false;
-        mDone = true;
+    public void setDone(Boolean done) {
+        mDone = done;
     }
 
-    public Boolean isSkipped() {
-        return mSkipped;
-    }
-
-    public void skip() {
-        mActive=false;
-        mSkipped = true;
-    }
-
-    public Boolean isActive() {
+    public Boolean getActive() {
         return mActive;
     }
 
-    public void start() {
-        if (mPaused) mPaused=false;
-        if (mSkipped) mSkipped=false;
-        else mActive = true;
-        mSkipped=false;
+    public void setActive(Boolean active) {
+        mActive = active;
     }
 
-    public Boolean isPaused() {
+    public Boolean getSkipped() {
+        return mSkipped;
+    }
+
+    public void setSkipped(Boolean skipped) {
+        mSkipped = skipped;
+    }
+
+    public Boolean getPaused() {
         return mPaused;
     }
 
-    public void pause() {
-        mPaused = true;
+    public void setPaused(Boolean paused) {
+        mPaused = paused;
     }
+
 }

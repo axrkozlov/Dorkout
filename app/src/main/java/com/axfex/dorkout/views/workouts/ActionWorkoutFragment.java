@@ -17,14 +17,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
 import com.axfex.dorkout.data.Exercise;
 import com.axfex.dorkout.data.Workout;
-import com.axfex.dorkout.services.ActionWorkoutService;
 import com.axfex.dorkout.vm.ViewModelFactory;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -39,6 +40,7 @@ public class ActionWorkoutFragment extends Fragment {
     private static final String WORKOUT_ID = "WORKOUT_ID";
     @Inject
     ViewModelFactory<ActionWorkoutViewModel> mViewModelFactory;
+
     private Menu mMenu;
     private RecyclerView mRecyclerView;
     private ExercisesAdapter mAdapter;
@@ -47,8 +49,17 @@ public class ActionWorkoutFragment extends Fragment {
     private Long mWorkoutId;
     private Workout mWorkout;
     private List<Exercise> mExercises;
+
     private FloatingActionButton mStartWorkout;
     private FloatingActionButton mStopWorkout;
+    private TextView mExerciseName;
+    private ImageView mRedLamp;
+    private ImageView mGreenLamp;
+    private ImageView mYellowLamp;
+    private Button mStartExercise;
+    private Button mRestartExercise;
+    private Button mSkipExercise;
+    private Button mDoneExercise;
 
     public static ActionWorkoutFragment newInstance() {
         ActionWorkoutFragment fragment = new ActionWorkoutFragment();
@@ -82,14 +93,53 @@ public class ActionWorkoutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.action_workout_fragment, container, false);
+
+
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView = v.findViewById(R.id.rv_exercises);
         mRecyclerView.setLayoutManager(layoutManager);
-        mStartWorkout=v.findViewById(R.id.fab_start_workout);
-        mStartWorkout.setOnClickListener( view -> ActionWorkoutService.startActionWorkoutService(getContext(),mWorkout,mExercises));
-        mStopWorkout=v.findViewById(R.id.fab_stop_workout);
-        mStopWorkout.setOnClickListener(view -> ActionWorkoutService.stopWorkout(getContext()));
+        setupActionWidgets(v);
         return v;
+    }
+
+    private void setupActionWidgets(View v) {
+        mStartWorkout = v.findViewById(R.id.fab_start_workout);
+        mStartWorkout.setOnClickListener(view -> mActionWorkoutViewModel.startWorkout(mWorkout, mExercises));
+//        mStartWorkout.setOnClickListener( view -> ActionWorkoutService.startActionWorkoutService(getContext(),mWorkout,mExercises));
+        mStopWorkout = v.findViewById(R.id.fab_stop_workout);
+        mStopWorkout.setOnClickListener(view -> mActionWorkoutViewModel.stopWorkout());
+//        mStopWorkout.setOnClickListener(view -> ActionWorkoutService.stopWorkout(getContext()));
+        mExerciseName = v.findViewById(R.id.et_exercise_name);
+        mRedLamp = v.findViewById(R.id.red_lamp);
+        mRedLamp.setEnabled(false);
+        mGreenLamp = v.findViewById(R.id.green_lamp);
+        mGreenLamp.setEnabled(false);
+        mYellowLamp = v.findViewById(R.id.yellow_lamp);
+        mYellowLamp.setEnabled(false);
+        mStartExercise=v.findViewById(R.id.bt_start);
+        mStartExercise.setOnClickListener(view->mActionWorkoutViewModel.startExercise());
+        mRestartExercise=v.findViewById(R.id.bt_restart);
+        mRestartExercise.setOnClickListener(view->mActionWorkoutViewModel.restartExercise());
+        mSkipExercise=v.findViewById(R.id.bt_skip);
+        mSkipExercise.setOnClickListener(view->mActionWorkoutViewModel.skipExercise());
+        mDoneExercise=v.findViewById(R.id.bt_done);
+        mDoneExercise.setOnClickListener(view->mActionWorkoutViewModel.finishExercise());
+
+    }
+
+    private void onUpdateActiveExercise(Exercise exercise){
+        if (exercise!=null) {
+            mExerciseName.setText(exercise.getName());
+            mGreenLamp.setEnabled(exercise.getActive());
+            mRedLamp.setEnabled(!exercise.getActive());
+        } else {
+            mExerciseName.setText("");
+            mRedLamp.setEnabled(false);
+            mGreenLamp.setEnabled(false);
+            mYellowLamp.setEnabled(false);
+        }
+
     }
 
     @Override
@@ -99,6 +149,7 @@ public class ActionWorkoutFragment extends Fragment {
         mMainViewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
         mActionWorkoutViewModel.getWorkout(mWorkoutId).observe(this, this::onWorkoutLoaded);
         mActionWorkoutViewModel.getExercises(mWorkoutId).observe(this, this::onExerciseListLoaded);
+        mActionWorkoutViewModel.getActiveExercise().observe(this, this::onUpdateActiveExercise);
     }
 
     @Override
@@ -200,15 +251,15 @@ public class ActionWorkoutFragment extends Fragment {
 //            itemView.setActivated(isExpanded);
 //            setsView.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
 
-            itemView.setOnClickListener(view -> {
-//                mExpandedPosition = isExpanded ? -1 : mPosition;
-//                TransitionManager.beginDelayedTransition(rvExercises);
-//                notifyDataSetChanged();
-            });
+//            itemView.setOnClickListener(view -> {
+////                mExpandedPosition = isExpanded ? -1 : mPosition;
+////                TransitionManager.beginDelayedTransition(rvExercises);
+////                notifyDataSetChanged();
+//            });
 
-
+            itemView.setOnClickListener(this);
             mName.setText(mExercise.getName());
-            if (mExercise.getDescription() != null) mDesc.setText(mExercise.getDescription());
+            if (mExercise.getNote() != null) mDesc.setText(mExercise.getNote());
             else mDesc.setVisibility(View.GONE);
 
             if (mExercise.getTime() != null) {
@@ -224,7 +275,7 @@ public class ActionWorkoutFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-
+            mActionWorkoutViewModel.setActiveExercise(mExercise);
         }
 
         @Override

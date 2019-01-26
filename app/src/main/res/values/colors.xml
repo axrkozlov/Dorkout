@@ -3,16 +3,16 @@
     <color name="colorPrimary">#404444</color>
     <color name="colorPrimaryDark">#252524</color>
     <color name="colorAccent">#ff012f</color>
-    <color name="colorToolbarElements">#42fa05</color>
+    <color name="colorToolbarElements">#F8F8F8</color>
     <color name="TextColor">#EEEE55</color>
     <color name="background">#303135</color>
     <color name="menu_buttons">#ff012f</color>
 
     <color name="status_digit">#E5DE6E</color>
 
-    <color name="status_light_red">#FF4444</color>
-    <color name="status_light_yellow">#E5DE6E</color>
-    <color name="status_light_green">#7ED321</color>
+    <color name="status_light_red">#FF2222</color>
+    <color name="status_light_yellow">#FFAC11</color>
+    <color name="status_light_green">#42fa05</color>
     <color name="status_light_off">#D8D8D8</color>
     <color name="status_light_borders">#979797</color>
     <color name="status_workout_run">#7ED321</color>
@@ -39,6 +39,7 @@
     <color name="exercise_active_item">#F7EAD8</color>
     <color name="exercise_button_background">#978F87</color>
     <color name="exercise_button_text">#2D2D56</color>
+    <color name="exercise_edit_background">#2D2D56</color>
 
 
     <color name="primary_text">#fff8c6</color>

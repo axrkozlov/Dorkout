@@ -1,9 +1,14 @@
 package com.axfex.dorkout.data;
 
 
+import com.axfex.dorkout.data.source.local.TimestampConverter;
+
+import java.util.Date;
+
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 /**
  * Created by alexanderkozlov on 1/2/18.
@@ -13,27 +18,26 @@ public class Workout {
     @PrimaryKey(autoGenerate = true)
     private Long id;
     private String name;
-    private String description;
+    private String note;
     private Long totalTime;
-    private Long lastDate;
+    private Long lastStartTime;
     private Integer order;
     private Integer exercisesCount;
 
-    //Remove later, add Reminder instead
-    private Long startTime;
-    private Integer weekDaysComposed;
+    @TypeConverters({TimestampConverter.class})
+    private Date startTime;
+    private Boolean active = false;
 
-    @Ignore
-    private transient Boolean mDone = false;
-    @Ignore
-    private transient Boolean mActive = false;
+    //Add Reminder instead
 
 
+    public Workout() {
+    }
     @Ignore
     public Workout(String name) {
         this.name = name;
     }
-
+    @Ignore
     public Workout(Long id) {
         this.id = id;
     }
@@ -54,20 +58,12 @@ public class Workout {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getNote() {
+        return note;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Long getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Long startTime) {
-        this.startTime = startTime;
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public Long getTotalTime() {
@@ -78,12 +74,12 @@ public class Workout {
         this.totalTime = totalTime;
     }
 
-    public Long getLastDate() {
-        return lastDate;
+    public Long getLastStartTime() {
+        return lastStartTime;
     }
 
-    public void setLastDate(Long lastDate) {
-        this.lastDate = lastDate;
+    public void setLastStartTime(Long lastStartTime) {
+        this.lastStartTime = lastStartTime;
     }
 
     public Integer getOrder() {
@@ -94,14 +90,6 @@ public class Workout {
         this.order = order;
     }
 
-    public Integer getWeekDaysComposed() {
-        return weekDaysComposed;
-    }
-
-    public void setWeekDaysComposed(Integer weekDaysComposed) {
-        this.weekDaysComposed = weekDaysComposed;
-    }
-
     public Integer getExercisesCount() {
         return exercisesCount;
     }
@@ -110,22 +98,30 @@ public class Workout {
         this.exercisesCount = exercisesCount;
     }
 
-    public Boolean isDone() {
-        return mDone;
+    public Date getStartTime() {
+        return startTime;
     }
 
-    public void finish() {
-        mActive=false;
-        mDone = true;
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
     }
 
-    public Boolean isActive() {
-        return mActive;
+    public Boolean getActive() {
+        return active;
     }
 
-    public void start() {
-        mActive = true;
+    public void setActive(Boolean active) {
+        this.active = active;
     }
-
-
 }
+
+
+
+//
+//    public Integer getWeekDaysComposed() {
+//        return weekDaysComposed;
+//    }
+//
+//    public void setWeekDaysComposed(Integer weekDaysComposed) {
+//        this.weekDaysComposed = weekDaysComposed;
+//    }

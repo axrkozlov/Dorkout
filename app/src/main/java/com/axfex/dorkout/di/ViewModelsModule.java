@@ -13,6 +13,8 @@ import com.axfex.dorkout.views.workouts.WorkoutsViewModel;
 import com.axfex.dorkout.vm.ViewModelFactory;
 
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -55,8 +57,9 @@ class ViewModelsModule {
     }
 
     @Provides
-    ActionWorkoutManager providesActionWorkoutManager(){
-        return new ActionWorkoutManager();
+    @Singleton
+    ActionWorkoutManager providesActionWorkoutManager(WorkoutsRepository workoutsRepository){
+        return new ActionWorkoutManager(workoutsRepository);
     }
 
     @Provides

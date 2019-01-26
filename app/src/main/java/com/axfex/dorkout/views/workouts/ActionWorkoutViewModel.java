@@ -16,6 +16,7 @@ public class ActionWorkoutViewModel extends ViewModel {
     private WorkoutsRepository mWorkoutsRepository;
     private ActionWorkoutManager mActionWorkoutManager;
 
+
     public ActionWorkoutViewModel(WorkoutsRepository workoutsRepository, ActionWorkoutManager actionWorkoutManager) {
         this.mWorkoutsRepository = workoutsRepository;
         this.mActionWorkoutManager=actionWorkoutManager;
@@ -29,20 +30,46 @@ public class ActionWorkoutViewModel extends ViewModel {
         return mWorkoutsRepository.getExercisesLD(workoutId);
     }
 
-    public void setWorkout(Workout workout,List<Exercise> exercises){
-        mActionWorkoutManager.setWorkout(workout,exercises);
+    public void startWorkout(Workout workout, List<Exercise> exercises){
+        mActionWorkoutManager.startWorkout(workout,exercises);
+    }
+
+    public void stopWorkout(){
+        mActionWorkoutManager.stopWorkout();
     }
 
     public Workout getActiveWorkout() {
         return mActionWorkoutManager.getWorkout();
     }
 
-    public Exercise getActiveExercise() {
-        return mActionWorkoutManager.getExercise();
+    public LiveData<Exercise> getActiveExercise() {
+        return mActionWorkoutManager.getActiveExercise();
     }
 
-    public List<Exercise> getActiveExercises() {
-        return mActionWorkoutManager.getExercises();
+    public void setActiveExercise(Exercise exercise){
+        mActionWorkoutManager.setExercise(exercise);
     }
+
+    public void startExercise() {
+        mActionWorkoutManager.startExercise();
+    }
+
+    public void restartExercise() {
+        mActionWorkoutManager.restartExercise();
+    }
+
+    public void skipExercise() {
+        mActionWorkoutManager.skipExercise();
+    }
+
+    public void finishExercise() {
+        mActionWorkoutManager.finishExercise();
+    }
+
+//    public List<Exercise> getActiveExercises() {
+//        return mActionWorkoutManager.getExercises();
+//    }
+
+
 
 }

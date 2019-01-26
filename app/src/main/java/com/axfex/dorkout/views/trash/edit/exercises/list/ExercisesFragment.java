@@ -6,7 +6,6 @@ import androidx.annotation.Nullable;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.transition.TransitionManager;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import android.view.LayoutInflater;
@@ -198,7 +197,7 @@ public class ExercisesFragment extends Fragment {
 
         @Override
         public ExercisesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(getContext()).inflate(R.layout.exercise_item, parent, false);
+            View view = LayoutInflater.from(getContext()).inflate(R.layout.action_workout_exercise_item, parent, false);
             return new ExercisesViewHolder(view);
 
         }
@@ -230,7 +229,7 @@ public class ExercisesFragment extends Fragment {
 
             }
             holder.nameView.setText(exercise.getName());
-            holder.descView.setText(exercise.getDescription());
+            holder.descView.setText(exercise.getNote());
             holder.numberView.setText(Integer.toString(position + 1));
             holder.itemView.setTag(exercise.getId());
 

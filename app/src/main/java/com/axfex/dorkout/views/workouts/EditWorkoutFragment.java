@@ -2,6 +2,9 @@ package com.axfex.dorkout.views.workouts;
 
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -70,7 +73,7 @@ public class EditWorkoutFragment extends Fragment {
     private ItemTouchHelper mItemTouchHelper;
 
     private Button mButtonOk;
-    ArrayAdapter<String> mAdapterExerciseName;
+    NamesAdapter mAdapterExerciseName;
     private AutoCompleteTextView mExerciseName;
     private Spinner mSpinnerExerciseNames;
 
@@ -127,14 +130,13 @@ public class EditWorkoutFragment extends Fragment {
         mEditWorkoutViewModel.getAllExerciseNames().observe(this, this::onExerciseNamesListLoaded);
     }
 
-    private void setupEditWidgets(View v){
-        mExerciseEditLayout = v.findViewById(R.id.layout_edit_exercise);
+    private void setupEditWidgets(View v) {
         mButtonOk = v.findViewById(R.id.button_ok);
 
         mExerciseName = v.findViewById(R.id.et_exercise_type);
         mSpinnerExerciseNames = v.findViewById(R.id.sp_exercise_type);
-        mEditNormTime =v.findViewById(R.id.np_norm_time);
-        mEditRestTime =v.findViewById(R.id.np_rest_time);
+        mEditNormTime = v.findViewById(R.id.np_norm_time);
+        mEditRestTime = v.findViewById(R.id.np_rest_time);
 
         mButtonOk.setOnClickListener(this::onNewExerciseOk);
 
@@ -142,10 +144,9 @@ public class EditWorkoutFragment extends Fragment {
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             if (!hasFocus) {
                 imm.hideSoftInputFromWindow(v1.getWindowToken(), 0);
-                mExerciseName.setVisibility(View.GONE);
-                mSpinnerExerciseNames.setVisibility(View.VISIBLE);
             } else {
-                imm.showSoftInput(v1, InputMethodManager.SHOW_IMPLICIT);}
+                imm.showSoftInput(v1, InputMethodManager.SHOW_IMPLICIT);
+            }
         });
 
         mSpinnerExerciseNames.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -155,9 +156,9 @@ public class EditWorkoutFragment extends Fragment {
                     mExerciseName.setVisibility(View.VISIBLE);
                     mExerciseName.requestFocus();
                     mSpinnerExerciseNames.setVisibility(View.GONE);
-                    mAdapterExerciseName.remove("New name...");
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -173,17 +174,16 @@ public class EditWorkoutFragment extends Fragment {
 
     private void onExerciseNamesListLoaded(List<String> names) {
         mExerciseNames = names;
-        mExerciseNames.add("New name...");
+
         //Delete later!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         onNewExercise();
         Log.i(TAG, "onExerciseNamesListLoaded: ");
     }
 
     private void onNewExercise() {
-        mExerciseEditLayout.setVisibility(View.VISIBLE);
-        mAdapterExerciseName = new ArrayAdapter<>(getActivity(),
+        mAdapterExerciseName = new NamesAdapter(getActivity(),
                 android.R.layout.simple_spinner_item, mExerciseNames);
-        mAdapterExerciseName.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        mAdapterExerciseName.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mExerciseName.setAdapter(mAdapterExerciseName);
         mSpinnerExerciseNames.setAdapter(mAdapterExerciseName);
     }
@@ -192,19 +192,21 @@ public class EditWorkoutFragment extends Fragment {
 //        Exercise exercise=new Exercise(mSpinnerExerciseNames.getSelectedItem().toString(),mWorkoutId);
 
         String newName;
-        if (mSpinnerExerciseNames.getVisibility()==View.VISIBLE){
+        if (mSpinnerExerciseNames.getVisibility() == View.VISIBLE) {
             newName = mSpinnerExerciseNames.getSelectedItem().toString();
-        } else  {
-            newName=mExerciseName.getText().toString();
+        } else {
+            newName = mExerciseName.getText().toString();
+            mSpinnerExerciseNames.setSelected(false);
         }
+
         newName = newName.trim()
                 .replaceAll("\\s+", " ")
                 .replaceAll("\\.+|\\s\\.", ".")
                 .replaceAll(",+|\\s,", ",")
-                ;
+        ;
 
-        int time= mEditNormTime.getValue();
-        int restTime= mEditRestTime.getValue();
+        int time = mEditNormTime.getValue();
+        int restTime = mEditRestTime.getValue();
 
         Exercise exercise = new Exercise(newName, mWorkoutId);
         exercise.setTime(time);
@@ -212,10 +214,10 @@ public class EditWorkoutFragment extends Fragment {
 
         exercise.setOrderNumber(mExercises != null ? mExercises.size() + 1 : 0);
         mEditWorkoutViewModel.createExercise(exercise);
-        mExerciseEditLayout.setVisibility(View.GONE);
         whenExerciseAddedScrollDown = true;
+        mExerciseName.setVisibility(View.GONE);
+        mSpinnerExerciseNames.setVisibility(View.VISIBLE);
     }
-
 
 
     //STOP
@@ -236,18 +238,15 @@ public class EditWorkoutFragment extends Fragment {
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         if (mWorkout != null) actionBar.setTitle(mWorkout.getName());
-}
+    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home: {
-                break;
+                getActivity().onBackPressed();
             }
-            case R.id.menu_exercises_add: {
-                onNewExercise();
-                break;
-            }
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -333,7 +332,7 @@ public class EditWorkoutFragment extends Fragment {
             super(itemView);
             mName = itemView.findViewById(R.id.exercise_name);
             mDesc = itemView.findViewById(R.id.exercise_desc);
-            mInfoBar=itemView.findViewById(R.id.exercise_info_bar);
+            mInfoBar = itemView.findViewById(R.id.exercise_info_bar);
             mNormTime = mInfoBar.findViewById(R.id.norm_time);
             mRestTime = mInfoBar.findViewById(R.id.rest_time);
             mOrderNumber = itemView.findViewById(R.id.exercise_order);
@@ -364,16 +363,16 @@ public class EditWorkoutFragment extends Fragment {
 
 
             mName.setText(mExercise.getName());
-            if (mExercise.getDescription()!=null) mDesc.setText(mExercise.getDescription());
+            if (mExercise.getNote() != null) mDesc.setText(mExercise.getNote());
             else mDesc.setVisibility(View.GONE);
 
             if (mExercise.getTime() != null) {
-                mNormTime.setText(String.format(Locale.getDefault(),"%d",mExercise.getTime()));
+                mNormTime.setText(String.format(Locale.getDefault(), "%d", mExercise.getTime()));
             }
             if (mExercise.getRestTime() != null) {
-                mRestTime.setText(String.format(Locale.getDefault(),"%d",mExercise.getRestTime()));
+                mRestTime.setText(String.format(Locale.getDefault(), "%d", mExercise.getRestTime()));
             }
-            mOrderNumber.setText(String.format(Locale.getDefault(),"%d",mPosition+1));
+            mOrderNumber.setText(String.format(Locale.getDefault(), "%d", mPosition + 1));
 //            mOrderNumber.setVisibility(View.GONE);
             itemView.setTag(mExercise.getId());
         }
@@ -396,11 +395,12 @@ public class EditWorkoutFragment extends Fragment {
         }
 
 
-
     }
 
 
-    /**====================Helpers==================================================*/
+    /**
+     * ====================Helpers==================================================
+     */
 
 
     private class TouchHelperCallback extends ItemTouchHelper.Callback {
@@ -467,6 +467,47 @@ public class EditWorkoutFragment extends Fragment {
         public static void openSoftKeyboard(Context context, EditText editText) {
             InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+        }
+
+
+    }
+
+    private class NamesAdapter extends ArrayAdapter<String> {
+        public NamesAdapter(@NonNull Context context, int resource, @NonNull List<String> objects) {
+            super(context, resource, objects);
+            insert("New name...",objects.size()>0?1:0);
+        }
+//        public NamesAdapter(@NonNull Context context, int resource, @NonNull List objects) {
+//            super(context, resource, objects);
+
+//        }
+
+        @NonNull
+        @Override
+        public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            String text=getItem(position);
+            if (convertView==null){
+                convertView=LayoutInflater.from(getContext()).inflate(R.layout.edit_workout_name_item, parent, false);
+            }
+            TextView name =(TextView) convertView;
+            name.setText(text);
+            if (text.equals("New name...")) {
+                Log.i(TAG, "getDropDownView: "+text+position+":"+getCount());
+//                convertView.setBackgroundColor(256);
+//                ((TextView) convertView.findViewById(android.R.id.text1)).setTextColor(256);
+                // .setTypeface(null, Typeface.ITALIC);
+
+//                LayoutInflater inflater = LayoutInflater.from(getContext());
+//                View view = inflater.inflate(android.R.layout.simple_spinner_dropdown_item, parent, false);
+
+                name.setTextColor(Color.BLUE);
+                name.setTypeface(null, Typeface.ITALIC);
+//                return view;
+            } else {
+                name.setTextColor(Color.WHITE);
+                name.setTypeface(null, Typeface.NORMAL);
+            }
+            return convertView;
         }
 
     }

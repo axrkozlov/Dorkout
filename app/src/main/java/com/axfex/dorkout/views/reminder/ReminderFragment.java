@@ -89,12 +89,12 @@ public class ReminderFragment extends Fragment {
 //        if (workoutId != 0) {
 //            workout.setId(workoutId);
 //        } else {
-//            workout.setLastDate(0L);
+//            workout.setLastStartTime(0L);
 //            workout.setTotalTime(0L);
 //            workout.setExercisesCount(0);
 //        }
 //
-//        workout.setDescription(mDesc.getText().toString());
+//        workout.setNote(mDesc.getText().toString());
 //        ArrayList<Boolean> weekDays = new ArrayList<>();
 //        weekDays.add(mDay1.isChecked());
 //        weekDays.add(mDay2.isChecked());
@@ -106,7 +106,7 @@ public class ReminderFragment extends Fragment {
 //
 //        workout.setWeekDaysComposed(DateUtils.composeWeekDays(weekDays));
 //
-//        workout.setLastDate(Calendar.getInstance().getTimeInMillis());
+//        workout.setLastStartTime(Calendar.getInstance().getTimeInMillis());
 //
 //        String startTimeText = mStartTime.getText().toString();
 //        if (!startTimeText.equals(getResources().getShowTag(R.string.workout_id_tag))) {
@@ -129,7 +129,7 @@ public class ReminderFragment extends Fragment {
 ////        mDelete.setVisibility(View.VISIBLE);
 //
 //        mName.setText(workout.getName());
-//        mDesc.setText(workout.getDescription());
+//        mDesc.setText(workout.getNote());
 //        ArrayList<Boolean> weekDays = DateUtils.parseWeekDays(workout.getWeekDaysComposed());
 //        mDay1.setChecked(weekDays.get(0));
 //        mDay2.setChecked(weekDays.get(1));

@@ -55,11 +55,11 @@ public class EditExerciseFragment extends Fragment {
 //                .inject(this);
     }
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.edit_exercise_fragment, container, false);
-    }
+//    @Override
+//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+//                             @Nullable Bundle savedInstanceState) {
+//        return inflater.inflate(R.layout.edit_exercise_fragment, container, false);
+//    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

@@ -1,7 +1,5 @@
 package com.axfex.dorkout.data.source;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.annotation.NonNull;
@@ -29,7 +27,6 @@ public class WorkoutsRepository  {
         this.workoutsDao = workoutsDao;
         this.exercisesDao = exercisesDao;
         this.mAppExecutors=appExecutors;
-
     }
 
     /**Workouts**/
@@ -46,6 +43,10 @@ public class WorkoutsRepository  {
 
     public LiveData<Workout> getWorkoutLD(@NonNull Long id) {
         return workoutsDao.getWorkoutLD(id);
+    }
+
+    public LiveData<Workout> getActiveWorkoutLD() {
+        return workoutsDao.getActiveWorkoutLD();
     }
 
     public void updateWorkout(@NonNull Workout workout) {
@@ -92,18 +93,18 @@ public class WorkoutsRepository  {
         return exercisesDao.getAllExerciseNamesLD();
     }
 
-    public int updateExercise(@NonNull Exercise... exercise) {
-        return exercisesDao.updateExercise(exercise);
+    public void updateExercise(@NonNull Exercise... exercise) {
+        mAppExecutors.diskIO().execute(()->exercisesDao.updateExercise(exercise));
     }
 
-    public int updateExercises(@NonNull List<Exercise> exercises) {
+    public void updateExercises(@NonNull List<Exercise> exercises) {
         int i=0;
         for (Exercise e :
                 exercises) {
             e.setOrderNumber(++i);
         }
         Exercise[] exercisesArray=exercises.toArray(new Exercise[exercises.size()]);
-        return exercisesDao.updateExercise(exercisesArray);
+        mAppExecutors.diskIO().execute(()->exercisesDao.updateExercise(exercisesArray));
     }
 
 //    public int updateExercises(List<ExerciseWithSets> exercisesWithSets){
