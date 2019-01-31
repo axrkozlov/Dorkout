@@ -2,7 +2,6 @@ package com.axfex.dorkout.views.workouts;
 
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -205,12 +204,12 @@ public class EditWorkoutFragment extends Fragment {
                 .replaceAll(",+|\\s,", ",")
         ;
 
-        int time = mEditNormTime.getValue();
-        int restTime = mEditRestTime.getValue();
+        long time = mEditNormTime.getValue()*1000;
+        long restTime = mEditRestTime.getValue()*1000;
 
         Exercise exercise = new Exercise(newName, mWorkoutId);
-        exercise.setTime(time);
-        exercise.setRestTime(restTime);
+        exercise.setTimePlan(time);
+        exercise.setRestTimePlan(restTime);
 
         exercise.setOrderNumber(mExercises != null ? mExercises.size() + 1 : 0);
         mEditWorkoutViewModel.createExercise(exercise);
@@ -257,6 +256,7 @@ public class EditWorkoutFragment extends Fragment {
         mWorkout = workout;
         Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
     }
+
 
     private void onExerciseListLoaded(List<Exercise> exercises) {
         this.mExercises = exercises;
@@ -366,11 +366,11 @@ public class EditWorkoutFragment extends Fragment {
             if (mExercise.getNote() != null) mDesc.setText(mExercise.getNote());
             else mDesc.setVisibility(View.GONE);
 
-            if (mExercise.getTime() != null) {
-                mNormTime.setText(String.format(Locale.getDefault(), "%d", mExercise.getTime()));
+            if (mExercise.getTimePlan() != null) {
+                mNormTime.setText(String.format(Locale.getDefault(), "%d", mExercise.getTimePlan()));
             }
-            if (mExercise.getRestTime() != null) {
-                mRestTime.setText(String.format(Locale.getDefault(), "%d", mExercise.getRestTime()));
+            if (mExercise.getRestTimePlan() != null) {
+                mRestTime.setText(String.format(Locale.getDefault(), "%d", mExercise.getRestTimePlan()));
             }
             mOrderNumber.setText(String.format(Locale.getDefault(), "%d", mPosition + 1));
 //            mOrderNumber.setVisibility(View.GONE);
@@ -493,16 +493,8 @@ public class EditWorkoutFragment extends Fragment {
             name.setText(text);
             if (text.equals("New name...")) {
                 Log.i(TAG, "getDropDownView: "+text+position+":"+getCount());
-//                convertView.setBackgroundColor(256);
-//                ((TextView) convertView.findViewById(android.R.id.text1)).setTextColor(256);
-                // .setTypeface(null, Typeface.ITALIC);
-
-//                LayoutInflater inflater = LayoutInflater.from(getContext());
-//                View view = inflater.inflate(android.R.layout.simple_spinner_dropdown_item, parent, false);
-
-                name.setTextColor(Color.BLUE);
+                name.setTextColor(getResources().getColor(R.color.colorAccent));
                 name.setTypeface(null, Typeface.ITALIC);
-//                return view;
             } else {
                 name.setTextColor(Color.WHITE);
                 name.setTypeface(null, Typeface.NORMAL);

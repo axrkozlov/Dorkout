@@ -2,89 +2,36 @@
 <com.google.android.flexbox.FlexboxLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:flexWrap="wrap"
     app:flexDirection="row"
     app:justifyContent="space_around"
     app:alignItems="stretch"
-    app:alignContent="stretch">
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/set_widget"
-        android:layout_width="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_height="80dp"
-        app:layout_minWidth="40dp"
-        app:layout_flexGrow="5"
-        android:visibility="visible">
-        <ImageView
-            android:id="@+id/set_widget_back"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/card_result" />
-
-        <TextView
-            android:id="@+id/set_widget_label"
-            android:text="@string/lb_set"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:textAppearance="@style/result_label"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/set"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:maxWidth="80dp"
-            android:fontFamily="serif"
-            android:gravity="center"
-            android:maxLines="1"
-            android:textColor="@color/result_digit"
-            android:text="3"
-            android:textAlignment="center"
-            android:textSize="60sp"
-            app:autoSizeStepGranularity="1sp"
-            app:autoSizeTextType="uniform"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    app:alignContent="stretch" >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/weight_widget"
         android:layout_width="wrap_content"
-        android:layout_marginBottom="4dp"
         android:layout_height="80dp"
-        app:layout_minWidth="110dp"
-        app:layout_flexGrow="2"
-        android:visibility="visible">
-
+        app:layout_minWidth="40dp"
+        app:layout_flexGrow="2">
         <ImageView
             android:id="@+id/weight_widget_back"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/card_result" />
 
         <TextView
             android:id="@+id/weight_widget_label"
+            android:text="@string/lb_weight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:text="@string/lb_weight"
             android:textAppearance="@style/result_label"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -92,21 +39,17 @@
         <TextView
             android:id="@+id/weight"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:maxWidth="120dp"
-            android:fontFamily="serif"
-            android:gravity="center"
-            android:maxLines="1"
-            android:textColor="@color/result_digit"
-            android:text="110"
-            android:textAlignment="center"
-            android:textSize="60sp"
-            app:autoSizeStepGranularity="1sp"
-            app:autoSizeTextType="uniform"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
+            android:text="@string/weight"
+            android:textAppearance="@style/result_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -115,11 +58,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/reps_widget"
         android:layout_width="wrap_content"
-        android:layout_marginBottom="4dp"
         android:layout_height="80dp"
-        app:layout_minWidth="80dp"
-        app:layout_flexGrow="2"
-        android:visibility="visible">
+        app:layout_minWidth="40dp"
+        app:layout_flexGrow="2">
         <ImageView
             android:id="@+id/reps_widget_back"
             android:layout_width="0dp"
@@ -144,22 +85,16 @@
         <TextView
             android:id="@+id/reps"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:maxWidth="120dp"
-            android:fontFamily="serif"
-            android:gravity="center"
-            android:maxLines="1"
-            android:textColor="@color/result_digit"
-            android:text="15"
-            android:textAlignment="center"
-            android:textSize="60sp"
-            app:autoSizeStepGranularity="1sp"
-            app:autoSizeTextType="uniform"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
+            android:text="@string/result_reps"
+            android:textAppearance="@style/result_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -168,11 +103,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/distance_widget"
         android:layout_width="wrap_content"
-        android:layout_marginBottom="4dp"
         android:layout_height="80dp"
-        app:layout_minWidth="80dp"
+        app:layout_minWidth="40dp"
         app:layout_flexGrow="2"
-        android:visibility="visible">
+        >
 
         <ImageView
             android:id="@+id/distance_widget_iv"
@@ -197,17 +131,16 @@
 
         <TextView
             android:id="@+id/distance"
-            android:layout_width="wrap_content"
-            android:maxWidth="120dp"
+            android:text="@string/result_reps"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:fontFamily="serif"
-            android:gravity="center"
+            android:layout_margin="8dp"
+            android:gravity="bottom"
             android:maxLines="1"
-            android:textColor="@color/result_digit"
-            android:text="99"
             android:textAlignment="center"
-            android:textSize="60sp"
-            app:autoSizeStepGranularity="1sp"
+            app:autoSizeMaxTextSize="100sp"
+            app:autoSizeMinTextSize="12sp"
+            app:autoSizeStepGranularity="2sp"
             app:autoSizeTextType="uniform"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -220,11 +153,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/time_widget"
         android:layout_width="wrap_content"
-        android:layout_marginBottom="4dp"
         android:layout_height="80dp"
-        app:layout_minWidth="140dp"
-        app:layout_flexGrow="5"
-        android:visibility="visible">
+        app:layout_flexGrow="4"
+        app:layout_minWidth="140dp">
 
         <ImageView
             android:id="@+id/time_widget_back"
@@ -250,38 +181,22 @@
             android:id="@+id/exercise_time"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:fontFamily="serif"
-            android:gravity="center"
+            android:layout_margin="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="bottom"
             android:maxLines="1"
-            android:text="4:36"
+            android:text="9"
             android:textAlignment="center"
-            android:textColor="@color/result_digit"
-            android:textSize="60sp"
             app:autoSizeMaxTextSize="100sp"
-            app:autoSizeMinTextSize="56sp"
-            app:autoSizeStepGranularity="1sp"
+            app:autoSizeMinTextSize="24sp"
+            app:autoSizeStepGranularity="2sp"
             app:autoSizeTextType="uniform"
+            android:textSize="65sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="8dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="2dp"
-            android:indeterminateOnly="false"
-            android:minHeight="13dp"
-            android:progress="33"
-            android:progressDrawable="@drawable/progress_bar_horizontal"
-            android:secondaryProgress="55"
-            app:layout_constraintBottom_toBottomOf="@+id/exercise_time"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

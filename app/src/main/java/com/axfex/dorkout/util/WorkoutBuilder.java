@@ -8,7 +8,7 @@ public class WorkoutBuilder {
 //        ActiveWorkout activeWorkout=new ActiveWorkout(workout.getId());
 //        activeWorkout.setName(workout.getName());
 //        activeWorkout.setNote(workout.getNote());
-//        activeWorkout.setTotalTime(workout.getTotalTime());
+//        activeWorkout.setTotalExercisesTime(workout.getCurrentTime());
 //        activeWorkout.setLastTime(workout.getLastStartTime());
 //        activeWorkout.setOrder(0);
 //        activeWorkout.setExercisesCount(0);

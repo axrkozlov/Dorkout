@@ -1,6 +1,7 @@
 package com.axfex.dorkout.data.source.local;
 
 import com.axfex.dorkout.data.Exercise;
+import com.axfex.dorkout.data.Workout;
 
 import java.util.List;
 
@@ -27,7 +28,6 @@ public interface ExercisesDao {
 
     @Query("SELECT DISTINCT name from Exercise order by creationDate DESC")
     LiveData<List<String>> getAllExerciseNamesLD();
-
 
 
     //@Query("SELECT * FROM colis INNER JOIN step ON colis.idColis= step.idColis ORDER BY date DESC")

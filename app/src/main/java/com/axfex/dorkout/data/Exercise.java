@@ -1,10 +1,9 @@
 package com.axfex.dorkout.data;
 
 
-import com.axfex.dorkout.data.source.local.TimestampConverter;
+import com.axfex.dorkout.util.StatusConverter;
 
-import java.util.Date;
-
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -14,19 +13,28 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import static androidx.room.ForeignKey.CASCADE;
+import static com.axfex.dorkout.data.Status.DONE;
+import static com.axfex.dorkout.data.Status.RUNNING;
+import static com.axfex.dorkout.data.Status.SKIPPED;
+import static com.axfex.dorkout.data.Status.STOPPED;
+import static com.axfex.dorkout.util.DateUtils.now;
 
 /**
  * Created by alexanderkozlov on 2/18/18.
  */
+@TypeConverters({Status.class})
 
 @Entity(foreignKeys = {@ForeignKey(entity = Workout.class,
         parentColumns = "id",
         childColumns = "workoutId",
         onDelete = CASCADE)},
         indices = {@Index(value = "workoutId")}
-        )
+)
 
-    public class Exercise {
+
+public class Exercise {
+
+
     @PrimaryKey(autoGenerate = true)
     private Long id;
     @ColumnInfo(name = "workoutId")
@@ -34,22 +42,29 @@ import static androidx.room.ForeignKey.CASCADE;
     private String name;
     private String note;
     private Integer orderNumber;
+    private Integer weightPlan;
+    private Integer repeatsPlan;
+    private Long timePlan;
+    private Long restTimePlan;
+    private Long creationDate = now();
+
+    //Results
     private Integer weight;
     private Integer repeats;
-    private Integer time;
-    private Integer restTime;
-    @TypeConverters({TimestampConverter.class})
-    private Date creationDate = new Date(System.currentTimeMillis());
+    private Long time;
+    private Long restTime;
 
-    private Integer weightFact;
-    private Integer repeatsFact;
-    private Integer timeFact;
-    private Integer restTimeFact;
+    @Nullable
+    private Status status;
 
-    private Boolean mDone = false;
-    private Boolean mActive = false;
-    private Boolean mSkipped = false;
-    private Boolean mPaused = false;
+    @Ignore
+    private long startTime;
+    @Ignore
+    private long stopTime;
+    @Ignore
+    private long accumulatedTime;
+    @Ignore
+    private long accumulatedRestTime;
 
 
     public Exercise() {
@@ -58,7 +73,7 @@ import static androidx.room.ForeignKey.CASCADE;
     @Ignore
     public Exercise(String name, final Long workoutId) {
         this.name = name;
-        this.workoutId=workoutId;
+        this.workoutId = workoutId;
     }
 
     public Long getId() {
@@ -101,6 +116,46 @@ import static androidx.room.ForeignKey.CASCADE;
         this.orderNumber = orderNumber;
     }
 
+    public Integer getWeightPlan() {
+        return weightPlan;
+    }
+
+    public void setWeightPlan(Integer weightPlan) {
+        this.weightPlan = weightPlan;
+    }
+
+    public Integer getRepeatsPlan() {
+        return repeatsPlan;
+    }
+
+    public void setRepeatsPlan(Integer repeatsPlan) {
+        this.repeatsPlan = repeatsPlan;
+    }
+
+    public Long getTimePlan() {
+        return timePlan;
+    }
+
+    public void setTimePlan(Long timePlan) {
+        this.timePlan = timePlan;
+    }
+
+    public Long getRestTimePlan() {
+        return restTimePlan;
+    }
+
+    public void setRestTimePlan(Long restTimePlan) {
+        this.restTimePlan = restTimePlan;
+    }
+
+    public Long getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Long creationDate) {
+        this.creationDate = creationDate;
+    }
+
     public Integer getWeight() {
         return weight;
     }
@@ -117,92 +172,80 @@ import static androidx.room.ForeignKey.CASCADE;
         this.repeats = repeats;
     }
 
-    public Integer getTime() {
+    public Long getTime() {
+        if (status!=RUNNING) {
+            return time;
+        }
+
+        final long timeSinceStart = now() - startTime;
+        time = accumulatedTime + Math.max(0, timeSinceStart);
         return time;
     }
 
-    public void setTime(Integer time) {
+    public void setTime(Long time) {
         this.time = time;
     }
 
-    public Integer getRestTime() {
+    public Long getRestTime() {
+        if (status!=STOPPED) {
+            return restTime;
+        }
+
+        final long timeSinceStop = now() - stopTime;
+        restTime = accumulatedRestTime + Math.max(0, timeSinceStop);
         return restTime;
     }
 
-    public void setRestTime(Integer restTime) {
+    public void setRestTime(Long restTime) {
         this.restTime = restTime;
     }
 
-    public Date getCreationDate() {
-        return creationDate;
+    @Nullable
+    public Status getStatus() {
+        return status;
     }
 
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
+    public void setStatus(@Nullable Status status) {
+        this.status = status;
     }
 
-    public Integer getWeightFact() {
-        return weightFact;
+    public void start() {
+        startTime = now();
+        accumulatedTime = time == null ? 0L : time;
+        status = RUNNING;
     }
 
-    public void setWeightFact(Integer weightFact) {
-        this.weightFact = weightFact;
+    public void restart() {
+        startTime = now();
+        status = RUNNING;
     }
 
-    public Integer getRepeatsFact() {
-        return repeatsFact;
+    public void stop() {
+        stopTime = now();
+        getTime();
+        accumulatedRestTime = restTime == null ? 0L : restTime;
+        status = STOPPED;
     }
 
-    public void setRepeatsFact(Integer repeatsFact) {
-        this.repeatsFact = repeatsFact;
+    public void skip() {
+        status = SKIPPED;
+        weight = 0;
+        repeats = 0;
+        time = 0L;
+        restTime = 0L;
     }
 
-    public Integer getTimeFact() {
-        return timeFact;
+    public void finish() {
+        status=DONE;
     }
 
-    public void setTimeFact(Integer timeFact) {
-        this.timeFact = timeFact;
+    public void reset() {
+        weight = 0;
+        repeats = 0;
+        time = 0L;
+        restTime = 0L;
+        status=null;
     }
 
-    public Integer getRestTimeFact() {
-        return restTimeFact;
-    }
-
-    public void setRestTimeFact(Integer restTimeFact) {
-        this.restTimeFact = restTimeFact;
-    }
-
-    public Boolean getDone() {
-        return mDone;
-    }
-
-    public void setDone(Boolean done) {
-        mDone = done;
-    }
-
-    public Boolean getActive() {
-        return mActive;
-    }
-
-    public void setActive(Boolean active) {
-        mActive = active;
-    }
-
-    public Boolean getSkipped() {
-        return mSkipped;
-    }
-
-    public void setSkipped(Boolean skipped) {
-        mSkipped = skipped;
-    }
-
-    public Boolean getPaused() {
-        return mPaused;
-    }
-
-    public void setPaused(Boolean paused) {
-        mPaused = paused;
-    }
 
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import androidx.fragment.app.Fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -33,7 +34,9 @@ public class MainActivity extends BaseActivity implements MainNavigator {
     public MainViewModel mMainViewModel;
 
     private boolean mIsMainMenuShown = false;
-
+    public static Intent newIntent(Context context) {
+        return new Intent(context, MainActivity.class);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

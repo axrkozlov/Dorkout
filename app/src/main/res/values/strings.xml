@@ -5,14 +5,14 @@
 
     <string name="workout_id_tag" translatable="false">exercise_id</string>
 
-    <string name="lb_total_time">time</string>
+    <string name="lb_total_time">timePlan</string>
     <string name="lb_rest_time">rest</string>
 
 
     <string name="lb_workout_desc_exercises">Exercises:</string>
-    <string name="lb_workout_desc_total_time">Total time:</string>
+    <string name="lb_workout_desc_total_time">Total timePlan:</string>
     <string name="lb_workout_desc_days">Days:</string>
-    <string name="lb_workout_desc_start_time">Start time:</string>
+    <string name="lb_workout_desc_start_time">Start timePlan:</string>
 
     <string name="lb_last_result">Last result</string>
     <string name="lb_norm_reps">Reps</string>
@@ -61,18 +61,18 @@
 
     <string name="exercise_number">2</string>
     <string name="exercise_title">Barbell</string>
-    <string name="exercise_desc">Up and high, weight: 11kg. mSets 3, reps 115 </string>
+    <string name="exercise_desc">Up and high, weightPlan: 11kg. mSets 3, reps 115 </string>
 
 
     <string name="norm_time">1:24</string>
     <string name="norm_reps">31</string>
     <string name="mSets">3</string>
-    <string name="weight">50</string>
+    <string name="weight">10</string>
     <string name="rest">3:30</string>
     <string name="result_time">1:24:29</string>
-    <string name="result_time_ms">59</string>
-    <string name="set">23</string>
-    <string name="result_reps">222</string>
+    <string name="result_time_ms">9</string>
+    <string name="set">3</string>
+    <string name="result_reps">22</string>
 
     <string name="last_result_time">1:24:86</string>
     <string name="last_result_reps">40</string>
@@ -112,4 +112,7 @@
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="action_settings">Settings</string>
     <string name="bt_skip">skip</string>
+    <string name="empty_time">--:--</string>
+    <string name="bt_stop">stop</string>
+    <string name="lb_distance">Distance</string>
 </resources>

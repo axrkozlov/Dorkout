@@ -11,8 +11,8 @@
     <dimen name="info_label">14sp</dimen>
     <dimen name="info_text">20sp</dimen>
     <dimen name="result_label">14sp</dimen>
-    <dimen name="result_text">46sp</dimen>
-    <dimen name="result_text_ms">24sp</dimen>
+    <dimen name="result_text">38sp</dimen>
+    <dimen name="result_text_ms">28sp</dimen>
     <dimen name="title_big_text">24sp</dimen>
     <dimen name="desc_text">14sp</dimen>
     <dimen name="info_high">50dp</dimen>

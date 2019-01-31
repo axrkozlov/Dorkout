@@ -2,16 +2,12 @@
 <shape
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:innerRadiusRatio="5"
-    android:thicknessRatio="4"
+    android:thicknessRatio="10"
     android:shape="ring"
-    android:useLevel="true"
+
     >
-
-
     <solid android:color="@color/colorAccent"/>
-    <size
-        android:height="76dip"
-        android:width="76dip" />
+
 
 
 </shape>

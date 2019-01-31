@@ -90,7 +90,7 @@ public class ReminderFragment extends Fragment {
 //            workout.setId(workoutId);
 //        } else {
 //            workout.setLastStartTime(0L);
-//            workout.setTotalTime(0L);
+//            workout.setTotalExercisesTime(0L);
 //            workout.setExercisesCount(0);
 //        }
 //

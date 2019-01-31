@@ -1,8 +1,13 @@
 package com.axfex.dorkout.util;
 
+import android.os.SystemClock;
+
+import com.axfex.dorkout.R;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by alexanderkozlov on 11/27/17.
@@ -33,7 +38,7 @@ public final class DateUtils {
     }
 
     public static Long getTimeMillis(String time) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm",Locale.getDefault());
         if (time.length() == 0) {
             return 0L;
         }
@@ -48,34 +53,26 @@ public final class DateUtils {
 
         return 0L;
     }
-//    public static String normalizeTimeString(String time) {
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
-//        if (time.length() == 0) {
-//            return "";
-//        }
-//
-//        try {
-//            Date date = dateFormat.parse(time);
-//            return date.getTime();
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        return 0L;
-//    }
 
     public static String getTimeString(Long time_ms) {
-        if (time_ms == null ||  time_ms <= 0) {
+        if (time_ms == null ) {
             //TODO: get string from resource
             return "--:--";
+        } else if (time_ms <= 0){
+            return "00:00";
         }
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        String timeFormat;
+        if (time_ms<3600000) {
+            timeFormat="mm:ss";
+        }else {
+            timeFormat="H:mm:ss";
+        }
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat(timeFormat, Locale.getDefault());
 
         try {
             Date date = new Date(time_ms);
             return dateFormat.format(date);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -83,20 +80,14 @@ public final class DateUtils {
         return "";
     }
 
-//    public static ArrayList<Boolean> parseWeekDays(Integer fromBase) {
-//        ArrayList<Boolean> result = new ArrayList<>();
-//        Integer temp_result;
-//        String string_result = "AA";
-//        for (Integer i = 0; i < 7; ++i) {
-//            temp_result = (fromBase >> i) & 1;
-//            string_result = string_result + Boolean.toString(((fromBase >> i) & 1) == 1);
-//            result.add(((fromBase >> i) & 1) == 1);
-//            //result.add(fromBase & (i << 1)  ? true:false );
-//        }
-//        Log.e("WEEK_DAYS_PARSE", "froBase:" + Integer.toString(fromBase) + " result:" + string_result);
-//
-//
-//        return result;
-//    }
+    public static Integer sec(Long milliseconds){
+        milliseconds=milliseconds/1000;
+        return milliseconds.intValue();
+    }
+
+    public static Long now(){
+        return SystemClock.elapsedRealtime();
+    }
+
 
 }

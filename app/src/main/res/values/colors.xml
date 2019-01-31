@@ -21,10 +21,12 @@
     <color name="status_exercise_active">#7ED321</color>
     <color name="status_exercise_inactive">#505074</color>
 
-    <color name="result_digit">#E5DE6E</color>
-    <color name="result_background">#303044</color>
+    <color name="result_digit">#FFFA98</color>
+    <color name="result_background">#161414</color>
     <color name="result_borders">#979797</color>
     <color name="result_label">#EEEEEE</color>
+    <color name="result_progress">#F8E836</color>
+    <color name="rest_progress">#78FC31</color>
 
     <color name="info_digit">#212121</color>
     <color name="info_background">#292626</color>

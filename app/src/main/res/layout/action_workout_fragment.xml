@@ -17,15 +17,19 @@
 
             <TextView
                 android:id="@+id/et_exercise_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ExerciseName"/>
+                android:layout_width="246dp"
+                android:layout_height="33dp"
+                android:layout_marginStart="12dp"
+                android:text="ExerciseName"
+                android:textSize="25dp" />
 
             <include
                 layout="@layout/action_workout_result_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp" />
+
+
             <include
                 layout="@layout/action_workout_button_bar"
                 android:layout_width="match_parent"

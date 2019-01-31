@@ -1,46 +1,55 @@
 package com.axfex.dorkout.data;
 
 
-import com.axfex.dorkout.data.source.local.TimestampConverter;
-
-import java.util.Date;
-
+import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
+import static com.axfex.dorkout.data.Status.RUNNING;
+import static com.axfex.dorkout.data.Status.STOPPED;
+import static com.axfex.dorkout.util.DateUtils.now;
+
 /**
  * Created by alexanderkozlov on 1/2/18.
  */
+
+@TypeConverters({Status.class})
+
 @Entity
 public class Workout {
     @PrimaryKey(autoGenerate = true)
     private Long id;
     private String name;
     private String note;
-    private Long totalTime;
-    private Long lastStartTime;
     private Integer order;
+    private Integer color;
+    private Long totalExercisesTime;
     private Integer exercisesCount;
-
-    @TypeConverters({TimestampConverter.class})
-    private Date startTime;
-    private Boolean active = false;
+    private Long startTime;
+    private Long time;
+    @Nullable
+    private Status status;
+    @Ignore
+    private long accumulatedTime;
 
     //Add Reminder instead
 
 
     public Workout() {
     }
+
     @Ignore
     public Workout(String name) {
         this.name = name;
     }
+
     @Ignore
     public Workout(Long id) {
         this.id = id;
     }
+
 
     public Long getId() {
         return id;
@@ -66,28 +75,28 @@ public class Workout {
         this.note = note;
     }
 
-    public Long getTotalTime() {
-        return totalTime;
-    }
-
-    public void setTotalTime(Long totalTime) {
-        this.totalTime = totalTime;
-    }
-
-    public Long getLastStartTime() {
-        return lastStartTime;
-    }
-
-    public void setLastStartTime(Long lastStartTime) {
-        this.lastStartTime = lastStartTime;
-    }
-
     public Integer getOrder() {
         return order;
     }
 
     public void setOrder(Integer order) {
         this.order = order;
+    }
+
+    public Integer getColor() {
+        return color;
+    }
+
+    public void setColor(Integer color) {
+        this.color = color;
+    }
+
+    public Long getTotalExercisesTime() {
+        return totalExercisesTime;
+    }
+
+    public void setTotalExercisesTime(Long totalExercisesTime) {
+        this.totalExercisesTime = totalExercisesTime;
     }
 
     public Integer getExercisesCount() {
@@ -98,23 +107,53 @@ public class Workout {
         this.exercisesCount = exercisesCount;
     }
 
-    public Date getStartTime() {
+    public Long getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(Long startTime) {
         this.startTime = startTime;
     }
 
-    public Boolean getActive() {
-        return active;
+    public Long getTime() {
+        if (status != RUNNING) {
+            return time;
+        }
+
+        final long timeSinceStart = now() - startTime;
+        time = accumulatedTime + Math.max(0, timeSinceStart);
+        return time;
     }
 
-    public void setActive(Boolean active) {
-        this.active = active;
+    public void setTime(Long time) {
+        this.time = time;
+    }
+
+    @Nullable
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(@Nullable Status status) {
+        this.status = status;
+    }
+
+    public void start() {
+        startTime = now();
+        accumulatedTime = time == null ? 0L : time;
+        status = RUNNING;
+    }
+
+    public void stop() {
+        status = STOPPED;
+    }
+
+    public void reset() {
+        status = null;
+        startTime = 0L;
+        time = 0L;
     }
 }
-
 
 
 //

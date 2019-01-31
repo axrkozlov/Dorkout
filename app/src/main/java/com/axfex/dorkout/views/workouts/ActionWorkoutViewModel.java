@@ -19,7 +19,7 @@ public class ActionWorkoutViewModel extends ViewModel {
 
     public ActionWorkoutViewModel(WorkoutsRepository workoutsRepository, ActionWorkoutManager actionWorkoutManager) {
         this.mWorkoutsRepository = workoutsRepository;
-        this.mActionWorkoutManager=actionWorkoutManager;
+        this.mActionWorkoutManager = actionWorkoutManager;
     }
 
     public LiveData<Workout> getWorkout(@NonNull final Long workoutId) {
@@ -30,28 +30,31 @@ public class ActionWorkoutViewModel extends ViewModel {
         return mWorkoutsRepository.getExercisesLD(workoutId);
     }
 
-    public void startWorkout(Workout workout, List<Exercise> exercises){
-        mActionWorkoutManager.startWorkout(workout,exercises);
+    public LiveData<Workout> getActiveWorkoutLD() {
+        return mActionWorkoutManager.getActiveWorkoutLD();
     }
 
-    public void stopWorkout(){
-        mActionWorkoutManager.stopWorkout();
+    public LiveData<Exercise> getActiveExerciseLD() {
+        return mActionWorkoutManager.getActiveExerciseLD();
     }
 
-    public Workout getActiveWorkout() {
-        return mActionWorkoutManager.getWorkout();
-    }
-
-    public LiveData<Exercise> getActiveExercise() {
-        return mActionWorkoutManager.getActiveExercise();
-    }
-
-    public void setActiveExercise(Exercise exercise){
+    public void setActiveExercise(Exercise exercise) {
         mActionWorkoutManager.setExercise(exercise);
+    }
+    public void startWorkout(Workout workout) {
+        mActionWorkoutManager.startWorkout(workout);
+    }
+
+    public void stopWorkout() {
+        mActionWorkoutManager.stopWorkout();
     }
 
     public void startExercise() {
         mActionWorkoutManager.startExercise();
+    }
+
+    public void stopExercise() {
+        mActionWorkoutManager.stopExercise();
     }
 
     public void restartExercise() {
@@ -66,10 +69,23 @@ public class ActionWorkoutViewModel extends ViewModel {
         mActionWorkoutManager.finishExercise();
     }
 
+//    public LiveData<Long> getWorkoutTime() {
+//        return mActionWorkoutManager.getWorkoutTime();
+//    }
+//
+//    public LiveData<Long> getExerciseTime() {
+//        return mActionWorkoutManager.getExerciseTime();
+//    }
+//    public LiveData<Long> getRestTimePlan() {
+//        return mActionWorkoutManager.getRestTimePlan();
+//    }
 //    public List<Exercise> getActiveExercises() {
 //        return mActionWorkoutManager.getExercises();
 //    }
 
 
-
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+    }
 }

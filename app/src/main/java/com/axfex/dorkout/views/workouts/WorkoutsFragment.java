@@ -307,7 +307,7 @@ public class WorkoutsFragment extends Fragment implements WorkoutsNavigator {
 
 //            mDays.setText(sb.toString());
 //            mStartTime.setText(mWorkout.getStartTime().toString());
-//            mTotalTime.setText(DateUtils.getTimeString(mWorkout.getTotalTime()));
+//            mTotalTime.setText(DateUtils.getTimeString(mWorkout.getCurrentTime()));
             //holder.mCard.setCardBackgroundColor(workout.isMarked() ? markedCardColor : unmarkedCardColor);
             //holder.mActiveIcon.setVisibility(workout.isMarked() ? View.VISIBLE : View.INVISIBLE);
 
