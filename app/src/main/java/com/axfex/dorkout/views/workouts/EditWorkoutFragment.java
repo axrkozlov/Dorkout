@@ -283,7 +283,7 @@ public class EditWorkoutFragment extends Fragment {
         @NonNull
         @Override
         public ExerciseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(getContext()).inflate(R.layout.edit_workout_exercise_item, parent, false);
+            View view = LayoutInflater.from(getContext()).inflate(R.layout.action_workout_exercise_item, parent, false);
             return new ExerciseViewHolder(view);
         }
 
@@ -333,8 +333,8 @@ public class EditWorkoutFragment extends Fragment {
             mName = itemView.findViewById(R.id.exercise_name);
             mDesc = itemView.findViewById(R.id.exercise_desc);
             mInfoBar = itemView.findViewById(R.id.exercise_info_bar);
-            mNormTime = mInfoBar.findViewById(R.id.norm_time);
-            mRestTime = mInfoBar.findViewById(R.id.rest_time);
+            mNormTime = mInfoBar.findViewById(R.id.time);
+            mRestTime = mInfoBar.findViewById(R.id.rest);
             mOrderNumber = itemView.findViewById(R.id.exercise_order);
             mOrderButton = itemView.findViewById(R.id.exercise_collapse);
             setsView = itemView.findViewById(R.id.exercise_sets);

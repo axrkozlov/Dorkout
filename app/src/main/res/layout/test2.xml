@@ -14,14 +14,15 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/set"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="45645264"
-            android:textSize="55dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="29dp"
+            android:fontFamily="@font/bitter"
+            android:includeFontPadding="false"
+            android:text="PPPPP"
+            android:textColor="@color/result_digit"
+            android:textFontWeight="10dp"
+            android:textSize="30sp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

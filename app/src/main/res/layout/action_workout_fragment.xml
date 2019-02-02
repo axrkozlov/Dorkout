@@ -1,40 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/AppTheme.AppBarOverlay">
 
-            <include
-                layout="@layout/action_workout_status_bar"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/et_exercise_name"
-                android:layout_width="246dp"
-                android:layout_height="33dp"
-                android:layout_marginStart="12dp"
-                android:text="ExerciseName"
-                android:textSize="25dp" />
+                <ImageView
+                    android:id="@+id/line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:contentDescription="TODO"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/gray_borders" />
+
+                <TextView
+                    android:id="@+id/total_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/total_time"
+                    android:textColor="@color/status_digit"
+                    android:textSize="@dimen/status_digit"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toStartOf="@+id/green_lamp"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/et_exercise_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="1"
+                    android:textColor="@color/secondary_white_text"
+                    android:textSize="25dp"
+                    android:typeface="normal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <TextView
+                    android:id="@+id/et_exercise_name"
+                    android:layout_width="246dp"
+                    android:layout_height="33dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="ExerciseName"
+                    android:textColor="@color/secondary_white_text"
+                    android:textSize="25dp"
+                    android:typeface="normal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/et_exercise_number"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <ImageView
+                    android:id="@+id/green_lamp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:contentDescription="TODO"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/comment"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.444"
+                    app:srcCompat="@drawable/lamp_green" />
+
+                <ImageView
+                    android:id="@+id/comment"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:contentDescription="TODO"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_comment" />
+                <!--<ProgressBar-->
+                    <!--android:id="@+id/pb_total_time"-->
+                    <!--style="?android:progressBarStyleHorizontal"-->
+                    <!--android:layout_width="45dp"-->
+                    <!--android:layout_height="45dp"-->
+                    <!--android:layout_marginTop="8dp"-->
+                    <!--android:layout_marginBottom="8dp"-->
+                    <!--android:progress="80"-->
+                    <!--android:progressDrawable="@drawable/progress_bar_ring"-->
+                    <!--app:layout_constraintBottom_toBottomOf="@+id/total_time"-->
+                    <!--app:layout_constraintEnd_toEndOf="parent"-->
+                    <!--app:layout_constraintTop_toTopOf="parent" />-->
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <include
                 layout="@layout/action_workout_result_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp" />
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"/>
 
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="10dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="4dp"
+                android:indeterminateOnly="false"
+                android:minHeight="13dp"
+                android:progress="33"
+                android:progressDrawable="@drawable/progress_bar_horizontal"
+                android:secondaryProgress="55"
+                app:layout_constraintBottom_toBottomOf="@+id/exercise_time"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <include
                 layout="@layout/action_workout_button_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
                 />
+
+
+
         </com.google.android.material.appbar.AppBarLayout>
 
 
@@ -43,7 +155,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-
         >
 
     </androidx.recyclerview.widget.RecyclerView>
@@ -65,6 +176,6 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="@dimen/fab_margin"
-        app:srcCompat="@drawable/ic_pause" />
+        app:srcCompat="@drawable/ic_skip_next_black_24dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,48 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#404444</color>
-    <color name="colorPrimaryDark">#252524</color>
-    <color name="colorAccent">#ff012f</color>
+
+    <color name="colorPrimary">#414446</color>
+    <color name="colorPrimaryDark">#282A2B</color>
+    <color name="colorAccent">#FC9120</color>
     <color name="colorToolbarElements">#F8F8F8</color>
     <color name="TextColor">#EEEE55</color>
-    <color name="background">#303135</color>
-    <color name="menu_buttons">#ff012f</color>
+    <color name="background">#2D3135</color>
+    <color name="menu_buttons">#FC9120</color>
 
     <color name="status_digit">#E5DE6E</color>
 
     <color name="status_light_red">#FF2222</color>
-    <color name="status_light_yellow">#FFAC11</color>
-    <color name="status_light_green">#42fa05</color>
+    <color name="status_light_yellow">#DD9203</color>
+
     <color name="status_light_off">#D8D8D8</color>
     <color name="status_light_borders">#979797</color>
     <color name="status_workout_run">#7ED321</color>
-    <color name="status_workout_pause">#FFAC11</color>
+
     <color name="status_exercise_done">#7ED321</color>
     <color name="status_exercise_active">#7ED321</color>
     <color name="status_exercise_inactive">#505074</color>
 
-    <color name="result_digit">#FFFA98</color>
-    <color name="result_background">#161414</color>
-    <color name="result_borders">#979797</color>
-    <color name="result_label">#EEEEEE</color>
-    <color name="result_progress">#F8E836</color>
-    <color name="rest_progress">#78FC31</color>
+    <color name="result_digit">#FCE977</color>
+    <color name="result_background">#353332</color>
+    <color name="result_borders">#998C8C</color>
+    <color name="result_label">#9E9884</color>
+    <color name="result_icon">#F7AF2C</color>
 
-    <color name="info_digit">#212121</color>
-    <color name="info_background">#292626</color>
-    <color name="info_borders">#979797</color>
-    <color name="info_label">#fcf6e8</color>
+    <color name="rest_progress">#F8E836</color>
+    <color name="result_progress">#78FC31</color>
+    <color name="status_button">#82FD3E</color>
+    <color name="status_button_text">#393B3D</color>
 
 
-    <color name="workout_item">#212121</color>
+    <color name="workout_item">#4C4C53</color>
     <color name="workout_item_marked">#4a148c</color>
+    <color name="workout_icon">#E3EBFA</color>
 
-    <color name="exercise_item">#EFDFC4</color>
+
+    <color name="exercise_item">#535557</color>
     <color name="exercise_active_item">#F7EAD8</color>
     <color name="exercise_button_background">#978F87</color>
     <color name="exercise_button_text">#2D2D56</color>
-    <color name="exercise_edit_background">#2D2D56</color>
+    <color name="exercise_status_running">#42E010</color>
+    <color name="exercise_status_paused">#FFEB3B</color>
+    <color name="exercise_status_done">#43A047</color>
+    <color name="exercise_status_skipped">#696767</color>
+    <color name="exercise_status_next">#039BE5</color>
+    <color name="exercise_status_forecolor">#FFFFFF</color>
 
+
+    <color name="exercise_info_digit">#FFF19A</color>
+    <color name="exercise_info_background">#494847</color>
+    <color name="exercise_info_borders">#948D87</color>
+    <color name="exercise_info_label">#C7BBA0</color>
+
+    <color name="exercise_edit_background">#2D2D56</color>
 
     <color name="primary_text">#fff8c6</color>
     <color name="secondary_text">#e6e497</color>

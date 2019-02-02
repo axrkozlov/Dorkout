@@ -65,7 +65,7 @@ public final class DateUtils {
         if (time_ms<3600000) {
             timeFormat="mm:ss";
         }else {
-            timeFormat="H:mm:ss";
+            timeFormat="h:mm:ss";
         }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat(timeFormat, Locale.getDefault());

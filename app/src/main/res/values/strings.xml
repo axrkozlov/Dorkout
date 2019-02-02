@@ -5,7 +5,7 @@
 
     <string name="workout_id_tag" translatable="false">exercise_id</string>
 
-    <string name="lb_total_time">timePlan</string>
+    <string name="lb_total_time">time</string>
     <string name="lb_rest_time">rest</string>
 
 
@@ -15,17 +15,17 @@
     <string name="lb_workout_desc_start_time">Start timePlan:</string>
 
     <string name="lb_last_result">Last result</string>
-    <string name="lb_norm_reps">Reps</string>
+    <string name="lb_reps">Reps</string>
     <string name="lb_time">Time</string>
     <string name="lb_set">Set</string>
     <string name="lb_weight">Weight</string>
     <string name="lb_rest">Rest</string>
 
     <string name="lb_result_reps">Reps</string>
-    <string name="lb_result_time">Result time</string>
+    <string name="lb_result_time">Time</string>
     <string name="lb_kg">kg</string>
     <string name="lb_th">th</string>
-    <string name="lb_reps">x</string>
+    <string name="lb_x">x</string>
 
 
     <string name="bt_restart">RESTART</string>
@@ -48,7 +48,7 @@
     <string name="menu_donate">Donate</string>
 
 
-    <string name="total_time">1:15:18</string>
+    <string name="total_time">1:15</string>
     <string name="rest_time">5:16</string>
 
     <string name="workout_title">Mourning workout</string>
@@ -65,8 +65,8 @@
 
 
     <string name="norm_time">1:24</string>
-    <string name="norm_reps">31</string>
-    <string name="mSets">3</string>
+    <string name="reps">31</string>
+    <string name="sets">3</string>
     <string name="weight">10</string>
     <string name="rest">3:30</string>
     <string name="result_time">1:24:29</string>

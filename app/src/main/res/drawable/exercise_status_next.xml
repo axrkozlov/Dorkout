@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@color/exercise_status_next"/>
+        </shape>
+    </item>
+    <item>
+        <vector android:height="28dp" android:tint="#FFFFFF"
+            android:viewportHeight="24.0" android:viewportWidth="24.0"
+            android:width="28dp" xmlns:android="http://schemas.android.com/apk/res/android">
+            <path android:fillColor="#FF000000" android:pathData="M6,18l8.5,-6L6,6v12zM16,6v12h2V6h-2z"/>
+        </vector>
+    </item>
+</layer-list>
+
+

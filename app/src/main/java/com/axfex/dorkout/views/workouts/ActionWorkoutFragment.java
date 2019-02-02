@@ -4,7 +4,6 @@ package com.axfex.dorkout.views.workouts;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,7 +25,6 @@ import android.widget.TextView;
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
 import com.axfex.dorkout.data.Exercise;
-import com.axfex.dorkout.data.Status;
 import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.services.ActionWorkoutService;
 import com.axfex.dorkout.util.DateUtils;
@@ -133,12 +131,12 @@ public class ActionWorkoutFragment extends Fragment {
         });
 //        mStopWorkout.setOnClickListener(view -> ActionWorkoutService.stopWorkout(getContext()));
         mExerciseName = v.findViewById(R.id.et_exercise_name);
-        mRedLamp = v.findViewById(R.id.red_lamp);
-        mRedLamp.setEnabled(false);
+//        mRedLamp = v.findViewById(R.id.red_lamp);
+//        mRedLamp.setEnabled(false);
         mGreenLamp = v.findViewById(R.id.green_lamp);
         mGreenLamp.setEnabled(false);
-        mYellowLamp = v.findViewById(R.id.yellow_lamp);
-        mYellowLamp.setEnabled(false);
+//        mYellowLamp = v.findViewById(R.id.yellow_lamp);
+//        mYellowLamp.setEnabled(false);
         mStartExercise = v.findViewById(R.id.bt_start);
         mStartExercise.setOnClickListener(view -> mActionWorkoutViewModel.startExercise());
         mStopExercise = v.findViewById(R.id.bt_stop);
@@ -151,7 +149,7 @@ public class ActionWorkoutFragment extends Fragment {
         mDoneExercise.setOnClickListener(view -> mActionWorkoutViewModel.finishExercise());
         mWorkoutTime = v.findViewById(R.id.total_time);
         mExerciseTime = v.findViewById(R.id.exercise_time);
-        mRestTime = v.findViewById(R.id.rest_time);
+        mRestTime = v.findViewById(R.id.rest);
 //        mPBRestTime = v.findViewById(R.id.pb_rest_time);
     }
 
@@ -275,7 +273,7 @@ public class ActionWorkoutFragment extends Fragment {
         @NonNull
         @Override
         public ExerciseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(getContext()).inflate(R.layout.edit_workout_exercise_item, parent, false);
+            View view = LayoutInflater.from(getContext()).inflate(R.layout.action_workout_exercise_item, parent, false);
             return new ExerciseViewHolder(view);
         }
 
@@ -312,8 +310,8 @@ public class ActionWorkoutFragment extends Fragment {
             mName = itemView.findViewById(R.id.exercise_name);
             mDesc = itemView.findViewById(R.id.exercise_desc);
             mInfoBar = itemView.findViewById(R.id.exercise_info_bar);
-            mNormTime = mInfoBar.findViewById(R.id.norm_time);
-            mRestTime = mInfoBar.findViewById(R.id.rest_time);
+            mNormTime = mInfoBar.findViewById(R.id.time);
+            mRestTime = mInfoBar.findViewById(R.id.rest);
             mOrderNumber = itemView.findViewById(R.id.exercise_order);
             mOrderButton = itemView.findViewById(R.id.exercise_collapse);
             setsView = itemView.findViewById(R.id.exercise_sets);

@@ -19,22 +19,15 @@
         <item name="android:textColorPrimary">@color/colorToolbarElements</item>
     </style>
 
-    <style name="ActionBar" parent="@style/Widget.AppCompat.ActionBar">
-        <item name="android:textColorPrimary">@color/status_workout_run</item>
-        <item name="android:textColorSecondary">#00FFFF</item>
-    </style>
-
-    <style name="ActionBarTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textColor">@color/status_workout_run</item>
-    </style>
-
     <style name="card_info_label">
         <item name="android:textSize">@dimen/info_label</item>
-        <item name="android:textColor">@color/info_label</item>
+        <item name="android:textColor">@color/exercise_info_label</item>
         <item name="android:textStyle">italic</item>
     </style>
 
     <style name="card_info_text" parent="@style/TextAppearance.AppCompat.Large">
+        <item name="android:fontFamily">@font/bitter</item>
+        <item name="android:textSize">@dimen/info_text</item>
         <item name="android:textColor">@color/status_digit</item>
     </style>
     <style name="result_label">
@@ -60,10 +53,10 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-
     </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark" >
+    </style>
 
 
     <!--<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />-->

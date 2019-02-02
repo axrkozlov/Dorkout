@@ -28,8 +28,12 @@
         android:id="@+id/bt_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/transparent"
-        android:text="@string/bt_start"
+        android:background="@drawable/ic_exercise_panel_status_lamp"
+        android:textColor="@color/status_button_text"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif"
+        android:textSize="16dp"
+        android:text="Go!"
         android:layout_weight="1"/>
 
     <Button

@@ -26,8 +26,8 @@
     <!-- Background -->
     <item>
         <shape >
-            <stroke android:color="@color/info_borders" android:width="0.8dp"/>
-            <solid android:color="@color/info_background" />
+            <stroke android:color="@color/exercise_info_borders" android:width="0.8dp"/>
+            <solid android:color="@color/exercise_info_background" />
             <corners android:radius="9dp" />
         </shape>
     </item>

@@ -197,7 +197,7 @@ public class ExercisesFragment extends Fragment {
 
         @Override
         public ExercisesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(getContext()).inflate(R.layout.action_workout_exercise_item, parent, false);
+            View view = LayoutInflater.from(getContext()).inflate(R.layout.z_workout_exercise_item, parent, false);
             return new ExercisesViewHolder(view);
 
         }
