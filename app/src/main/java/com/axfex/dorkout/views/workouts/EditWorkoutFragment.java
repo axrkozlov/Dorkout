@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -330,14 +331,13 @@ public class EditWorkoutFragment extends Fragment {
 
         public ExerciseViewHolder(@NonNull View itemView) {
             super(itemView);
-            mName = itemView.findViewById(R.id.exercise_name);
-            mDesc = itemView.findViewById(R.id.exercise_desc);
+            mName = itemView.findViewById(R.id.name);
+            mDesc = itemView.findViewById(R.id.desc);
             mInfoBar = itemView.findViewById(R.id.exercise_info_bar);
             mNormTime = mInfoBar.findViewById(R.id.time);
             mRestTime = mInfoBar.findViewById(R.id.rest);
-            mOrderNumber = itemView.findViewById(R.id.exercise_order);
-            mOrderButton = itemView.findViewById(R.id.exercise_collapse);
-            setsView = itemView.findViewById(R.id.exercise_sets);
+            mOrderNumber = itemView.findViewById(R.id.order);
+            mOrderButton = itemView.findViewById(R.id.change_order);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }
@@ -492,11 +492,10 @@ public class EditWorkoutFragment extends Fragment {
             TextView name =(TextView) convertView;
             name.setText(text);
             if (text.equals("New name...")) {
-                Log.i(TAG, "getDropDownView: "+text+position+":"+getCount());
-                name.setTextColor(getResources().getColor(R.color.colorAccent));
+                name.setTextColor(ContextCompat.getColor(getContext(),R.color.colorAccent));
                 name.setTypeface(null, Typeface.ITALIC);
             } else {
-                name.setTextColor(Color.WHITE);
+                name.setTextColor(ContextCompat.getColor(getContext(),R.color.secondary_white_text));
                 name.setTypeface(null, Typeface.NORMAL);
             }
             return convertView;

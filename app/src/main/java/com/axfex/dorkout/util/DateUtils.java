@@ -81,6 +81,9 @@ public final class DateUtils {
     }
 
     public static Integer sec(Long milliseconds){
+        if (milliseconds == null) {
+            return null;
+        }
         milliseconds=milliseconds/1000;
         return milliseconds.intValue();
     }

@@ -50,11 +50,9 @@ public class ActionWorkoutManager {
 
         @Override
         public void run() {
+            mExercise.updateTime();
+            timerHandler.postDelayed(this, 1000);
 
-//            mExerciseTime.setValue(mExercise.getCurrentTime());
-//            if (mExercise.getRunning()) {
-//            timerHandler.postDelayed(this, 100);
-//            }
         }
 
     }
@@ -89,6 +87,7 @@ public class ActionWorkoutManager {
 
     private void onStartExercise() {
         mExercise.start();
+        timerHandler.post(timerRunnable);
         onExerciseChanges();
     }
 
@@ -98,6 +97,7 @@ public class ActionWorkoutManager {
 
     private void onStopExercise() {
         mExercise.stop();
+        timerHandler.removeCallbacks(timerRunnable);
         onExerciseChanges();
     }
 

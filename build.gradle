@@ -20,6 +20,9 @@ allprojects {
         google()
         jcenter()
     }
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xmaxerrs" << "1000"
+    }
 }
 
 task clean(type: Delete) {

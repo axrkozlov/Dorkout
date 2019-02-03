@@ -4,6 +4,7 @@ package com.axfex.dorkout.views.workouts;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,6 +27,8 @@ import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
 import com.axfex.dorkout.data.Exercise;
 import com.axfex.dorkout.data.Workout;
+
+import com.axfex.dorkout.databinding.ActionWorkoutFragmentBinding;
 import com.axfex.dorkout.services.ActionWorkoutService;
 import com.axfex.dorkout.util.DateUtils;
 import com.axfex.dorkout.vm.ViewModelFactory;
@@ -38,7 +41,6 @@ import java.util.Objects;
 import javax.inject.Inject;
 
 import static com.axfex.dorkout.data.Status.RUNNING;
-import static com.axfex.dorkout.data.Status.STOPPED;
 import static com.axfex.dorkout.util.DateUtils.sec;
 
 public class ActionWorkoutFragment extends Fragment {
@@ -76,6 +78,9 @@ public class ActionWorkoutFragment extends Fragment {
     private final Runnable mExerciseTimeUpdateAction = this::onExerciseTimeUpdate;
     private final Runnable mRestTimeUpdateAction = this::onRestTimeUpdate;
 
+
+    ActionWorkoutFragmentBinding mBinding;
+
     public static ActionWorkoutFragment newInstance() {
         ActionWorkoutFragment fragment = new ActionWorkoutFragment();
         return fragment;
@@ -107,8 +112,12 @@ public class ActionWorkoutFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.action_workout_fragment, container, false);
-
+        //View v = inflater.inflate(R.layout.action_workout_fragment, container, false);
+        mBinding = DataBindingUtil.inflate(
+                inflater, R.layout.action_workout_fragment, container, false);
+        mBinding.setLifecycleOwner(this);
+        View v = mBinding.getRoot();
+        //here data must be an instance of the class MarsDataProvider
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView = v.findViewById(R.id.rv_exercises);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -130,14 +139,14 @@ public class ActionWorkoutFragment extends Fragment {
             ActionWorkoutService.stopWorkout(getContext());
         });
 //        mStopWorkout.setOnClickListener(view -> ActionWorkoutService.stopWorkout(getContext()));
-        mExerciseName = v.findViewById(R.id.et_exercise_name);
+        mExerciseName = v.findViewById(R.id.name);
 //        mRedLamp = v.findViewById(R.id.red_lamp);
 //        mRedLamp.setEnabled(false);
         mGreenLamp = v.findViewById(R.id.green_lamp);
         mGreenLamp.setEnabled(false);
 //        mYellowLamp = v.findViewById(R.id.yellow_lamp);
 //        mYellowLamp.setEnabled(false);
-        mStartExercise = v.findViewById(R.id.bt_start);
+        mStartExercise = v.findViewById(R.id.status_idle);
         mStartExercise.setOnClickListener(view -> mActionWorkoutViewModel.startExercise());
         mStopExercise = v.findViewById(R.id.bt_stop);
         mStopExercise.setOnClickListener(view -> mActionWorkoutViewModel.stopExercise());
@@ -148,7 +157,7 @@ public class ActionWorkoutFragment extends Fragment {
         mDoneExercise = v.findViewById(R.id.bt_done);
         mDoneExercise.setOnClickListener(view -> mActionWorkoutViewModel.finishExercise());
         mWorkoutTime = v.findViewById(R.id.total_time);
-        mExerciseTime = v.findViewById(R.id.exercise_time);
+        mExerciseTime = v.findViewById(R.id.time);
         mRestTime = v.findViewById(R.id.rest);
 //        mPBRestTime = v.findViewById(R.id.pb_rest_time);
     }
@@ -156,31 +165,33 @@ public class ActionWorkoutFragment extends Fragment {
 
     //Place bottom
     private void onUpdateExercise(Exercise exercise) {
+        mBinding.setExercise(exercise);
         mExercise = exercise;
-        if (mExercise != null) {
-            mExerciseName.setText(exercise.getName());
-            mGreenLamp.setEnabled(exercise.getStatus()==RUNNING);
-            mRedLamp.setEnabled(exercise.getStatus()==STOPPED);
-            mPBRestTime.setMax(sec(exercise.getRestTimePlan()));
-            if (mExercise.getStatus()==RUNNING) {
-                mExerciseTime.post(mExerciseTimeUpdateAction);
-            } else {
-                mExerciseTime.removeCallbacks(mExerciseTimeUpdateAction);
-            }
-            if (mExercise.getStatus()==STOPPED) {
-                mRestTime.post(mRestTimeUpdateAction);
-            } else {
-                mRestTime.removeCallbacks(mRestTimeUpdateAction);
-            }
-//
-        } else {
-            mExerciseTime.removeCallbacks(mExerciseTimeUpdateAction);
-            mRestTime.removeCallbacks(mRestTimeUpdateAction);
-            mExerciseName.setText("");
-            mRedLamp.setEnabled(false);
-            mGreenLamp.setEnabled(false);
-            mYellowLamp.setEnabled(false);
-        }
+//        mExerciseTime.post(mExerciseTimeUpdateAction);
+//        if (mExercise != null) {
+//            mExerciseName.setText(exercise.getName());
+//            mGreenLamp.setEnabled(exercise.getStatus() == RUNNING);
+//            mRedLamp.setEnabled(exercise.getStatus() == STOPPED);
+//            mPBRestTime.setMax(sec(exercise.getRestTimePlan()));
+//            if (mExercise.getStatus() == RUNNING) {
+//                mExerciseTime.post(mExerciseTimeUpdateAction);
+//            } else {
+//                mExerciseTime.removeCallbacks(mExerciseTimeUpdateAction);
+//            }
+//            if (mExercise.getStatus() == STOPPED) {
+//                mRestTime.post(mRestTimeUpdateAction);
+//            } else {
+//                mRestTime.removeCallbacks(mRestTimeUpdateAction);
+//            }
+////
+//        } else {
+//            mExerciseTime.removeCallbacks(mExerciseTimeUpdateAction);
+//            mRestTime.removeCallbacks(mRestTimeUpdateAction);
+//            mExerciseName.setText("");
+//            mRedLamp.setEnabled(false);
+//            mGreenLamp.setEnabled(false);
+//            mYellowLamp.setEnabled(false);
+//        }
     }
 
 //    private void onUpdateWorkout(Workout workout) {
@@ -208,12 +219,13 @@ public class ActionWorkoutFragment extends Fragment {
         String timeString = DateUtils.getTimeString(mWorkout.getTime());
         mWorkoutTime.setText(timeString);
         mWorkoutTime.postDelayed(mWorkoutTimeUpdateAction, 1000);
-        Log.i(TAG, "onWorkoutTimeUpdate: " + mWorkout.getName() +", running:" + mWorkout.getStatus() + ", time:" + mWorkout.getTime());
+        Log.i(TAG, "onWorkoutTimeUpdate: " + mWorkout.getName() + ", running:" + mWorkout.getStatus() + ", time:" + mWorkout.getTime());
     }
 
     private void onExerciseTimeUpdate() {
         String timeString = DateUtils.getTimeString(mExercise.getTime());
-        mExerciseTime.setText(timeString);
+
+//        mExerciseTime.setText(timeString);
         mExerciseTime.postDelayed(mExerciseTimeUpdateAction, 1000);
         Log.i(TAG, "onExerciseTimeUpdate: " + mExercise.getName() + ", time:" + mExercise.getTime());
     }
@@ -247,7 +259,7 @@ public class ActionWorkoutFragment extends Fragment {
     private void onWorkoutLoaded(Workout workout) {
         if (workout != null) {
             mWorkout = workout;
-            if (mWorkout.getStatus()==RUNNING) mWorkoutTime.post(mWorkoutTimeUpdateAction);
+            if (mWorkout.getStatus() == RUNNING) mWorkoutTime.post(mWorkoutTimeUpdateAction);
             else mWorkoutTime.removeCallbacks(mWorkoutTimeUpdateAction);
         }
         Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
@@ -307,14 +319,14 @@ public class ActionWorkoutFragment extends Fragment {
 
         public ExerciseViewHolder(@NonNull View itemView) {
             super(itemView);
-            mName = itemView.findViewById(R.id.exercise_name);
-            mDesc = itemView.findViewById(R.id.exercise_desc);
+            mName = itemView.findViewById(R.id.name);
+            mDesc = itemView.findViewById(R.id.desc);
             mInfoBar = itemView.findViewById(R.id.exercise_info_bar);
             mNormTime = mInfoBar.findViewById(R.id.time);
             mRestTime = mInfoBar.findViewById(R.id.rest);
-            mOrderNumber = itemView.findViewById(R.id.exercise_order);
-            mOrderButton = itemView.findViewById(R.id.exercise_collapse);
-            setsView = itemView.findViewById(R.id.exercise_sets);
+            mOrderNumber = itemView.findViewById(R.id.order);
+            mOrderButton = itemView.findViewById(R.id.change_order);
+            setsView = itemView.findViewById(R.id.set);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }

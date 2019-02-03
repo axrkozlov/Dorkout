@@ -30,11 +30,12 @@
 
     <color name="rest_progress">#F8E836</color>
     <color name="result_progress">#78FC31</color>
-    <color name="status_button">#82FD3E</color>
+    <color name="status_running_button">#82FD3E</color>
+    <color name="status_done_button">#F8E836</color>
     <color name="status_button_text">#393B3D</color>
 
 
-    <color name="workout_item">#4C4C53</color>
+    <color name="workout_item">#474145</color>
     <color name="workout_item_marked">#4a148c</color>
     <color name="workout_icon">#E3EBFA</color>
 

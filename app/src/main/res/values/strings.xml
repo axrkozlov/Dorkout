@@ -59,7 +59,7 @@
     <string name="workout_null_start_time">--:--</string>
 
 
-    <string name="exercise_number">2</string>
+    <string name="exercise_number">2.</string>
     <string name="exercise_title">Barbell</string>
     <string name="exercise_desc">Up and high, weightPlan: 11kg. mSets 3, reps 115 </string>
 

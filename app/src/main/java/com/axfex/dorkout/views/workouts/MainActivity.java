@@ -27,7 +27,6 @@ public class MainActivity extends BaseActivity implements MainNavigator {
     private static final String TAG = "MAIN_ACTIVITY";
     private static final String WORKOUT_ID = "workout_id";
     private static final int CONTENT_FRAME = R.id.contentFrame;
-
     @Inject
     public ViewModelFactory<MainViewModel> mViewModelFactory;
 

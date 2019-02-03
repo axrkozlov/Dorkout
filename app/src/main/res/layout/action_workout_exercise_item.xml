@@ -13,35 +13,35 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="@+id/exercise_desc"
-        app:layout_constraintTop_toBottomOf="@+id/exercise_desc">
+        app:layout_constraintBottom_toBottomOf="@+id/desc"
+        app:layout_constraintTop_toBottomOf="@+id/desc">
 
 
         <TextView
-            android:id="@+id/exercise_order"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="344dp"
-            android:gravity="start"
-            android:text="@string/exercise_number"
-            android:textColor="@color/primary_text"
-            android:textSize="@dimen/desc_text"
-            app:layout_constraintBottom_toBottomOf="@+id/exercise_collapse"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/exercise_collapse" />
-
-        <TextView
-            android:id="@+id/exercise_name"
+            android:id="@+id/order"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="12dp"
+            android:gravity="start"
+            android:text="@string/exercise_number"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/title_big_text"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@+id/status"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="12dp"
             android:gravity="start"
             android:text="@string/exercise_title"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/title_big_text"
-            app:layout_constraintStart_toEndOf="@+id/status"
+            app:layout_constraintStart_toEndOf="@+id/order"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
@@ -50,13 +50,13 @@
             android:layout_height="26dp"
             android:layout_marginStart="10dp"
             android:contentDescription="TODO"
-            app:layout_constraintBottom_toBottomOf="@+id/exercise_name"
+            app:layout_constraintBottom_toBottomOf="@+id/name"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/exercise_name"
+            app:layout_constraintTop_toTopOf="@+id/name"
             app:srcCompat="@drawable/exercise_status_undone" />
 
         <TextView
-            android:id="@+id/exercise_desc"
+            android:id="@+id/desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -67,10 +67,11 @@
             android:textSize="@dimen/small_label_text"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/exercise_name" />
+            app:layout_constraintTop_toBottomOf="@+id/name" />
 
         <ImageButton
-            android:id="@+id/exercise_collapse"
+            android:visibility="gone"
+            android:id="@+id/change_order"
             android:layout_width="38dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
@@ -79,9 +80,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_headline_24dp" />
+        <ImageButton
+            android:visibility="visible"
+            android:id="@+id/show_comment"
+            android:layout_width="38dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="6dp"
+            android:contentDescription="TODO"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_comment" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/line"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:contentDescription="TODO"
@@ -103,7 +115,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/exercise_desc" />
+            app:layout_constraintTop_toBottomOf="@+id/desc" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

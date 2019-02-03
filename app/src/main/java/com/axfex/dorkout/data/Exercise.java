@@ -1,9 +1,8 @@
 package com.axfex.dorkout.data;
 
-
-import com.axfex.dorkout.util.StatusConverter;
-
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -51,11 +50,20 @@ public class Exercise {
     //Results
     private Integer weight;
     private Integer repeats;
+    private Integer distance;
     private Long time;
     private Long restTime;
 
+    @Ignore
+    private MutableLiveData<Long> timeLD =new MutableLiveData<>();
+    @Ignore
+    private MutableLiveData<Long> restLD =new MutableLiveData<>();
+
     @Nullable
     private Status status;
+
+    @Ignore
+    private Boolean next;
 
     @Ignore
     private long startTime;
@@ -172,13 +180,15 @@ public class Exercise {
         this.repeats = repeats;
     }
 
-    public Long getTime() {
-        if (status!=RUNNING) {
-            return time;
-        }
+    public Integer getDistance() {
+        return distance;
+    }
 
-        final long timeSinceStart = now() - startTime;
-        time = accumulatedTime + Math.max(0, timeSinceStart);
+    public void setDistance(Integer distance) {
+        this.distance = distance;
+    }
+
+    public Long getTime() {
         return time;
     }
 
@@ -187,12 +197,6 @@ public class Exercise {
     }
 
     public Long getRestTime() {
-        if (status!=STOPPED) {
-            return restTime;
-        }
-
-        final long timeSinceStop = now() - stopTime;
-        restTime = accumulatedRestTime + Math.max(0, timeSinceStop);
         return restTime;
     }
 
@@ -213,6 +217,7 @@ public class Exercise {
         startTime = now();
         accumulatedTime = time == null ? 0L : time;
         status = RUNNING;
+        next=false;
     }
 
     public void restart() {
@@ -235,6 +240,15 @@ public class Exercise {
         restTime = 0L;
     }
 
+    public void unSkip() {
+        if (status==SKIPPED)
+        status = null;
+    }
+
+    public void resetNext(){
+        next=false;
+    }
+
     public void finish() {
         status=DONE;
     }
@@ -245,7 +259,33 @@ public class Exercise {
         time = 0L;
         restTime = 0L;
         status=null;
+        next=false;
     }
 
+    public void updateTime() {
+        if (status==RUNNING) {
+            final long timeSinceStart = now() - startTime;
+            time = accumulatedTime + Math.max(0, timeSinceStart);
+            timeLD.postValue(time);
+        } else if (status==DONE) {
+            final long timeSinceStop = now() - stopTime;
+            restTime = accumulatedRestTime + Math.max(0, timeSinceStop);
+            restLD.postValue(time);
+        }
+    }
 
+    public Boolean getNext(){
+        return next;
+    }
+
+    public void setNext(){
+        if (status==null) next=true;
+    }
+
+    public LiveData<Long> getTimeLD() {
+        return timeLD;
+    }
+    public LiveData<Long> getRestLD() {
+        return restLD;
+    }
 }

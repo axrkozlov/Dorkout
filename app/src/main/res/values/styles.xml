@@ -26,7 +26,7 @@
     </style>
 
     <style name="card_info_text" parent="@style/TextAppearance.AppCompat.Large">
-        <item name="android:fontFamily">@font/bitter</item>
+        <item name="android:fontFamily">serif</item>
         <item name="android:textSize">@dimen/info_text</item>
         <item name="android:textColor">@color/status_digit</item>
     </style>

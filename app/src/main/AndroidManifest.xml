@@ -37,8 +37,6 @@
             android:theme="@style/AppTheme"/>
         <service android:name=".services.ActionWorkoutService"
             android:exported="false"/>
-
-
     </application>
 
 </manifest>

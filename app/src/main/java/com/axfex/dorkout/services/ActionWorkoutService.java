@@ -13,15 +13,20 @@ import android.util.Log;
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
 import com.axfex.dorkout.util.DateUtils;
+import com.axfex.dorkout.views.workouts.ActionWorkoutViewModel;
 import com.axfex.dorkout.views.workouts.MainActivity;
+import com.axfex.dorkout.vm.ViewModelFactory;
 
 import javax.inject.Inject;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.LifecycleService;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProviders;
 
 public class ActionWorkoutService extends LifecycleService {
+
     @Inject
     ActionWorkoutManager mActionWorkoutManager;
 
