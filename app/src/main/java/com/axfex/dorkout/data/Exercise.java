@@ -12,10 +12,12 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import static androidx.room.ForeignKey.CASCADE;
+import static com.axfex.dorkout.data.Status.AWAITING;
 import static com.axfex.dorkout.data.Status.DONE;
+import static com.axfex.dorkout.data.Status.NEXT;
 import static com.axfex.dorkout.data.Status.RUNNING;
 import static com.axfex.dorkout.data.Status.SKIPPED;
-import static com.axfex.dorkout.data.Status.STOPPED;
+import static com.axfex.dorkout.data.Status.PAUSED;
 import static com.axfex.dorkout.util.DateUtils.now;
 
 /**
@@ -43,8 +45,9 @@ public class Exercise {
     private Integer orderNumber;
     private Integer weightPlan;
     private Integer repeatsPlan;
-    private Long timePlan;
+    private Integer distancePlan;
     private Long restTimePlan;
+    private Long timePlan;
     private Long creationDate = now();
 
     //Results
@@ -52,28 +55,18 @@ public class Exercise {
     private Integer repeats;
     private Integer distance;
     private Long time;
-    private Long restTime;
 
     @Ignore
-    private MutableLiveData<Long> timeLD =new MutableLiveData<>();
-    @Ignore
-    private MutableLiveData<Long> restLD =new MutableLiveData<>();
+    private MutableLiveData<Long> elapsedTime = new MutableLiveData<>();
 
     @Nullable
     private Status status;
 
     @Ignore
-    private Boolean next;
-
-    @Ignore
     private long startTime;
-    @Ignore
-    private long stopTime;
+
     @Ignore
     private long accumulatedTime;
-    @Ignore
-    private long accumulatedRestTime;
-
 
     public Exercise() {
     }
@@ -140,6 +133,14 @@ public class Exercise {
         this.repeatsPlan = repeatsPlan;
     }
 
+    public Integer getDistancePlan() {
+        return distancePlan;
+    }
+
+    public void setDistancePlan(Integer distancePlan) {
+        this.distancePlan = distancePlan;
+    }
+
     public Long getTimePlan() {
         return timePlan;
     }
@@ -196,14 +197,6 @@ public class Exercise {
         this.time = time;
     }
 
-    public Long getRestTime() {
-        return restTime;
-    }
-
-    public void setRestTime(Long restTime) {
-        this.restTime = restTime;
-    }
-
     @Nullable
     public Status getStatus() {
         return status;
@@ -213,11 +206,18 @@ public class Exercise {
         this.status = status;
     }
 
+    public void await(){
+        if (status==null||status==NEXT) status=AWAITING;
+        status=AWAITING;
+    }
+
     public void start() {
         startTime = now();
         accumulatedTime = time == null ? 0L : time;
         status = RUNNING;
-        next=false;
+        weight = weightPlan;
+        repeats = repeatsPlan;
+        distance = distancePlan;
     }
 
     public void restart() {
@@ -225,11 +225,10 @@ public class Exercise {
         status = RUNNING;
     }
 
-    public void stop() {
-        stopTime = now();
+    public void pause() {
+
         getTime();
-        accumulatedRestTime = restTime == null ? 0L : restTime;
-        status = STOPPED;
+        status = PAUSED;
     }
 
     public void skip() {
@@ -237,55 +236,67 @@ public class Exercise {
         weight = 0;
         repeats = 0;
         time = 0L;
-        restTime = 0L;
     }
 
     public void unSkip() {
-        if (status==SKIPPED)
-        status = null;
+        if (status == SKIPPED)
+            status = null;
     }
 
-    public void resetNext(){
-        next=false;
-    }
 
     public void finish() {
-        status=DONE;
+        status = DONE;
     }
 
     public void reset() {
         weight = 0;
         repeats = 0;
         time = 0L;
-        restTime = 0L;
-        status=null;
-        next=false;
+        status = null;
     }
 
     public void updateTime() {
-        if (status==RUNNING) {
+        if (status == RUNNING) {
             final long timeSinceStart = now() - startTime;
             time = accumulatedTime + Math.max(0, timeSinceStart);
-            timeLD.postValue(time);
-        } else if (status==DONE) {
-            final long timeSinceStop = now() - stopTime;
-            restTime = accumulatedRestTime + Math.max(0, timeSinceStop);
-            restLD.postValue(time);
+            elapsedTime.postValue(time);
         }
     }
 
-    public Boolean getNext(){
-        return next;
+    public Boolean getRunning() {
+        return status==RUNNING;
     }
 
-    public void setNext(){
-        if (status==null) next=true;
+    public Boolean getPaused() {
+        return status== PAUSED;
     }
 
-    public LiveData<Long> getTimeLD() {
-        return timeLD;
+    public Boolean getDone() {
+        return status==DONE;
     }
-    public LiveData<Long> getRestLD() {
-        return restLD;
+
+    public Boolean getSkipped() {
+        return status==SKIPPED;
+    }
+
+    public Boolean getAwaiting() {
+        return status==AWAITING;
+    }
+
+    public Boolean getNext() {
+        return status==NEXT;
+    }
+
+    public void next() {
+        if (status == AWAITING) status=NEXT;
+    }
+
+    public LiveData<Long> getElapsedTime() {
+        return elapsedTime;
+    }
+
+    public boolean is(Exercise exercise){
+        if (exercise == null) return false;
+        return this.id.equals(exercise.id);
     }
 }

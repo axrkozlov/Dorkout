@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import static com.axfex.dorkout.data.Status.RUNNING;
-import static com.axfex.dorkout.data.Status.STOPPED;
+import static com.axfex.dorkout.data.Status.PAUSED;
 import static com.axfex.dorkout.util.DateUtils.now;
 
 /**
@@ -145,7 +145,7 @@ public class Workout {
     }
 
     public void stop() {
-        status = STOPPED;
+        status = PAUSED;
     }
 
     public void reset() {

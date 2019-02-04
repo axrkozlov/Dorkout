@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="16dp"
             android:gravity="start"
             android:text="@string/exercise_number"
             android:textColor="@color/primary_text"
@@ -33,14 +33,18 @@
 
         <TextView
             android:id="@+id/name"
-            android:layout_width="75dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="1dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
             android:gravity="start"
             android:text="@string/exercise_title"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/title_big_text"
+            android:autoSizeTextType="uniform"
+            app:layout_constraintEnd_toStartOf="@+id/show_comment"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/order"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -55,6 +59,21 @@
             app:layout_constraintTop_toTopOf="@+id/name"
             app:srcCompat="@drawable/exercise_status_undone" />
 
+        <TextView
+            android:id="@+id/status_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            tools:text="Next exercise"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/small_label_text"
+            android:textStyle="italic"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
         <TextView
             android:id="@+id/desc"
             android:layout_width="match_parent"
@@ -80,14 +99,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_headline_24dp" />
+
         <ImageButton
-            android:visibility="visible"
             android:id="@+id/show_comment"
             android:layout_width="38dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="6dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
             android:contentDescription="TODO"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_comment" />

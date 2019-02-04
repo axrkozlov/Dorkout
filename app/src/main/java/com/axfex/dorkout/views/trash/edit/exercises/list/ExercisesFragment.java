@@ -80,7 +80,7 @@ public class ExercisesFragment extends Fragment {
 //        setHasOptionsMenu(true);
 ////        exercisesViewModel = ViewModelProviders.of(this, mViewModelFactory).get(ExercisesViewModel.class);
 ////        exercisesViewModel.getExercisesLD(workoutId).observe(this, exercises -> setExercises(exercises));
-////        exercisesViewModel.getWorkoutLD(workoutId).observe(this, workout -> setExercise(workout));
+////        exercisesViewModel.getWorkoutLD(workoutId).observe(this, workout -> setNextExercise(workout));
 //
 ////        exercisesViewModel.getExercisesWithSets(workoutId).observe(this, new Observer<List<ExerciseWithSets>>() {
 ////            @Override

@@ -27,7 +27,7 @@
     <string name="lb_th">th</string>
     <string name="lb_x">x</string>
 
-
+    <string name="bt_empty">EMPTY</string>
     <string name="bt_restart">RESTART</string>
     <string name="bt_start">START</string>
     <string name="bt_pause">PAUSE</string>

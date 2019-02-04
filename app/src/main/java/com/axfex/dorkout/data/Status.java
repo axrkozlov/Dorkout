@@ -3,10 +3,12 @@ package com.axfex.dorkout.data;
 import androidx.room.TypeConverter;
 
 public enum Status {
-    RUNNING(0),
-    STOPPED(1),
-    DONE(2),
-    SKIPPED(3);
+    AWAITING(0),
+    NEXT(1),
+    RUNNING(2),
+    PAUSED(3),
+    DONE(4),
+    SKIPPED(5);
     private int code;
 
     Status(int code) {

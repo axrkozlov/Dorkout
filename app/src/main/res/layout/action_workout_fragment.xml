@@ -7,10 +7,12 @@
         <variable
             name="exercise"
             type="com.axfex.dorkout.data.Exercise" />
+        <variable
+            name="viewModel"
+            type="com.axfex.dorkout.views.workouts.ActionWorkoutViewModel"/>
         <import type="android.view.View"/>
         <import type="com.axfex.dorkout.util.DateUtils"/>
         <import type="java.lang.Math"/>
-        <import type="com.axfex.dorkout.data.Status"/>
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -59,7 +61,9 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="8dp"
-                    android:text="@{exercise.orderNumber.toString()}"
+                    tools:text="1"
+                    android:text="@{viewModel.exercise.orderNumber.toString()}"
+
                     android:textColor="@color/secondary_white_text"
                     android:textSize="25dp"
                     android:typeface="normal"
@@ -75,7 +79,8 @@
                     android:layout_marginStart="6dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:text="@{exercise.name}"
+                    tools:text="Exercise"
+                    android:text="@{viewModel.exercise.name}"
                     android:textColor="@color/secondary_white_text"
                     android:textSize="25dp"
                     android:typeface="normal"
@@ -176,7 +181,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:fontFamily="@font/bitter"
+                        android:fontFamily="sans-serif-smallcaps"
                         android:gravity="bottom"
                         android:maxWidth="80dp"
                         android:maxLines="1"
@@ -244,7 +249,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:fontFamily="@font/bitter"
+                        android:fontFamily="sans-serif-smallcaps"
                         android:gravity="center"
                         android:maxWidth="80dp"
                         android:maxLines="1"
@@ -312,8 +317,7 @@
                         android:id="@+id/weight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:fontFamily="@font/bitter"
+                        android:fontFamily="sans-serif-smallcaps"
                         android:gravity="center"
                         android:maxWidth="120dp"
                         android:maxLines="1"
@@ -326,8 +330,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="1" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -381,7 +384,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:fontFamily="@font/bitter"
+                        android:fontFamily="sans-serif-smallcaps"
                         android:gravity="center"
                         android:maxWidth="80dp"
                         android:maxLines="1"
@@ -447,12 +450,11 @@
                         android:id="@+id/time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:fontFamily="@font/bitter"
+                        android:fontFamily="sans-serif-smallcaps"
                         android:gravity="center"
                         android:maxWidth="180dp"
                         android:maxLines="1"
-                        android:text="@{exercise.timeLD.toString()}"
+                        android:text="@{viewModel.exercise.elapsedTime.toString()}"
                         android:textAlignment="center"
                         android:textColor="@color/result_digit"
                         android:textSize="60sp"
@@ -462,7 +464,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="1" />
+                        tools:text="12:40" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -470,7 +472,7 @@
             </com.google.android.flexbox.FlexboxLayout>
 
 
-            <com.axfex.dorkout.util.AnimatingProgressBar
+            <ProgressBar
                 android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="fill_parent"
@@ -481,8 +483,8 @@
                 android:layout_marginBottom="4dp"
                 android:indeterminateOnly="false"
                 android:minHeight="13dp"
-                android:progress="@{Math.toIntExact(exercise.timeLD)}"
-                android:max="@{Math.toIntExact(exercise.timePlan)}"
+                android:progress="@{Math.toIntExact(safeUnbox(viewModel.exercise.elapsedTime))}"
+                android:max="@{Math.toIntExact(safeUnbox(viewModel.exercise.timePlan))}"
                 android:progressDrawable="@drawable/progress_bar_horizontal"
                 android:secondaryProgress="55"
                 app:layout_constraintBottom_toBottomOf="@+id/time"
@@ -514,41 +516,19 @@
                     android:background="@color/transparent"
                     android:text="@string/bt_skip" />
                 <Button
-                    android:id="@+id/status_idle"
+                    android:id="@+id/status_awaiting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/ic_exercise_running_lamp"
                     android:visibility="visible"
                     android:fontFamily="sans-serif"
-                    android:text="Go!"
+                    app:enumStatusText="@{viewModel.exercise.status}"
+                    tools:text="Go!"
                     android:textColor="@color/status_button_text"
                     android:textSize="16dp"
                     android:textStyle="bold" />
-                <ImageButton
-                    android:id="@+id/status_running"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/ic_exercise_running_lamp"
-                    android:visibility="@{exercise.status==Status.RUNNING ? View.VISIBLE : View.GONE}"
-                    android:fontFamily="sans-serif"
-                    android:text="Go!"
-                    android:textColor="@color/status_button_text"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
-                <ImageButton
-                    android:id="@+id/status_done"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/ic_exercise_done_lamp"
-                    android:visibility="@{exercise.status==Status.DONE ? View.VISIBLE : View.GONE}"
-                    android:fontFamily="sans-serif"
-                    android:text="Done"
-                    android:textColor="@color/status_button_text"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
+
 
                 <Button
                     android:id="@+id/bt_stop"

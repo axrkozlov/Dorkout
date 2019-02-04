@@ -205,7 +205,7 @@ public class AddEditExerciseFragment extends Fragment implements View.OnClickLis
 //    }
 //
 //    //
-////    private void setExercise(Workout workout){
+////    private void setNextExercise(Workout workout){
 ////        this.mWorkout=workout;
 ////    }
 //
