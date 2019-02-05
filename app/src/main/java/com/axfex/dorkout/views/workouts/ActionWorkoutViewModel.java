@@ -1,9 +1,6 @@
 package com.axfex.dorkout.views.workouts;
 
-import android.widget.TextView;
-
 import com.axfex.dorkout.data.Exercise;
-import com.axfex.dorkout.data.Status;
 import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.data.source.WorkoutsRepository;
 import com.axfex.dorkout.services.ActionWorkoutManager;
@@ -11,7 +8,6 @@ import com.axfex.dorkout.services.ActionWorkoutManager;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.BindingAdapter;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -50,7 +46,7 @@ public class ActionWorkoutViewModel extends ViewModel {
         mActionWorkoutManager.startWorkout(workout,exercises);
     }
 
-    public void stopWorkout() {
+    public void finishWorkout() {
         mActionWorkoutManager.stopWorkout();
     }
 
@@ -58,8 +54,8 @@ public class ActionWorkoutViewModel extends ViewModel {
         mActionWorkoutManager.startExercise();
     }
 
-    public void stopExercise() {
-        mActionWorkoutManager.stopExercise();
+    public void pauseExercise() {
+        mActionWorkoutManager.pauseExercise();
     }
 
     public void restartExercise() {

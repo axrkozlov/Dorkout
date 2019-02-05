@@ -32,7 +32,6 @@ import com.axfex.dorkout.data.Workout;
 
 import com.axfex.dorkout.databinding.ActionWorkoutFragmentBinding;
 import com.axfex.dorkout.services.ActionWorkoutService;
-import com.axfex.dorkout.util.DateUtils;
 import com.axfex.dorkout.vm.ViewModelFactory;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -133,7 +132,7 @@ public class ActionWorkoutFragment extends Fragment {
         );
         mStopWorkout = v.findViewById(R.id.fab_stop_workout);
         mStopWorkout.setOnClickListener(view -> {
-            mActionWorkoutViewModel.stopWorkout();
+            mActionWorkoutViewModel.finishWorkout();
             ActionWorkoutService.stopWorkout(getContext());
         });
         mExerciseName = v.findViewById(R.id.name);
@@ -142,7 +141,7 @@ public class ActionWorkoutFragment extends Fragment {
         mStartExercise = v.findViewById(R.id.status_awaiting);
         mStartExercise.setOnClickListener(view -> mActionWorkoutViewModel.startExercise());
         mStopExercise = v.findViewById(R.id.bt_stop);
-        mStopExercise.setOnClickListener(view -> mActionWorkoutViewModel.stopExercise());
+        mStopExercise.setOnClickListener(view -> mActionWorkoutViewModel.pauseExercise());
         mRestartExercise = v.findViewById(R.id.bt_restart);
         mRestartExercise.setOnClickListener(view -> mActionWorkoutViewModel.restartExercise());
         mSkipExercise = v.findViewById(R.id.bt_skip);

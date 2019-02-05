@@ -138,17 +138,18 @@ public class Workout {
         this.status = status;
     }
 
-    public void start() {
-        startTime = now();
-        accumulatedTime = time == null ? 0L : time;
-        status = RUNNING;
+    public boolean start() {
+        if (status != RUNNING) {
+            startTime = now();
+            accumulatedTime = time == null ? 0L : time;
+            status = RUNNING;
+            return true;
+        }
+        return false;
     }
 
-    public void stop() {
-        status = PAUSED;
-    }
 
-    public void reset() {
+    public void finish() {
         status = null;
         startTime = 0L;
         time = 0L;

@@ -1,6 +1,7 @@
 package com.axfex.dorkout.data;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NavUtils;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.room.ColumnInfo;
@@ -14,7 +15,6 @@ import androidx.room.TypeConverters;
 import static androidx.room.ForeignKey.CASCADE;
 import static com.axfex.dorkout.data.Status.AWAITING;
 import static com.axfex.dorkout.data.Status.DONE;
-import static com.axfex.dorkout.data.Status.NEXT;
 import static com.axfex.dorkout.data.Status.RUNNING;
 import static com.axfex.dorkout.data.Status.SKIPPED;
 import static com.axfex.dorkout.data.Status.PAUSED;
@@ -54,7 +54,8 @@ public class Exercise {
     private Integer weight;
     private Integer repeats;
     private Integer distance;
-    private Long time;
+    @TypeConverters(LiveDataConverter.class)
+    private MutableLiveData<Long> time;
 
     @Ignore
     private MutableLiveData<Long> elapsedTime = new MutableLiveData<>();
@@ -189,11 +190,11 @@ public class Exercise {
         this.distance = distance;
     }
 
-    public Long getTime() {
+    public MutableLiveData<Long> getTime() {
         return time;
     }
 
-    public void setTime(Long time) {
+    public void setTime(MutableLiveData<Long> time) {
         this.time = time;
     }
 
@@ -206,96 +207,85 @@ public class Exercise {
         this.status = status;
     }
 
-    public void await(){
-        if (status==null||status==NEXT) status=AWAITING;
-        status=AWAITING;
+    public void await() {
+        if (status == null) status = AWAITING;
+        status = AWAITING;
     }
 
-    public void start() {
-        startTime = now();
-        accumulatedTime = time == null ? 0L : time;
-        status = RUNNING;
-        weight = weightPlan;
-        repeats = repeatsPlan;
-        distance = distancePlan;
+    public boolean start() {
+        if (status != RUNNING && status != DONE) {
+            startTime = now();
+            accumulatedTime = time.getValue()==null?0L:time.getValue();
+            status = RUNNING;
+            return true;
+        }
+        return false;
     }
 
-    public void restart() {
-        startTime = now();
-        status = RUNNING;
+    public boolean restart() {
+        if (status == RUNNING || status == PAUSED) {
+            startTime = now();
+            accumulatedTime=0L;
+            status = RUNNING;
+            return true;
+        }
+        return false;
     }
 
-    public void pause() {
-
-        getTime();
-        status = PAUSED;
+    public boolean pause() {
+        if (status == RUNNING) {
+            status = PAUSED;
+            return true;
+        }
+        return false;
     }
 
-    public void skip() {
+    public boolean skip() {
         status = SKIPPED;
-        weight = 0;
-        repeats = 0;
-        time = 0L;
+        return true;
     }
 
-    public void unSkip() {
-        if (status == SKIPPED)
-            status = null;
-    }
-
-
-    public void finish() {
+    public boolean finish() {
         status = DONE;
+        return true;
     }
 
     public void reset() {
+        status = null;
         weight = 0;
         repeats = 0;
-        time = 0L;
-        status = null;
+        distance=0;
+        time.postValue(null);
     }
 
     public void updateTime() {
         if (status == RUNNING) {
             final long timeSinceStart = now() - startTime;
-            time = accumulatedTime + Math.max(0, timeSinceStart);
-            elapsedTime.postValue(time);
+            time.postValue(accumulatedTime + Math.max(0, timeSinceStart));
         }
     }
 
     public Boolean getRunning() {
-        return status==RUNNING;
+        return status == RUNNING;
     }
 
     public Boolean getPaused() {
-        return status== PAUSED;
+        return status == PAUSED;
     }
 
     public Boolean getDone() {
-        return status==DONE;
+        return status == DONE;
     }
 
     public Boolean getSkipped() {
-        return status==SKIPPED;
+        return status == SKIPPED;
     }
 
     public Boolean getAwaiting() {
-        return status==AWAITING;
+        return status == AWAITING;
     }
 
-    public Boolean getNext() {
-        return status==NEXT;
-    }
-
-    public void next() {
-        if (status == AWAITING) status=NEXT;
-    }
-
-    public LiveData<Long> getElapsedTime() {
-        return elapsedTime;
-    }
-
-    public boolean is(Exercise exercise){
+    public boolean is(Exercise exercise) {
         if (exercise == null) return false;
         return this.id.equals(exercise.id);
     }
