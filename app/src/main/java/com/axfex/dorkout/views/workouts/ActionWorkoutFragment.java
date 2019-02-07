@@ -1,12 +1,15 @@
 package com.axfex.dorkout.views.workouts;
 
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,6 +30,7 @@ import android.widget.TextView;
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
 import com.axfex.dorkout.data.Exercise;
+import com.axfex.dorkout.data.Rest;
 import com.axfex.dorkout.data.Status;
 import com.axfex.dorkout.data.Workout;
 
@@ -127,7 +131,7 @@ public class ActionWorkoutFragment extends Fragment {
     private void setupActionWidgets(View v) {
         mStartWorkout = v.findViewById(R.id.fab_start_workout);
         mStartWorkout.setOnClickListener(view -> {
-                    mActionWorkoutViewModel.startWorkout(mWorkout,mExercises);
+                    mActionWorkoutViewModel.startWorkout(mWorkout, mExercises);
                 }
         );
         mStopWorkout = v.findViewById(R.id.fab_stop_workout);
@@ -154,6 +158,39 @@ public class ActionWorkoutFragment extends Fragment {
 //        mPBRestTime = v.findViewById(R.id.pb_rest_time);
     }
 
+
+    @BindingAdapter("statusColor")
+    public static void setStatusColor(ImageView view, Status status) {
+        final int res;
+        if (status==null) {
+            res = R.drawable.card_status_empty;
+        } else {
+            switch (status) {
+                case AWAITING:
+                    res = R.drawable.card_status_awaiting;
+                    break;
+                case READY:
+                    res = R.drawable.card_status_ready;
+                    break;
+                case RUNNING:
+                    res = R.drawable.card_status_running;
+                    break;
+                case DONE:
+                    res = R.drawable.card_status_done;
+                    break;
+                case SKIPPED:
+                    res = R.drawable.card_status_skipped;
+                    break;
+                default:
+                    res = R.drawable.card_status_empty;
+                    break;
+            }
+        }
+        view.setImageDrawable(ContextCompat.getDrawable(view.getContext(), res));
+
+
+    }
+
     @BindingAdapter("enumStatusText")
     public static void setEnumStatusText(TextView view, Status status) {
         final int res;
@@ -162,9 +199,8 @@ public class ActionWorkoutFragment extends Fragment {
             view.setText(res);
         } else {
             view.setText(status.toString());
-            Log.i(TAG, "setEnumStatusText: " +status);
-
         }
+
 //            switch (status) {
 //                case AWAITING:
 //                    res = R.string.value_one;
@@ -202,8 +238,6 @@ public class ActionWorkoutFragment extends Fragment {
     }
 
 
-
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -233,6 +267,7 @@ public class ActionWorkoutFragment extends Fragment {
         this.mExercises = exercises;
         if (mAdapter == null) setupAdapter();
         else notifyAdapter();
+        Log.i(TAG, "onExerciseListLoaded: ");
     }
 
     private void setupAdapter() {
@@ -342,7 +377,35 @@ public class ActionWorkoutFragment extends Fragment {
 
     }
 }
-
+//    @BindingAdapter({"exercise", "rest"})
+//    public static void setProgress(ProgressBar progressBar, Exercise exercise, Rest rest) {
+//       if (exercise == null) {
+//            progressBar.setProgress(0);
+//            progressBar.setSecondaryProgress(0);
+//        } else if (exercise.getRunning() || exercise.getPaused()) {
+//            {
+//                Long time = exercise.getTimeLD().observe(this,);
+//                Long timePlan = exercise.getTimePlan();
+//                int progress = time != null ? time.intValue() : 0;
+//                int MAX_PROGRESS = timePlan != null ? timePlan.intValue() : 0;
+//                progressBar.setProgress(progress);
+//                progressBar.setMax(MAX_PROGRESS);
+//                progressBar.setSecondaryProgress(0);
+//
+//            }
+//        } else if (rest != null) {
+//            Long restTime = rest.getRestTime().getValue();
+//            Long restTimePlan = exercise.getTimePlan();
+//            int secondaryProgress = restTime != null ? restTime.intValue() : 0;
+//            int MAX_PROGRESS = restTimePlan != null ? restTimePlan.intValue() : 0;
+//            progressBar.setProgress(0);
+//            progressBar.setSecondaryProgress(secondaryProgress);
+//            progressBar.setMax(MAX_PROGRESS);
+//        } else {
+//            progressBar.setProgress(0);
+//            progressBar.setSecondaryProgress(0);
+//        }
+//    }
 //Place bottom
 //    private void onUpdateExercise(Exercise exercise) {
 //        mBinding.setExercise(exercise);
@@ -382,18 +445,18 @@ public class ActionWorkoutFragment extends Fragment {
 //    }
 //
 //    private void onWorkoutTimeUpdate() {
-//        String timeString = DateUtils.getTimeString(mWorkout.getTime());
+//        String timeString = DateUtils.getTimeString(mWorkout.getTimeLD());
 //        mWorkoutTime.setText(timeString);
 //        mWorkoutTime.postDelayed(mWorkoutTimeUpdateAction, 1000);
-//        Log.i(TAG, "onWorkoutTimeUpdate: " + mWorkout.getName() + ", running:" + mWorkout.getStatus() + ", time:" + mWorkout.getTime());
+//        Log.i(TAG, "onWorkoutTimeUpdate: " + mWorkout.getName() + ", running:" + mWorkout.getStatus() + ", time:" + mWorkout.getTimeLD());
 //    }
 //
 //    private void onExerciseTimeUpdate() {
-//        String timeString = DateUtils.getTimeString(mExercise.getTime());
+//        String timeString = DateUtils.getTimeString(mExercise.getTimeLD());
 //
 ////        mExerciseTime.setText(timeString);
 //        mExerciseTime.postDelayed(mExerciseTimeUpdateAction, 1000);
-//        Log.i(TAG, "onExerciseTimeUpdate: " + mExercise.getName() + ", time:" + mExercise.getTime());
+//        Log.i(TAG, "onExerciseTimeUpdate: " + mExercise.getName() + ", time:" + mExercise.getTimeLD());
 //    }
 //
 //    private void onRestTimeUpdate() {

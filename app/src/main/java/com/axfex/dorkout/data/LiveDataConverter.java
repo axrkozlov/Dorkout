@@ -1,5 +1,6 @@
 package com.axfex.dorkout.data;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 import androidx.room.TypeConverter;
 
@@ -12,6 +13,7 @@ public class LiveDataConverter {
         return mutableLiveData;
     }
 
+    @Nullable
     @TypeConverter
     public static Long setLiveData(MutableLiveData<Long> mutableLiveData) {
         if (mutableLiveData==null) return null;

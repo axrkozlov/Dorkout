@@ -2,11 +2,14 @@ package com.axfex.dorkout.data;
 
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
+import static com.axfex.dorkout.data.Status.DONE;
 import static com.axfex.dorkout.data.Status.RUNNING;
 import static com.axfex.dorkout.data.Status.PAUSED;
 import static com.axfex.dorkout.util.DateUtils.now;
@@ -28,7 +31,8 @@ public class Workout {
     private Long totalExercisesTime;
     private Integer exercisesCount;
     private Long startTime;
-    private Long time;
+    @TypeConverters(LiveDataConverter.class)
+    private MutableLiveData<Long> time;
     @Nullable
     private Status status;
     @Ignore
@@ -115,17 +119,11 @@ public class Workout {
         this.startTime = startTime;
     }
 
-    public Long getTime() {
-        if (status != RUNNING) {
-            return time;
-        }
-
-        final long timeSinceStart = now() - startTime;
-        time = accumulatedTime + Math.max(0, timeSinceStart);
+    public MutableLiveData<Long> getTime() {
         return time;
     }
 
-    public void setTime(Long time) {
+    public void setTime(MutableLiveData<Long> time) {
         this.time = time;
     }
 
@@ -141,18 +139,24 @@ public class Workout {
     public boolean start() {
         if (status != RUNNING) {
             startTime = now();
-            accumulatedTime = time == null ? 0L : time;
+            accumulatedTime = time.getValue()==null?0L:time.getValue();
             status = RUNNING;
             return true;
         }
         return false;
     }
 
-
     public void finish() {
         status = null;
         startTime = 0L;
-        time = 0L;
+        time.postValue(null);
+    }
+
+    public void updateTime() {
+        if (status == RUNNING) {
+            final long timeSinceStart = now() - startTime;
+            time.postValue(accumulatedTime + Math.max(0, timeSinceStart));
+        }
     }
 }
 

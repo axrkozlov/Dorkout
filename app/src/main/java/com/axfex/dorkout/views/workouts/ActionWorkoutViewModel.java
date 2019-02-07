@@ -1,6 +1,7 @@
 package com.axfex.dorkout.views.workouts;
 
 import com.axfex.dorkout.data.Exercise;
+import com.axfex.dorkout.data.Rest;
 import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.data.source.WorkoutsRepository;
 import com.axfex.dorkout.services.ActionWorkoutManager;
@@ -15,12 +16,12 @@ public class ActionWorkoutViewModel extends ViewModel {
     public static final String TAG = "ACTION_WORKOUT_VIEW_MODEL";
     private WorkoutsRepository mWorkoutsRepository;
     private ActionWorkoutManager mActionWorkoutManager;
-    private LiveData<Exercise> exercise;
+
 
     public ActionWorkoutViewModel(WorkoutsRepository workoutsRepository, ActionWorkoutManager actionWorkoutManager) {
         this.mWorkoutsRepository = workoutsRepository;
         this.mActionWorkoutManager = actionWorkoutManager;
-        exercise=actionWorkoutManager.getActiveExerciseLD();
+
     }
 
     public LiveData<Workout> getWorkout(@NonNull final Long workoutId) {
@@ -37,6 +38,10 @@ public class ActionWorkoutViewModel extends ViewModel {
 
     public LiveData<Exercise> getExercise() {
         return mActionWorkoutManager.getActiveExerciseLD();
+    }
+
+    public LiveData<Rest> getRest() {
+        return mActionWorkoutManager.getRestLD();
     }
 
     public void setActiveExercise(Exercise exercise) {

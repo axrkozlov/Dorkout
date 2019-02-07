@@ -57,7 +57,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/name"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/name"
-            app:srcCompat="@drawable/exercise_status_undone" />
+            app:srcCompat="@drawable/exercise_status_awaiting" />
 
         <TextView
             android:id="@+id/status_label"

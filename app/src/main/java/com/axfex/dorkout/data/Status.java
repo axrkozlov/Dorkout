@@ -4,10 +4,11 @@ import androidx.room.TypeConverter;
 
 public enum Status {
     AWAITING(0),
-    RUNNING(1),
-    PAUSED(2),
-    DONE(3),
-    SKIPPED(4);
+    READY(1),
+    RUNNING(2),
+    PAUSED(3),
+    DONE(4),
+    SKIPPED(5);
     private int code;
 
     Status(int code) {

@@ -5,7 +5,7 @@
 
     <string name="workout_id_tag" translatable="false">exercise_id</string>
 
-    <string name="lb_total_time">time</string>
+    <string name="lb_total_time">timeLD</string>
     <string name="lb_rest_time">rest</string>
 
 

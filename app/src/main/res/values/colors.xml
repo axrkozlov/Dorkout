@@ -3,7 +3,7 @@
 
     <color name="colorPrimary">#414446</color>
     <color name="colorPrimaryDark">#282A2B</color>
-    <color name="colorAccent">#FC9120</color>
+    <color name="colorAccent">#FDB92E</color>
     <color name="colorToolbarElements">#F8F8F8</color>
     <color name="TextColor">#EEEE55</color>
     <color name="background">#2D3135</color>
@@ -14,7 +14,7 @@
     <color name="status_light_red">#FF2222</color>
     <color name="status_light_yellow">#DD9203</color>
 
-    <color name="status_light_off">#D8D8D8</color>
+    <color name="status_light_off">#FDF6E9</color>
     <color name="status_light_borders">#979797</color>
     <color name="status_workout_run">#7ED321</color>
 
@@ -29,11 +29,17 @@
     <color name="result_icon">#F7AF2C</color>
 
     <color name="rest_progress">#F8E836</color>
-    <color name="result_progress">#78FC31</color>
-    <color name="status_running_button">#82FD3E</color>
-    <color name="status_done_button">#F8E836</color>
-    <color name="status_button_text">#393B3D</color>
+    <color name="result_progress">#61D325</color>
 
+    <color name="status_running_button">#82FD3E</color>
+    <color name="status_text">#FFFFFF</color>
+    <color name="status_empty">#353332</color>
+    <color name="status_awaiting">#353332</color>
+    <color name="status_ready">#FDB92E</color>
+    <color name="status_running">#42E010</color>
+    <color name="status_paused">#FDB92E</color>
+    <color name="status_done">#353332</color>
+    <color name="status_skipped">#696767</color>
 
     <color name="workout_item">#474145</color>
     <color name="workout_item_marked">#4a148c</color>
@@ -44,11 +50,13 @@
     <color name="exercise_active_item">#F7EAD8</color>
     <color name="exercise_button_background">#978F87</color>
     <color name="exercise_button_text">#2D2D56</color>
+    <color name="exercise_status_empty">#696767</color>
+    <color name="exercise_status_awaiting">#42E010</color>
+    <color name="exercise_status_ready">#FFEB3B</color>
     <color name="exercise_status_running">#42E010</color>
     <color name="exercise_status_paused">#FFEB3B</color>
-    <color name="exercise_status_done">#43A047</color>
+    <color name="exercise_status_done">#4378A0</color>
     <color name="exercise_status_skipped">#696767</color>
-    <color name="exercise_status_next">#039BE5</color>
     <color name="exercise_status_forecolor">#FFFFFF</color>
 
 

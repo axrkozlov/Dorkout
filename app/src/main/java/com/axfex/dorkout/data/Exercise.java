@@ -1,8 +1,6 @@
 package com.axfex.dorkout.data;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.NavUtils;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -15,6 +13,7 @@ import androidx.room.TypeConverters;
 import static androidx.room.ForeignKey.CASCADE;
 import static com.axfex.dorkout.data.Status.AWAITING;
 import static com.axfex.dorkout.data.Status.DONE;
+import static com.axfex.dorkout.data.Status.READY;
 import static com.axfex.dorkout.data.Status.RUNNING;
 import static com.axfex.dorkout.data.Status.SKIPPED;
 import static com.axfex.dorkout.data.Status.PAUSED;
@@ -54,11 +53,7 @@ public class Exercise {
     private Integer weight;
     private Integer repeats;
     private Integer distance;
-    @TypeConverters(LiveDataConverter.class)
-    private MutableLiveData<Long> time;
-
-    @Ignore
-    private MutableLiveData<Long> elapsedTime = new MutableLiveData<>();
+    private Long time;
 
     @Nullable
     private Status status;
@@ -68,6 +63,16 @@ public class Exercise {
 
     @Ignore
     private long accumulatedTime;
+
+
+    @Ignore
+    private MutableLiveData<Long> timeLD = new MutableLiveData<>();
+
+    @Ignore
+    private MutableLiveData<Integer> progressLD = new MutableLiveData<>();
+
+    @Ignore
+    public static final int MAX_PROGRESS = 10000;
 
     public Exercise() {
     }
@@ -190,12 +195,13 @@ public class Exercise {
         this.distance = distance;
     }
 
-    public MutableLiveData<Long> getTime() {
+    public Long getTime() {
         return time;
     }
 
-    public void setTime(MutableLiveData<Long> time) {
+    public void setTime(Long time) {
         this.time = time;
+        updateTime();
     }
 
     @Nullable
@@ -207,15 +213,28 @@ public class Exercise {
         this.status = status;
     }
 
+    public MutableLiveData<Long> getTimeLD() {
+        return timeLD;
+    }
+
+    public MutableLiveData<Integer> getProgressLD() {
+        return progressLD;
+    }
+
+
     public void await() {
         if (status == null) status = AWAITING;
-        status = AWAITING;
     }
+
+    public void ready() {
+        if (status == AWAITING) status = READY;
+    }
+
 
     public boolean start() {
         if (status != RUNNING && status != DONE) {
             startTime = now();
-            accumulatedTime = time.getValue()==null?0L:time.getValue();
+            accumulatedTime = timeLD.getValue() == null ? 0L : timeLD.getValue();
             status = RUNNING;
             return true;
         }
@@ -223,9 +242,9 @@ public class Exercise {
     }
 
     public boolean restart() {
-        if (status == RUNNING || status == PAUSED) {
+        if (status == RUNNING || status == PAUSED || status == DONE) {
             startTime = now();
-            accumulatedTime=0L;
+            accumulatedTime = 0L;
             status = RUNNING;
             return true;
         }
@@ -254,14 +273,24 @@ public class Exercise {
         status = null;
         weight = 0;
         repeats = 0;
-        distance=0;
-        time.postValue(null);
+        distance = 0;
+        setTime(null);
+        accumulatedTime = 0;
     }
 
     public void updateTime() {
         if (status == RUNNING) {
             final long timeSinceStart = now() - startTime;
-            time.postValue(accumulatedTime + Math.max(0, timeSinceStart));
+            time = accumulatedTime + Math.max(0, timeSinceStart);
+        }
+        timeLD.postValue(time);
+        updateProgress();
+    }
+
+    private void updateProgress() {
+        if (time != null && timePlan != null && timePlan > 0) {
+            Long progressLong = time * MAX_PROGRESS / timePlan;
+            progressLD.postValue(progressLong.intValue());
         }
     }
 
@@ -282,6 +311,10 @@ public class Exercise {
     }
 
     public Boolean getAwaiting() {
+        return status == AWAITING;
+    }
+
+    public Boolean getReady() {
         return status == AWAITING;
     }
 
