@@ -1,7 +1,6 @@
 package com.axfex.dorkout.views.workouts;
 
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,7 +8,6 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,7 +28,6 @@ import android.widget.TextView;
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
 import com.axfex.dorkout.data.Exercise;
-import com.axfex.dorkout.data.Rest;
 import com.axfex.dorkout.data.Status;
 import com.axfex.dorkout.data.Workout;
 
@@ -169,7 +166,7 @@ public class ActionWorkoutFragment extends Fragment {
                 case AWAITING:
                     res = R.drawable.card_status_awaiting;
                     break;
-                case READY:
+                case NEXT:
                     res = R.drawable.card_status_ready;
                     break;
                 case RUNNING:

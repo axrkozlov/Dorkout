@@ -13,7 +13,7 @@ import androidx.room.TypeConverters;
 import static androidx.room.ForeignKey.CASCADE;
 import static com.axfex.dorkout.data.Status.AWAITING;
 import static com.axfex.dorkout.data.Status.DONE;
-import static com.axfex.dorkout.data.Status.READY;
+import static com.axfex.dorkout.data.Status.NEXT;
 import static com.axfex.dorkout.data.Status.RUNNING;
 import static com.axfex.dorkout.data.Status.SKIPPED;
 import static com.axfex.dorkout.data.Status.PAUSED;
@@ -222,12 +222,20 @@ public class Exercise {
     }
 
 
-    public void await() {
-        if (status == null) status = AWAITING;
+    public boolean await() {
+        if (status  == null||status == NEXT)  {
+            status = AWAITING;
+            return true;
+        }
+        return false;
     }
 
-    public void ready() {
-        if (status == AWAITING) status = READY;
+    public boolean next() {
+        if (status  == null||status == AWAITING) {
+            status = NEXT;
+            return true;
+        }
+        return false;
     }
 
 
@@ -265,8 +273,11 @@ public class Exercise {
     }
 
     public boolean finish() {
-        status = DONE;
-        return true;
+        if (status==RUNNING||status==PAUSED){
+            status = DONE;
+            return true;
+        }
+        return false;
     }
 
     public void reset() {
@@ -314,7 +325,7 @@ public class Exercise {
         return status == AWAITING;
     }
 
-    public Boolean getReady() {
+    public Boolean getNext() {
         return status == AWAITING;
     }
 

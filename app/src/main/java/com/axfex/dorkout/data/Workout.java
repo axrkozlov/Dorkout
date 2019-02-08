@@ -22,6 +22,7 @@ import static com.axfex.dorkout.util.DateUtils.now;
 
 @Entity
 public class Workout {
+
     @PrimaryKey(autoGenerate = true)
     private Long id;
     private String name;
@@ -157,6 +158,10 @@ public class Workout {
             final long timeSinceStart = now() - startTime;
             time.postValue(accumulatedTime + Math.max(0, timeSinceStart));
         }
+    }
+
+    public  boolean getRunning(){
+        return status==RUNNING;
     }
 }
 

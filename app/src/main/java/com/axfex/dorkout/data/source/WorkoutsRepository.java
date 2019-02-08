@@ -1,5 +1,7 @@
 package com.axfex.dorkout.data.source;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.annotation.NonNull;
@@ -98,7 +100,10 @@ public class WorkoutsRepository {
     }
 
     public void updateExercise(@NonNull Exercise... exercise) {
-        mAppExecutors.diskIO().execute(() -> exercisesDao.updateExercise(exercise));
+        mAppExecutors.diskIO().execute(() -> {
+            exercisesDao.updateExercise(exercise);
+            Log.i(TAG, "updateExercise: " +exercise[0].getStatus());
+        });
     }
 
     public void updateExercises(@NonNull List<Exercise> exercises) {

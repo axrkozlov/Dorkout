@@ -599,7 +599,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@color/transparent"
-                    android:text="@string/bt_stop" />
+                    android:text="@string/bt_pause" />
 
                 <Button
                     android:id="@+id/bt_done"
