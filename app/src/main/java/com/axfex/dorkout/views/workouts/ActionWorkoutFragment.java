@@ -184,8 +184,17 @@ public class ActionWorkoutFragment extends Fragment {
             }
         }
         view.setImageDrawable(ContextCompat.getDrawable(view.getContext(), res));
+    }
 
-
+    @BindingAdapter("planTime")
+    public static void setStatusColor(TextView view, String planTime) {
+//        final int res;
+//        if (view.getText().length()==0) {
+//            res = R.string.exercise_null_time;
+//
+//        }
+//        view.setText(planTime);
+//        Log.i(TAG, "setStatusColor: "+view.getText().length());
     }
 
     @BindingAdapter("enumStatusText")
@@ -442,14 +451,14 @@ public class ActionWorkoutFragment extends Fragment {
 //    }
 //
 //    private void onWorkoutTimeUpdate() {
-//        String timeString = DateUtils.getTimeString(mWorkout.getTimeLD());
+//        String timeString = FormatUtils.getTimeString(mWorkout.getTimeLD());
 //        mWorkoutTime.setText(timeString);
 //        mWorkoutTime.postDelayed(mWorkoutTimeUpdateAction, 1000);
 //        Log.i(TAG, "onWorkoutTimeUpdate: " + mWorkout.getName() + ", running:" + mWorkout.getStatus() + ", time:" + mWorkout.getTimeLD());
 //    }
 //
 //    private void onExerciseTimeUpdate() {
-//        String timeString = DateUtils.getTimeString(mExercise.getTimeLD());
+//        String timeString = FormatUtils.getTimeString(mExercise.getTimeLD());
 //
 ////        mExerciseTime.setText(timeString);
 //        mExerciseTime.postDelayed(mExerciseTimeUpdateAction, 1000);
@@ -458,7 +467,7 @@ public class ActionWorkoutFragment extends Fragment {
 //
 //    private void onRestTimeUpdate() {
 //        final long time = mExercise.getRestTime();
-//        String timeString = DateUtils.getTimeString(time);
+//        String timeString = FormatUtils.getTimeString(time);
 //        mRestTime.setText(timeString);
 //        mRestTime.postDelayed(mRestTimeUpdateAction, 1000);
 //        Log.i(TAG, "onRestTimeUpdate: " + mExercise.getName() + ", time:" + time);

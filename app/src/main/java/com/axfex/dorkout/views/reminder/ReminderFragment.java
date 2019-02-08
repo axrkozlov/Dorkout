@@ -104,13 +104,13 @@ public class ReminderFragment extends Fragment {
 //        weekDays.add(mDay6.isChecked());
 //        weekDays.add(mDay7.isChecked());
 //
-//        workout.setWeekDaysComposed(DateUtils.composeWeekDays(weekDays));
+//        workout.setWeekDaysComposed(FormatUtils.composeWeekDays(weekDays));
 //
 //        workout.setLastStartTime(Calendar.getInstance().getTimeInMillis());
 //
 //        String startTimeText = mStartTime.getText().toString();
 //        if (!startTimeText.equals(getResources().getShowTag(R.string.workout_id_tag))) {
-//            long startTimeLong = DateUtils.getTimeMillis(startTimeText);
+//            long startTimeLong = FormatUtils.getTimeMillis(startTimeText);
 //            workout.setStartTime(startTimeLong);
 //        }
 //
@@ -130,7 +130,7 @@ public class ReminderFragment extends Fragment {
 //
 //        mName.setText(workout.getName());
 //        mDesc.setText(workout.getNote());
-//        ArrayList<Boolean> weekDays = DateUtils.parseWeekDays(workout.getWeekDaysComposed());
+//        ArrayList<Boolean> weekDays = FormatUtils.parseWeekDays(workout.getWeekDaysComposed());
 //        mDay1.setChecked(weekDays.get(0));
 //        mDay2.setChecked(weekDays.get(1));
 //        mDay3.setChecked(weekDays.get(2));
@@ -138,7 +138,7 @@ public class ReminderFragment extends Fragment {
 //        mDay5.setChecked(weekDays.get(4));
 //        mDay6.setChecked(weekDays.get(5));
 //        mDay7.setChecked(weekDays.get(6));
-//        mStartTime.setText(DateUtils.getTimeString(workout.getStartTime()));
+//        mStartTime.setText(FormatUtils.getTimeString(workout.getStartTime()));
 //
 //    }
 

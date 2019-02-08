@@ -13,7 +13,7 @@ import java.util.Locale;
  * Created by alexanderkozlov on 11/27/17.
  */
 
-public final class DateUtils {
+public final class FormatUtils {
     public static int composeWeekDays(ArrayList<Boolean> isDayActive) {
         int result = 0;
         if (isDayActive == null) {
@@ -57,15 +57,15 @@ public final class DateUtils {
     public static String getTimeString(Long time_ms) {
         if (time_ms == null ) {
             //TODO: get string from resource
-            return "--:--";
+            return null;
         } else if (time_ms <= 0){
             return "00:00";
         }
         String timeFormat;
         if (time_ms<3600000) {
-            timeFormat="mm:ss";
+            timeFormat="mm:ss.S";
         }else {
-            timeFormat="h:mm:ss";
+            timeFormat="h:mm:s";
         }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat(timeFormat, Locale.getDefault());
@@ -87,10 +87,13 @@ public final class DateUtils {
         milliseconds=milliseconds/1000;
         return milliseconds.intValue();
     }
-
     public static Long now(){
         return SystemClock.elapsedRealtime();
     }
 
+    public static int unwrap(Long l){
+        if (l!=null) return l.intValue();
+        return 0;
+    }
 
 }

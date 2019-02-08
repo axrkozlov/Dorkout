@@ -3,15 +3,15 @@ package com.axfex.dorkout.data;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import static com.axfex.dorkout.data.Exercise.MAX_PROGRESS;
-import static com.axfex.dorkout.util.DateUtils.now;
+import static com.axfex.dorkout.util.FormatUtils.now;
 
 public class Rest {
+    public static final Long MAX_PROGRESS = 10000L;
     private Long restTimePlan;
     private Long restTime;
 
     private MutableLiveData<Long> restTimeLD = new MutableLiveData<>();
-    private MutableLiveData<Integer> progressLD = new MutableLiveData<>();
+    private MutableLiveData<Long> progressLD = new MutableLiveData<>();
 
     private long startTime;
     private boolean expired = false;
@@ -36,10 +36,10 @@ public class Rest {
 
     private void updateProgress() {
         if (restTime != null && restTimePlan != null && restTimePlan > 0) {
-            Long progressLong = restTime * MAX_PROGRESS / restTimePlan;
-            progressLD.postValue(progressLong.intValue());
+            Long progress = restTime * MAX_PROGRESS / restTimePlan;
+            progressLD.postValue(progress);
         } else {
-            progressLD.postValue(0);
+            progressLD.postValue(null);
         }
     }
 
@@ -51,7 +51,7 @@ public class Rest {
         return restTimeLD;
     }
 
-    public LiveData<Integer> getProgressLD() {
+    public LiveData<Long> getProgressLD() {
         return progressLD;
     }
 }

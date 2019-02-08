@@ -56,13 +56,13 @@
     <string name="workout_desc_exercises">20</string>
     <string name="workout_desc_total_time">1:20</string>
     <string name="workout_desc_days">Mon Wed</string>
-    <string name="workout_null_start_time">--:--</string>
+    <string name="workout_null_time">--:--</string>
 
 
     <string name="exercise_number">2.</string>
     <string name="exercise_title">Barbell</string>
     <string name="exercise_desc">Up and high, weightPlan: 11kg. mSets 3, reps 115 </string>
-
+    <string name="exercise_null_time">--:--</string>
 
     <string name="norm_time">1:24</string>
     <string name="reps">31</string>

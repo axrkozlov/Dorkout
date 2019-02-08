@@ -20,7 +20,7 @@
 
         <import type="android.view.View" />
 
-        <import type="com.axfex.dorkout.util.DateUtils" />
+        <import type="com.axfex.dorkout.util.FormatUtils" />
 
         <import type="java.lang.Math" />
     </data>
@@ -420,7 +420,7 @@
                     android:layout_margin="2dp"
                     android:visibility="visible"
                     app:layout_flexGrow="4"
-                    app:layout_minWidth="160dp">
+                    app:layout_minWidth="200dp">
 
                     <ImageView
                         android:id="@+id/time_widget_back"
@@ -465,7 +465,8 @@
                         android:gravity="center"
                         android:maxWidth="180dp"
                         android:maxLines="1"
-                        android:text="@{viewModel.exercise.timeLD.toString()}"
+                        android:text="@{FormatUtils.getTimeString(viewModel.exercise.timeLD)}"
+                        app:planTime="@{FormatUtils.getTimeString(viewModel.exercise.timePlan)}"
                         android:textAlignment="center"
                         android:textColor="@color/result_digit"
                         android:textSize="60sp"
@@ -475,26 +476,24 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="12:40" />
+                        tools:text="12:40.9" />
+
                     <ProgressBar
                         android:id="@+id/progressBar"
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="0dp"
                         android:layout_height="6dp"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginTop="0dp"
-                        android:layout_marginEnd="4dp"
-                        android:layout_marginBottom="4dp"
+                        android:layout_margin="4dp"
+
                         android:indeterminateOnly="false"
-                        android:max="@{viewModel.exercise.MAX_PROGRESS}"
-                        tools:progress="75"
+                        android:max="@{FormatUtils.unwrap(viewModel.exercise.MAX_PROGRESS)}"
                         android:minHeight="13dp"
+                        android:progress="@{FormatUtils.unwrap(viewModel.exercise.progressLD)}"
                         android:progressDrawable="@drawable/progress_bar_horizontal"
-                        android:progress="@{viewModel.exercise.progressLD}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:progress="75" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -542,18 +541,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"/>
 
-
-
-                    <!--<ch.halcyon.squareprogressbar.SquareProgressView-->
-                        <!--android:id="@+id/sprogressbar"-->
-                        <!--android:layout_width="50dp"-->
-                        <!--android:layout_height="50dp"-->
-                        <!--android:layout_alignParentTop="true"-->
-                        <!--android:layout_centerHorizontal="true"-->
-                        <!--android:paddingTop="20dp"-->
-                        <!--android:progress="50"-->
-                        <!--/>-->
-
                     <ProgressBar
                         android:id="@+id/pb_total_time"
                         style="?android:progressBarStyleHorizontal"
@@ -561,8 +548,8 @@
                         android:layout_height="0dp"
                         android:layout_marginTop="2dp"
                         android:layout_marginBottom="2dp"
-                        android:max="@{viewModel.exercise.MAX_PROGRESS}"
-                        android:progress="@{viewModel.rest.progressLD}"
+                        android:max="@{FormatUtils.unwrap(viewModel.rest.MAX_PROGRESS)}"
+                        android:progress="@{FormatUtils.unwrap(viewModel.rest.progressLD)}"
                         android:progressDrawable="@drawable/progress_bar_ring"
                         tools:progress="95"
                         app:layout_constraintBottom_toBottomOf="parent"

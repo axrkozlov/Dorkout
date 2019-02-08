@@ -2,17 +2,14 @@ package com.axfex.dorkout.data;
 
 
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
-import static com.axfex.dorkout.data.Status.DONE;
 import static com.axfex.dorkout.data.Status.RUNNING;
-import static com.axfex.dorkout.data.Status.PAUSED;
-import static com.axfex.dorkout.util.DateUtils.now;
+import static com.axfex.dorkout.util.FormatUtils.now;
 
 /**
  * Created by alexanderkozlov on 1/2/18.

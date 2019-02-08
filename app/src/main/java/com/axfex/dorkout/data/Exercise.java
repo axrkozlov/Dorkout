@@ -17,7 +17,7 @@ import static com.axfex.dorkout.data.Status.NEXT;
 import static com.axfex.dorkout.data.Status.RUNNING;
 import static com.axfex.dorkout.data.Status.SKIPPED;
 import static com.axfex.dorkout.data.Status.PAUSED;
-import static com.axfex.dorkout.util.DateUtils.now;
+import static com.axfex.dorkout.util.FormatUtils.now;
 
 /**
  * Created by alexanderkozlov on 2/18/18.
@@ -69,10 +69,10 @@ public class Exercise {
     private MutableLiveData<Long> timeLD = new MutableLiveData<>();
 
     @Ignore
-    private MutableLiveData<Integer> progressLD = new MutableLiveData<>();
+    private MutableLiveData<Long> progressLD = new MutableLiveData<>();
 
     @Ignore
-    public static final int MAX_PROGRESS = 10000;
+    public static final Long MAX_PROGRESS = 10000L;
 
     public Exercise() {
     }
@@ -214,10 +214,11 @@ public class Exercise {
     }
 
     public MutableLiveData<Long> getTimeLD() {
+        if (time==null) timeLD.postValue(timePlan);
         return timeLD;
     }
 
-    public MutableLiveData<Integer> getProgressLD() {
+    public MutableLiveData<Long> getProgressLD() {
         return progressLD;
     }
 
@@ -242,7 +243,7 @@ public class Exercise {
     public boolean start() {
         if (status != RUNNING && status != DONE) {
             startTime = now();
-            accumulatedTime = timeLD.getValue() == null ? 0L : timeLD.getValue();
+            accumulatedTime = time == null ? 0L : time;
             status = RUNNING;
             return true;
         }
@@ -301,7 +302,7 @@ public class Exercise {
     private void updateProgress() {
         if (time != null && timePlan != null && timePlan > 0) {
             Long progressLong = time * MAX_PROGRESS / timePlan;
-            progressLD.postValue(progressLong.intValue());
+            progressLD.postValue(progressLong);
         }
     }
 
@@ -326,7 +327,7 @@ public class Exercise {
     }
 
     public Boolean getNext() {
-        return status == AWAITING;
+        return status == NEXT;
     }
 
     public boolean is(Exercise exercise) {

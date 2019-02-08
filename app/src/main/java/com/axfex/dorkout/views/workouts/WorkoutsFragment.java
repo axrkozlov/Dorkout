@@ -292,7 +292,7 @@ public class WorkoutsFragment extends Fragment implements WorkoutsNavigator {
                 mDesc.setText(mWorkout.getNote());
             } else mDesc.setVisibility(View.GONE);
             String[] weekDaysText = DateFormatSymbols.getInstance().getShortWeekdays();
-//            ArrayList<Boolean> weekDays = DateUtils.parseWeekDays(mWorkout.getWeekDaysComposed());
+//            ArrayList<Boolean> weekDays = FormatUtils.parseWeekDays(mWorkout.getWeekDaysComposed());
 //            StringBuilder sb = new StringBuilder();
 //
 //            for (int i = 0; i < 7; i++) {
@@ -307,7 +307,7 @@ public class WorkoutsFragment extends Fragment implements WorkoutsNavigator {
 
 //            mDays.setText(sb.toString());
 //            mStartTime.setText(mWorkout.getStartTime().toString());
-//            mTotalTime.setText(DateUtils.getTimeString(mWorkout.getCurrentTime()));
+//            mTotalTime.setText(FormatUtils.getTimeString(mWorkout.getCurrentTime()));
             //holder.mCard.setCardBackgroundColor(workout.isMarked() ? markedCardColor : unmarkedCardColor);
             //holder.mActiveIcon.setVisibility(workout.isMarked() ? View.VISIBLE : View.INVISIBLE);
 

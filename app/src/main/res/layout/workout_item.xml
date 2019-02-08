@@ -136,7 +136,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:text="@string/workout_null_start_time"
+            android:text="@string/workout_null_time"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/small_label_text"
             app:layout_constraintBaseline_toBaselineOf="@+id/lb_workout_start_time"
