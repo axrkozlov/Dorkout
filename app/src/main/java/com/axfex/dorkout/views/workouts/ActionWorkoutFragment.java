@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,11 +29,13 @@ import android.widget.TextView;
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
 import com.axfex.dorkout.data.Exercise;
+import com.axfex.dorkout.data.LiveDataConverter;
 import com.axfex.dorkout.data.Status;
 import com.axfex.dorkout.data.Workout;
 
 import com.axfex.dorkout.databinding.ActionWorkoutFragmentBinding;
 import com.axfex.dorkout.services.ActionWorkoutService;
+import com.axfex.dorkout.util.FormatUtils;
 import com.axfex.dorkout.vm.ViewModelFactory;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -167,10 +170,13 @@ public class ActionWorkoutFragment extends Fragment {
                     res = R.drawable.card_status_awaiting;
                     break;
                 case NEXT:
-                    res = R.drawable.card_status_ready;
+                    res = R.drawable.card_status_next;
                     break;
                 case RUNNING:
                     res = R.drawable.card_status_running;
+                    break;
+                case PAUSED:
+                    res = R.drawable.card_status_paused;
                     break;
                 case DONE:
                     res = R.drawable.card_status_done;
@@ -186,15 +192,24 @@ public class ActionWorkoutFragment extends Fragment {
         view.setImageDrawable(ContextCompat.getDrawable(view.getContext(), res));
     }
 
-    @BindingAdapter("planTime")
-    public static void setStatusColor(TextView view, String planTime) {
-//        final int res;
-//        if (view.getText().length()==0) {
+    @BindingAdapter({"time","timePlan"})
+    public static void setTime(TextView view, Long time,Long timePlan) {
+        final int res;
+        final int color;
+        if (time==null) {
+            color=R.color.result_digit_plan;
+            view.setText(FormatUtils.getTimeString(timePlan));
+            view.setTextColor(ContextCompat.getColor(view.getContext(),color));
+        } else {
+            color=R.color.result_digit;
+            view.setText(FormatUtils.getTimeString(time));
+            view.setTextColor(ContextCompat.getColor(view.getContext(),color));
+        }
 //            res = R.string.exercise_null_time;
 //
 //        }
 //        view.setText(planTime);
-//        Log.i(TAG, "setStatusColor: "+view.getText().length());
+        Log.i(TAG, "setTime: "+time);
     }
 
     @BindingAdapter("enumStatusText")

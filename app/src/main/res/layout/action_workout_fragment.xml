@@ -465,8 +465,9 @@
                         android:gravity="center"
                         android:maxWidth="180dp"
                         android:maxLines="1"
-                        android:text="@{FormatUtils.getTimeString(viewModel.exercise.timeLD)}"
-                        app:planTime="@{FormatUtils.getTimeString(viewModel.exercise.timePlan)}"
+                        app:timePlan="@{viewModel.exercise.timePlan}"
+                        app:time="@{viewModel.exercise.timeLD}"
+
                         android:textAlignment="center"
                         android:textColor="@color/result_digit"
                         android:textSize="60sp"

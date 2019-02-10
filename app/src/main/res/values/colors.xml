@@ -23,6 +23,7 @@
     <color name="status_exercise_inactive">#505074</color>
 
     <color name="result_digit">#FCE977</color>
+    <color name="result_digit_plan">#C7C7C7</color>
     <color name="result_background">#353332</color>
     <color name="result_borders">#998C8C</color>
     <color name="result_label">#9E9884</color>

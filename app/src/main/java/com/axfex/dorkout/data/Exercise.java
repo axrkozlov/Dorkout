@@ -214,7 +214,6 @@ public class Exercise {
     }
 
     public MutableLiveData<Long> getTimeLD() {
-        if (time==null) timeLD.postValue(timePlan);
         return timeLD;
     }
 
