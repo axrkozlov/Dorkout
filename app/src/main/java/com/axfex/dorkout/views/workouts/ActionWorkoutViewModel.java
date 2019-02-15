@@ -1,5 +1,7 @@
 package com.axfex.dorkout.views.workouts;
 
+import android.util.Log;
+
 import com.axfex.dorkout.data.Exercise;
 import com.axfex.dorkout.data.Rest;
 import com.axfex.dorkout.data.Workout;
@@ -8,12 +10,13 @@ import com.axfex.dorkout.services.ActionWorkoutManager;
 
 import java.util.List;
 
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 public class ActionWorkoutViewModel extends ViewModel {
-    public static final String TAG = "ACTION_WORKOUT_VIEW_MODEL";
+    public static final String TAG = "ACTION_WORKOUT_VM";
     private WorkoutsRepository mWorkoutsRepository;
     private ActionWorkoutManager mActionWorkoutManager;
 
@@ -69,11 +72,31 @@ public class ActionWorkoutViewModel extends ViewModel {
 
     public void skipExercise() {
         mActionWorkoutManager.skipExercise();
+
     }
 
     public void finishExercise() {
         mActionWorkoutManager.finishExercise();
     }
+
+    public void finishRest() {
+        Log.i(TAG, "finishRest: ");
+        mActionWorkoutManager.finishRest();
+    }
+
+    public void onMasterClick(){
+        Exercise exercise=getExercise().getValue();
+        Rest rest=getRest().getValue();
+        if (rest!=null) {
+            mActionWorkoutManager.finishRest();
+        } else if (exercise != null) {
+            if (exercise.canStart()) mActionWorkoutManager.startExercise();
+            else mActionWorkoutManager.finishExercise();
+        }
+
+    }
+
+
 
 //    public LiveData<Long> getWorkoutTime() {
 //        return mActionWorkoutManager.getWorkoutTime();

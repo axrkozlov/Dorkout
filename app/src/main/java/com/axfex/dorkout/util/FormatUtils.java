@@ -1,13 +1,17 @@
 package com.axfex.dorkout.util;
 
+import android.content.res.Resources;
 import android.os.SystemClock;
 
 import com.axfex.dorkout.R;
+import com.axfex.dorkout.WorkoutApplication;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+
+import androidx.core.content.ContextCompat;
 
 /**
  * Created by alexanderkozlov on 11/27/17.
@@ -55,11 +59,9 @@ public final class FormatUtils {
     }
 
     public static String getTimeString(Long time_ms) {
-        if (time_ms == null ) {
-            //TODO: get string from resource
-            return null;
-        } else if (time_ms <= 0){
-            return "00:00";
+            if (time_ms == null || time_ms <= 0){
+            return
+                    WorkoutApplication.getContext().getString(R.string.empty_time);
         }
         String timeFormat;
         if (time_ms<3600000) {

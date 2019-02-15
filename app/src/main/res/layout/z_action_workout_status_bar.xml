@@ -74,7 +74,7 @@
         <!--android:layout_marginTop="8dp"-->
         <!--android:layout_marginBottom="8dp"-->
         <!--android:progress="80"-->
-        <!--android:progressDrawable="@drawable/progress_bar_ring"-->
+        <!--android:progressDrawable="@drawable/action_rest_progress_bar"-->
         <!--app:layout_constraintBottom_toBottomOf="@+id/total_time"-->
         <!--app:layout_constraintEnd_toEndOf="parent"-->
         <!--app:layout_constraintTop_toTopOf="parent" />-->

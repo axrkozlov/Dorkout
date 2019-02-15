@@ -41,8 +41,8 @@ public class WorkoutsFragment extends Fragment implements WorkoutsNavigator {
     public static final String TAG = "WORKOUTS_FRAGMENT";
 
     @Inject
-    public ViewModelFactory<WorkoutsViewModel> mViewModelFactory;
-    public WorkoutsViewModel mWorkoutsViewModel;
+    ViewModelFactory<WorkoutsViewModel> mViewModelFactory;
+    private WorkoutsViewModel mWorkoutsViewModel;
 
     private MainViewModel mMainViewModel;
     private RecyclerView mRecyclerView;
@@ -92,6 +92,7 @@ public class WorkoutsFragment extends Fragment implements WorkoutsNavigator {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.workouts_menu, menu);
+
         mMenu = menu;
         updateActionBar();
     }
@@ -135,6 +136,7 @@ public class WorkoutsFragment extends Fragment implements WorkoutsNavigator {
                 break;
             }
         }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -256,7 +258,6 @@ public class WorkoutsFragment extends Fragment implements WorkoutsNavigator {
         public int getItemCount() {
             return mWorkouts.size();
         }
-
     }
 
     private class WorkoutViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {

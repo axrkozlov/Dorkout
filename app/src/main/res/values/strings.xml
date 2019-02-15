@@ -31,7 +31,7 @@
     <string name="bt_restart">RESTART</string>
     <string name="bt_start">START</string>
     <string name="bt_pause">PAUSE</string>
-    <string name="bt_done">DONE</string>
+    <string name="bt_finish">FINISH</string>
     <string name="bt_ok">OK</string>
     <string name="bt_cancel">CANCEL</string>
 

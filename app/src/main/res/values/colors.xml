@@ -27,27 +27,37 @@
     <color name="result_background">#353332</color>
     <color name="result_borders">#998C8C</color>
     <color name="result_label">#9E9884</color>
-    <color name="result_icon">#F7AF2C</color>
+    <color name="result_icon">#EDAD39</color>
 
-    <color name="rest_progress">#F8E836</color>
-    <color name="result_progress">#61D325</color>
 
-    <color name="status_running_button">#82FD3E</color>
-    <color name="status_text">#FFFFFF</color>
-    <color name="status_empty">#353332</color>
-    <color name="status_awaiting">#353332</color>
-    <color name="status_ready">#FDB92E</color>
-    <color name="status_running">#42E010</color>
-    <color name="status_paused">#FDB92E</color>
-    <color name="status_done">#353332</color>
-    <color name="status_skipped">#696767</color>
+    <color name="result_progress">#88DC5A</color>
+
+    <color name="action_icon">#FFFFFF</color>
+    <color name="action_icon_inactive">#929292</color>
+
+    <color name="action_icon_empty">#74929292</color>
+    <color name="action_icon_skipped">#C29E91</color>
+    <color name="action_icon_done">#6499D9</color>
+    <color name="rest_progressbar">#FAEDBB63</color>
+    <color name="action_status_text">#3AEBE9E9</color>
+
+    <color name="action_elements_background">#696767</color>
+    <color name="state_empty_back">#696767</color>
+    <color name="state_rest_await_back">#696767</color>
+    <color name="state_start_back">#DDBB5F</color>
+    <color name="state_finish_back">#7EBA5D</color>
+    <color name="state_skipped_back">#696767</color>
+    <color name="state_done_back">#696767</color>
+
+
+
 
     <color name="workout_item">#474145</color>
     <color name="workout_item_marked">#4a148c</color>
     <color name="workout_icon">#E3EBFA</color>
 
 
-    <color name="exercise_item">#535557</color>
+    <color name="exercise_item">#4A4F53</color>
     <color name="exercise_active_item">#F7EAD8</color>
     <color name="exercise_button_background">#978F87</color>
     <color name="exercise_button_text">#2D2D56</color>

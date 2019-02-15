@@ -309,7 +309,7 @@
             <!--android:layout_marginTop="2dp"-->
             <!--app:layout_constraintStart_toStartOf="parent"-->
             <!--app:layout_constraintTop_toTopOf="parent"-->
-            <!--app:srcCompat="@drawable/ic_exericse_timer" />-->
+            <!--app:srcCompat="@drawable/ic_exercise_timer" />-->
 
         <!--<TextView-->
             <!--android:id="@+id/time_widget_tv"-->

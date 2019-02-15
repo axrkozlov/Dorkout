@@ -4,11 +4,9 @@ package com.axfex.dorkout.views.workouts;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,22 +18,22 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
 import com.axfex.dorkout.data.Exercise;
-import com.axfex.dorkout.data.LiveDataConverter;
-import com.axfex.dorkout.data.Status;
 import com.axfex.dorkout.data.Workout;
 
 import com.axfex.dorkout.databinding.ActionWorkoutFragmentBinding;
+import com.axfex.dorkout.databinding.ActionWorkoutPanelBinding;
 import com.axfex.dorkout.services.ActionWorkoutService;
-import com.axfex.dorkout.util.FormatUtils;
 import com.axfex.dorkout.vm.ViewModelFactory;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -59,23 +57,15 @@ public class ActionWorkoutFragment extends Fragment {
     private Long mWorkoutId;
     private Workout mWorkout;
     private List<Exercise> mExercises;
-    private Exercise mExercise;
 
     private FloatingActionButton mStartWorkout;
     private FloatingActionButton mStopWorkout;
-    private TextView mExerciseName;
-    private ImageView mRedLamp;
     private ImageView mGreenLamp;
-    private ImageView mYellowLamp;
-    private Button mStartExercise;
-    private Button mStopExercise;
-    private Button mRestartExercise;
-    private Button mSkipExercise;
-    private Button mDoneExercise;
-    private TextView mWorkoutTime;
-    private TextView mExerciseTime;
-    private TextView mRestTime;
-    private ProgressBar mPBRestTime;
+
+    private Button mButton;
+    private ViewSwitcher mViewSwitcher;
+    ActionWorkoutPanelBinding panel1;
+    ActionWorkoutPanelBinding panel2;
 
     ActionWorkoutFragmentBinding mBinding;
 
@@ -117,9 +107,24 @@ public class ActionWorkoutFragment extends Fragment {
         mBinding = DataBindingUtil.inflate(
                 inflater, R.layout.action_workout_fragment, container, false);
         mBinding.setViewModel(mActionWorkoutViewModel);
+
+
+
+//        mBinding.included1.setViewModel(mActionWorkoutViewModel);
+//        mBinding.included2.setViewModel(mActionWorkoutViewModel);
         mBinding.setLifecycleOwner(this);
 
         View v = mBinding.getRoot();
+//        panel1 = ActionWorkoutPanelBinding.inflate(
+//                inflater, container, false);
+//        panel1.setLifecycleOwner(this);
+//
+//        panel2 = ActionWorkoutPanelBinding.inflate(
+//                inflater, container, false);
+//        panel2.setLifecycleOwner(this);
+//        mBinding.viewSwitcher.addView(panel1.getRoot());
+//        mBinding.viewSwitcher.addView(panel2.getRoot());
+
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView = v.findViewById(R.id.rv_exercises);
@@ -139,112 +144,27 @@ public class ActionWorkoutFragment extends Fragment {
             mActionWorkoutViewModel.finishWorkout();
             ActionWorkoutService.stopWorkout(getContext());
         });
-        mExerciseName = v.findViewById(R.id.name);
-        mGreenLamp = v.findViewById(R.id.green_lamp);
-        mGreenLamp.setEnabled(false);
-        mStartExercise = v.findViewById(R.id.status_awaiting);
-        mStartExercise.setOnClickListener(view -> mActionWorkoutViewModel.startExercise());
-        mStopExercise = v.findViewById(R.id.bt_stop);
-        mStopExercise.setOnClickListener(view -> mActionWorkoutViewModel.pauseExercise());
-        mRestartExercise = v.findViewById(R.id.bt_restart);
-        mRestartExercise.setOnClickListener(view -> mActionWorkoutViewModel.restartExercise());
-        mSkipExercise = v.findViewById(R.id.bt_skip);
-        mSkipExercise.setOnClickListener(view -> mActionWorkoutViewModel.skipExercise());
-        mDoneExercise = v.findViewById(R.id.bt_done);
-        mDoneExercise.setOnClickListener(view -> mActionWorkoutViewModel.finishExercise());
-        mWorkoutTime = v.findViewById(R.id.total_time);
-        mExerciseTime = v.findViewById(R.id.time);
-        mRestTime = v.findViewById(R.id.rest);
-//        mPBRestTime = v.findViewById(R.id.pb_rest_time);
-    }
 
 
-    @BindingAdapter("statusColor")
-    public static void setStatusColor(ImageView view, Status status) {
-        final int res;
-        if (status==null) {
-            res = R.drawable.card_status_empty;
-        } else {
-            switch (status) {
-                case AWAITING:
-                    res = R.drawable.card_status_awaiting;
-                    break;
-                case NEXT:
-                    res = R.drawable.card_status_next;
-                    break;
-                case RUNNING:
-                    res = R.drawable.card_status_running;
-                    break;
-                case PAUSED:
-                    res = R.drawable.card_status_paused;
-                    break;
-                case DONE:
-                    res = R.drawable.card_status_done;
-                    break;
-                case SKIPPED:
-                    res = R.drawable.card_status_skipped;
-                    break;
-                default:
-                    res = R.drawable.card_status_empty;
-                    break;
+//        panel= LayoutInflater.from(getContext()).inflate(R.layout.action_workout_panel, null);
+
+        mViewSwitcher=v.findViewById(R.id.view_switcher);
+        Animation in = AnimationUtils.loadAnimation(getContext(),R.anim.slide_in_top); // load an animation
+        mViewSwitcher.setInAnimation(in); // set in Animation for ViewSwitcher
+        Animation out = AnimationUtils.loadAnimation(getContext(),R.anim.slide_out_bottom); // load an animation
+        mViewSwitcher.setOutAnimation(out); // set out Animation for ViewSwitcher
+        mButton=v.findViewById(R.id.button);
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewSwitcher.showNext();
+                Log.i(TAG, "onClick: ");
             }
-        }
-        view.setImageDrawable(ContextCompat.getDrawable(view.getContext(), res));
+        });
     }
 
-    @BindingAdapter({"time","timePlan"})
-    public static void setTime(TextView view, Long time,Long timePlan) {
-        final int res;
-        final int color;
-        if (time==null) {
-            color=R.color.result_digit_plan;
-            view.setText(FormatUtils.getTimeString(timePlan));
-            view.setTextColor(ContextCompat.getColor(view.getContext(),color));
-        } else {
-            color=R.color.result_digit;
-            view.setText(FormatUtils.getTimeString(time));
-            view.setTextColor(ContextCompat.getColor(view.getContext(),color));
-        }
-//            res = R.string.exercise_null_time;
-//
-//        }
-//        view.setText(planTime);
-        Log.i(TAG, "setTime: "+time);
-    }
 
-    @BindingAdapter("enumStatusText")
-    public static void setEnumStatusText(TextView view, Status status) {
-        final int res;
-        if (status == null) {
-            res = R.string.bt_empty;
-            view.setText(res);
-        } else {
-            view.setText(status.toString());
-        }
 
-//            switch (status) {
-//                case AWAITING:
-//                    res = R.string.value_one;
-//                    break;
-//                case NEXT:
-//                    res = R.string.value_two;
-//                    break;
-//                case RUNNING:
-//                    res = R.string.value_three;
-//                    break;
-//                case DONE:
-//                    res = R.string.value_two;
-//                    break;
-//                case SKIPPED:
-//                    res = R.string.value_three;
-//                    break;
-//                default:
-//                    res = R.string.bt_empty;
-//                    break;
-//            }
-//        }
-
-    }
 
     @Override
     public void onStart() {

@@ -30,7 +30,8 @@ public class ActionWorkoutManager {
 
     private int mExercisePosition;
     private boolean mAutoMode;
-    private boolean prepareExercises = false;
+    private boolean isWorkoutStarted = false;
+    private boolean isWorkoutResumed = false;
     private WorkoutsRepository mWorkoutsRepository;
     private MutableLiveData<Exercise> mActiveExerciseLD = new MutableLiveData<>();
     private MutableLiveData<Rest> mRestLD = new MutableLiveData<>();
@@ -86,12 +87,7 @@ public class ActionWorkoutManager {
     }
 
     public void startExercise() {
-        if (mWorkout != null) {
-//            if (mExercise.getDone()) getNextExercise();
-//            else
-            onStartExercise();
-        }
-//        onFinishRest();
+        if (mWorkout != null) onStartExercise();
     }
 
     public void pauseExercise() {
@@ -110,10 +106,16 @@ public class ActionWorkoutManager {
         if (mWorkout != null) onFinishExercise();
     }
 
+    public void finishRest() {
+        if (mWorkout != null) onFinishRest();
+    }
+
+
     private void onStartWorkout(Workout workout, List<Exercise> exercises) {
         mWorkout = workout;
         boolean result = mWorkout.start();
-        prepareExercises = true;
+        if (result) isWorkoutStarted = true;
+        else isWorkoutResumed=true;
         updateWorkoutInDB(result);
         observeExercises();
     }
@@ -123,7 +125,6 @@ public class ActionWorkoutManager {
             updateExerciseInDB(mExercise);
             timerHandler.post(timerRunnable);
         }
-        onFinishRest();
         Log.i(TAG, "onStartExercise: ");
     }
 
@@ -132,9 +133,8 @@ public class ActionWorkoutManager {
     }
 
     private void onRestartExercise() {
-        if (mExercise.restart()) {
+        if (mExercise.redo()) {
             updateExerciseInDB(mExercise);
-            timerHandler.post(timerRunnable);
         }
     }
 
@@ -153,6 +153,8 @@ public class ActionWorkoutManager {
             if (!onStartRest()) getNextExercise();
         }
     }
+
+
 
     private boolean onStartRest() {
         if (mExercise.getRestTimePlan() != null) {
@@ -192,29 +194,23 @@ public class ActionWorkoutManager {
             Log.i(TAG, "getNextExercise: " + mExercise + mExercise.getOrderNumber() + " status: " + mExercise.getStatus());
         int pos = -1;
         for (Exercise e : mExercises) {
-            pos++;
             if (e.is(mExercise)) {
-                e = mExercise;
-                mExercises.set(pos, e);
                 findPastCurrent = true;
             }
-            if (e.await()) updateExerciseInDB(e);
-            if (findPastCurrent && e.getAwaiting() && awaitingExercisePastCurrent == null) {
+            if (findPastCurrent && e.getUndone() && awaitingExercisePastCurrent == null) {
                 awaitingExercisePastCurrent = e;
-            } else if (e.getAwaiting() && anyAwaitingExercise == null) {
+            } else if (e.getUndone() && anyAwaitingExercise == null) {
                 anyAwaitingExercise = e;
             }
         }
 
         if (mExercise == null || !mExercise.getRunning() && !mExercise.getPaused()) {
-            if (mExercise != null && mExercise.next()) {
-                updateExerciseInDB(mExercise);
-            } else if (awaitingExercisePastCurrent != null && awaitingExercisePastCurrent.next()) {
+                if (awaitingExercisePastCurrent != null) {
                 mExercise = awaitingExercisePastCurrent;
-                updateExerciseInDB(mExercise);
-            } else if (anyAwaitingExercise != null && anyAwaitingExercise.next()) {
+                onExerciseChanges();
+            } else if (anyAwaitingExercise != null) {
                 mExercise = anyAwaitingExercise;
-                updateExerciseInDB(mExercise);
+                onExerciseChanges();
             }
         }
 
@@ -265,7 +261,8 @@ public class ActionWorkoutManager {
 
     private void onExercisesLoaded(List<Exercise> exercises) {
         mExercises = exercises;
-        if (prepareExercises) onPrepareExercises();
+        prepareExercises();
+
         for (Exercise e : exercises
         ) {
             Log.i(TAG, "onExercisesLoaded: " + e.getStatus());
@@ -273,16 +270,24 @@ public class ActionWorkoutManager {
         Log.i(TAG, "onExercisesLoaded: -----------------");
     }
 
-    private void onPrepareExercises() {
+    private void prepareExercises() {
+        boolean hasChanges=false;
+        int pos = -1;
         for (Exercise e : mExercises) {
-            if (mExercise==null && (e.getRunning() || e.getPaused())) {
+            pos++;
+            if (e.is(mExercise)) {
+                e = mExercise;
+                mExercises.set(pos, e);
+            }
+            if (isWorkoutStarted||(isWorkoutResumed && (e.getRunning() || e.getPaused()))) {
                 e.reset();
             }
-            e.await();
+            if (e.setUndone()) hasChanges=true;
         }
-        updateExercisesInDB();
-        getNextExercise();
-        prepareExercises = false;
+        if (hasChanges) updateExercisesInDB();
+        if (isWorkoutStarted || isWorkoutResumed) getNextExercise();
+        isWorkoutStarted = false;
+        isWorkoutResumed=false;
     }
 
 

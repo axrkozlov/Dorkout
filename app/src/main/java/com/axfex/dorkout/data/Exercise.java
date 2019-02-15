@@ -11,9 +11,8 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import static androidx.room.ForeignKey.CASCADE;
-import static com.axfex.dorkout.data.Status.AWAITING;
+import static com.axfex.dorkout.data.Status.UNDONE;
 import static com.axfex.dorkout.data.Status.DONE;
-import static com.axfex.dorkout.data.Status.NEXT;
 import static com.axfex.dorkout.data.Status.RUNNING;
 import static com.axfex.dorkout.data.Status.SKIPPED;
 import static com.axfex.dorkout.data.Status.PAUSED;
@@ -31,9 +30,7 @@ import static com.axfex.dorkout.util.FormatUtils.now;
         indices = {@Index(value = "workoutId")}
 )
 
-
 public class Exercise {
-
 
     @PrimaryKey(autoGenerate = true)
     private Long id;
@@ -63,7 +60,6 @@ public class Exercise {
 
     @Ignore
     private long accumulatedTime;
-
 
     @Ignore
     private MutableLiveData<Long> timeLD = new MutableLiveData<>();
@@ -222,25 +218,16 @@ public class Exercise {
     }
 
 
-    public boolean await() {
-        if (status  == null||status == NEXT)  {
-            status = AWAITING;
+    public boolean setUndone() {
+        if (status  == null)  {
+            status = UNDONE;
             return true;
         }
         return false;
     }
-
-    public boolean next() {
-        if (status  == null||status == AWAITING) {
-            status = NEXT;
-            return true;
-        }
-        return false;
-    }
-
 
     public boolean start() {
-        if (status != RUNNING && status != DONE) {
+        if (canStart() && (status == UNDONE)) {
             startTime = now();
             accumulatedTime = time == null ? 0L : time;
             status = RUNNING;
@@ -249,11 +236,12 @@ public class Exercise {
         return false;
     }
 
-    public boolean restart() {
-        if (status == RUNNING || status == PAUSED || status == DONE) {
+    public boolean redo() {
+        if (status == RUNNING || status == PAUSED || status == DONE || status == SKIPPED ) {
+            time=null;
             startTime = now();
-            accumulatedTime = 0L;
-            status = RUNNING;
+            updateTime();
+            if (status == DONE || status == SKIPPED) status= UNDONE;
             return true;
         }
         return false;
@@ -273,7 +261,7 @@ public class Exercise {
     }
 
     public boolean finish() {
-        if (status==RUNNING||status==PAUSED){
+        if (status==RUNNING||status==PAUSED||!canStart()){
             status = DONE;
             return true;
         }
@@ -305,28 +293,28 @@ public class Exercise {
         }
     }
 
-    public Boolean getRunning() {
+    public boolean getRunning() {
         return status == RUNNING;
     }
 
-    public Boolean getPaused() {
+    public boolean getPaused() {
         return status == PAUSED;
     }
 
-    public Boolean getDone() {
+    public boolean getDone() {
         return status == DONE;
     }
 
-    public Boolean getSkipped() {
+    public boolean getSkipped() {
         return status == SKIPPED;
     }
 
-    public Boolean getAwaiting() {
-        return status == AWAITING;
+    public boolean getUndone() {
+        return status == UNDONE;
     }
 
-    public Boolean getNext() {
-        return status == NEXT;
+    public boolean canStart(){
+        return timePlan!=null && status!=RUNNING;
     }
 
     public boolean is(Exercise exercise) {

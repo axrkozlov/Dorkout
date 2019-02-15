@@ -2,7 +2,6 @@ package com.axfex.dorkout.views.workouts;
 
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
@@ -30,6 +29,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -71,6 +71,7 @@ public class EditWorkoutFragment extends Fragment {
     private List<String> mExerciseNames = new ArrayList<>();
     private boolean whenExerciseAddedScrollDown = false;
     private ItemTouchHelper mItemTouchHelper;
+    private CheckBox mTimeCheckBox;
 
     private Button mButtonOk;
     NamesAdapter mAdapterExerciseName;
@@ -137,7 +138,7 @@ public class EditWorkoutFragment extends Fragment {
         mSpinnerExerciseNames = v.findViewById(R.id.sp_exercise_type);
         mEditNormTime = v.findViewById(R.id.np_norm_time);
         mEditRestTime = v.findViewById(R.id.np_rest_time);
-
+        mTimeCheckBox = v.findViewById(R.id.time_checkBox);
         mButtonOk.setOnClickListener(this::onNewExerciseOk);
 
         mExerciseName.setOnFocusChangeListener((v1, hasFocus) -> {
@@ -209,7 +210,7 @@ public class EditWorkoutFragment extends Fragment {
         long restTime = mEditRestTime.getValue()*1000;
 
         Exercise exercise = new Exercise(newName, mWorkoutId);
-        exercise.setTimePlan(time);
+        if (mTimeCheckBox.isChecked()) exercise.setTimePlan(time);
         exercise.setRestTimePlan(restTime);
 
         exercise.setOrderNumber(mExercises != null ? mExercises.size() + 1 : 0);
