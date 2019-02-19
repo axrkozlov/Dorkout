@@ -43,95 +43,95 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/gray_borders" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/name_widget"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="2dp">
+        <!--<androidx.constraintlayout.widget.ConstraintLayout-->
+            <!--android:id="@+id/name_widget"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="2dp"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--app:layout_constraintTop_toTopOf="parent"-->
+            <!--tools:layout_editor_absoluteX="2dp">-->
 
 
-            <TextView
-                android:id="@+id/total_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/total_time"
-                android:textColor="@color/status_digit"
-                android:textSize="@dimen/status_digit"
-                android:visibility="visible"
-                app:layout_constraintEnd_toStartOf="@+id/green_lamp"
-                app:layout_constraintTop_toTopOf="parent" />
+            <!--<TextView-->
+                <!--android:id="@+id/total_time"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:layout_marginEnd="8dp"-->
+                <!--android:text="@string/total_time"-->
+                <!--android:textColor="@color/status_digit"-->
+                <!--android:textSize="@dimen/status_digit"-->
+                <!--android:visibility="visible"-->
+                <!--app:layout_constraintEnd_toStartOf="@+id/green_lamp"-->
+                <!--app:layout_constraintTop_toTopOf="parent" />-->
 
-            <TextView
-                android:id="@+id/number"
-                android:layout_width="wrap_content"
-                android:layout_height="33dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
-                android:text="@{exercise.orderNumber.toString()}"
-                android:textColor="@color/secondary_white_text"
+            <!--<TextView-->
+                <!--android:id="@+id/number"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="33dp"-->
+                <!--android:layout_marginStart="10dp"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:layout_marginEnd="16dp"-->
+                <!--android:layout_marginBottom="8dp"-->
+                <!--android:text="@{exercise.orderNumber.toString()}"-->
+                <!--android:textColor="@color/secondary_white_text"-->
 
-                android:textSize="25dp"
-                android:typeface="normal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                tools:text="1" />
+                <!--android:textSize="25dp"-->
+                <!--android:typeface="normal"-->
+                <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toTopOf="parent"-->
+                <!--app:layout_constraintVertical_bias="0.0"-->
+                <!--tools:text="1" />-->
 
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="246dp"
-                android:layout_height="33dp"
-                android:layout_marginStart="6dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:text='@{exercise.name}'
-                android:textColor="@color/secondary_white_text"
-                android:textSize="25dp"
-                android:typeface="normal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/number"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                tools:text="Exercise" />
+            <!--<TextView-->
+                <!--android:id="@+id/name"-->
+                <!--android:layout_width="246dp"-->
+                <!--android:layout_height="33dp"-->
+                <!--android:layout_marginStart="6dp"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:layout_marginBottom="8dp"-->
+                <!--android:text='@{exercise.name}'-->
+                <!--android:textColor="@color/secondary_white_text"-->
+                <!--android:textSize="25dp"-->
+                <!--android:typeface="normal"-->
+                <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--app:layout_constraintStart_toEndOf="@+id/number"-->
+                <!--app:layout_constraintTop_toTopOf="parent"-->
+                <!--app:layout_constraintVertical_bias="0.0"-->
+                <!--tools:text="Exercise" />-->
 
-            <ImageView
-                android:id="@+id/green_lamp"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:contentDescription="TODO"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/show_comment"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.444"
-                app:srcCompat="@drawable/lamp_green" />
+            <!--<ImageView-->
+                <!--android:id="@+id/green_lamp"-->
+                <!--android:layout_width="24dp"-->
+                <!--android:layout_height="24dp"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:layout_marginEnd="8dp"-->
+                <!--android:layout_marginBottom="8dp"-->
+                <!--android:contentDescription="TODO"-->
+                <!--android:visibility="visible"-->
+                <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--app:layout_constraintEnd_toStartOf="@+id/show_comment"-->
+                <!--app:layout_constraintTop_toTopOf="parent"-->
+                <!--app:layout_constraintVertical_bias="0.444"-->
+                <!--app:srcCompat="@drawable/lamp_green" />-->
 
-            <ImageView
-                android:id="@+id/show_comment"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:contentDescription="TODO"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_comment" />
+            <!--<ImageView-->
+                <!--android:id="@+id/show_comment"-->
+                <!--android:layout_width="24dp"-->
+                <!--android:layout_height="24dp"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:layout_marginEnd="8dp"-->
+                <!--android:layout_marginBottom="8dp"-->
+                <!--android:contentDescription="TODO"-->
+                <!--android:visibility="visible"-->
+                <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintTop_toTopOf="parent"-->
+                <!--app:srcCompat="@drawable/ic_comment" />-->
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <!--</androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
         <com.google.android.flexbox.FlexboxLayout
@@ -140,7 +140,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
-            app:layout_constraintTop_toBottomOf="@+id/name_widget"
+            app:layout_constraintTop_toTopOf="parent"
             app:alignContent="stretch"
             app:alignItems="stretch"
             app:flexDirection="row"

@@ -68,6 +68,10 @@ public class Exercise {
     private MutableLiveData<Long> progressLD = new MutableLiveData<>();
 
     @Ignore
+    private MutableLiveData<Status> statusLD = new MutableLiveData<>();
+
+
+    @Ignore
     public static final Long MAX_PROGRESS = 10000L;
 
     public Exercise() {
@@ -207,6 +211,7 @@ public class Exercise {
 
     public void setStatus(@Nullable Status status) {
         this.status = status;
+        statusLD.postValue(status);
     }
 
     public MutableLiveData<Long> getTimeLD() {
@@ -217,10 +222,13 @@ public class Exercise {
         return progressLD;
     }
 
+    public MutableLiveData<Status> getStatusLD() {
+        return statusLD;
+    }
 
     public boolean setUndone() {
         if (status  == null)  {
-            status = UNDONE;
+            setStatus(UNDONE);
             return true;
         }
         return false;
@@ -230,7 +238,7 @@ public class Exercise {
         if (canStart() && (status == UNDONE)) {
             startTime = now();
             accumulatedTime = time == null ? 0L : time;
-            status = RUNNING;
+            setStatus(status = RUNNING);
             return true;
         }
         return false;
@@ -241,7 +249,7 @@ public class Exercise {
             time=null;
             startTime = now();
             updateTime();
-            if (status == DONE || status == SKIPPED) status= UNDONE;
+            if (status == DONE || status == SKIPPED) setStatus(UNDONE);
             return true;
         }
         return false;
@@ -249,27 +257,30 @@ public class Exercise {
 
     public boolean pause() {
         if (status == RUNNING) {
-            status = PAUSED;
+            setStatus(PAUSED);
             return true;
         }
         return false;
     }
 
     public boolean skip() {
-        status = SKIPPED;
-        return true;
+        if (status!=SKIPPED){
+            setStatus(SKIPPED);
+            return true;
+        }
+        return false;
     }
 
     public boolean finish() {
-        if (status==RUNNING||status==PAUSED||!canStart()){
-            status = DONE;
+        if (status!=DONE && status!=SKIPPED){
+            setStatus(DONE);
             return true;
         }
         return false;
     }
 
     public void reset() {
-        status = null;
+        setStatus(null);
         weight = 0;
         repeats = 0;
         distance = 0;
@@ -314,7 +325,7 @@ public class Exercise {
     }
 
     public boolean canStart(){
-        return timePlan!=null && status!=RUNNING;
+        return timePlan!=null;
     }
 
     public boolean is(Exercise exercise) {

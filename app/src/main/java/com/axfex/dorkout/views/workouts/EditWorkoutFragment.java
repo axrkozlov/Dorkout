@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -80,7 +81,6 @@ public class EditWorkoutFragment extends Fragment {
 
     private NumberPicker mEditNormTime;
     private NumberPicker mEditRestTime;
-
     public static EditWorkoutFragment newInstance() {
         return new EditWorkoutFragment();
     }
@@ -336,7 +336,6 @@ public class EditWorkoutFragment extends Fragment {
             mDesc = itemView.findViewById(R.id.desc);
             mInfoBar = itemView.findViewById(R.id.exercise_info_bar);
             mNormTime = mInfoBar.findViewById(R.id.time);
-            mRestTime = mInfoBar.findViewById(R.id.rest);
             mOrderNumber = itemView.findViewById(R.id.order);
             mOrderButton = itemView.findViewById(R.id.change_order);
             itemView.setOnClickListener(this);

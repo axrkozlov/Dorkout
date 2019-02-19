@@ -22,38 +22,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:srcCompat="@drawable/card_info" />
-        <ImageView
-            android:id="@+id/set_widget_icon"
+
+        <TextView
+            android:id="@+id/set_widget_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="6dp"
+            android:maxLines="1"
+            android:gravity="start"
+            android:text="@string/lb_set"
+            android:textAppearance="@style/card_info_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_exercise_set"
-            />
-
-        <!--<TextView-->
-            <!--android:id="@+id/set_widget_label"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginEnd="6dp"-->
-            <!--android:maxLines="1"-->
-            <!--android:gravity="start"-->
-            <!--android:text="@string/lb_set"-->
-            <!--android:textAppearance="@style/card_info_label"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintHorizontal_bias="1.0"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toTopOf="parent" />-->
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/set"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="5dp"
             android:gravity="end|center"
             android:maxLines="1"
@@ -86,37 +76,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:srcCompat="@drawable/card_info" />
-        <ImageView
-            android:id="@+id/reps_widget_icon"
+
+        <TextView
+            android:id="@+id/reps_widget_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="3dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="6dp"
+            android:maxLines="1"
+            android:gravity="start"
+            android:text="@string/lb_reps"
+            android:textAppearance="@style/card_info_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_exercise_reps" />
-
-        <!--<TextView-->
-            <!--android:id="@+id/reps_widget_label"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginEnd="6dp"-->
-            <!--android:maxLines="1"-->
-            <!--android:gravity="start"-->
-            <!--android:text="@string/lb_reps"-->
-            <!--android:textAppearance="@style/card_info_label"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintHorizontal_bias="1.0"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toTopOf="parent" />-->
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/reps"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="5dp"
             android:gravity="end|center"
             android:maxLines="1"
@@ -149,30 +130,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:srcCompat="@drawable/card_info" />
-       <ImageView
-           android:id="@+id/weight_widget_icon"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_marginStart="4dp"
-           android:layout_marginTop="2dp"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toTopOf="parent"
-           app:srcCompat="@drawable/ic_exercise_weight" />
 
-        <!--<TextView-->
-            <!--android:id="@+id/weight_widget_label"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginEnd="6dp"-->
-            <!--android:maxLines="1"-->
-            <!--android:gravity="start"-->
-            <!--android:text="@string/lb_weight"-->
-            <!--android:textAppearance="@style/card_info_label"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintHorizontal_bias="1.0"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toTopOf="parent" />-->
+        <TextView
+            android:id="@+id/weight_widget_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="6dp"
+            android:maxLines="1"
+            android:gravity="start"
+            android:text="@string/lb_weight"
+            android:textAppearance="@style/card_info_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
        <TextView
            android:id="@+id/weight"
@@ -180,7 +152,7 @@
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:layout_marginStart="2dp"
-           android:layout_marginTop="8dp"
+           android:layout_marginTop="16dp"
            android:layout_marginEnd="5dp"
            android:gravity="end|center"
            android:maxLines="1"
@@ -213,37 +185,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:srcCompat="@drawable/card_info" />
-        <ImageView
-            android:id="@+id/distance_widget_icon"
+
+        <TextView
+            android:id="@+id/distance_widget_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="6dp"
+            android:maxLines="1"
+            android:gravity="start"
+            android:text="@string/lb_distance"
+            android:textAppearance="@style/card_info_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_exercise_distance" />
-
-        <!--<TextView-->
-            <!--android:id="@+id/distance_widget_label"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginEnd="6dp"-->
-            <!--android:maxLines="1"-->
-            <!--android:gravity="start"-->
-            <!--android:text="@string/lb_distance"-->
-            <!--android:textAppearance="@style/card_info_label"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintHorizontal_bias="1.0"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toTopOf="parent" />-->
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/distance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="5dp"
             android:gravity="end|center"
             android:maxLines="1"
@@ -277,30 +240,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:srcCompat="@drawable/card_info" />
-        <ImageView
-            android:id="@+id/time_widget_icon"
+
+        <TextView
+            android:id="@+id/time_widget_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="6dp"
+            android:maxLines="1"
+            android:gravity="start"
+            android:text="@string/lb_time"
+            android:textAppearance="@style/card_info_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_exercise_timer" />
-
-        <!--<TextView-->
-            <!--android:id="@+id/time_widget_label"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginEnd="6dp"-->
-            <!--android:maxLines="1"-->
-            <!--android:gravity="start"-->
-            <!--android:text="@string/lb_time"-->
-            <!--android:textAppearance="@style/card_info_label"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintHorizontal_bias="1.0"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toTopOf="parent" />-->
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/time"

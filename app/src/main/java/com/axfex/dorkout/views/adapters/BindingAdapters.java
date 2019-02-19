@@ -4,6 +4,10 @@ import android.animation.Animator;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
@@ -28,15 +32,16 @@ import static com.axfex.dorkout.data.Status.RUNNING;
 public class BindingAdapters {
     public static final String TAG = "BINDING_ADAPTERS";
 
-    @BindingAdapter({"exercise1","binding1","binding2"})
-    public static void setExercise1(ViewSwitcher view,Exercise exercise,ActionWorkoutPanelBinding binding1,ActionWorkoutPanelBinding binding2) {
 
-        if (view.getNextView().equals(binding1.getRoot())) binding1.setExercise(exercise);
-        else if (view.getNextView().equals(binding2.getRoot())) binding2.setExercise(exercise);
+    @BindingAdapter({"exercise1", "binding1", "binding2"})
+    public static void setExercise1(ViewSwitcher view, Exercise exercise, ActionWorkoutPanelBinding binding1, ActionWorkoutPanelBinding binding2) {
+        if (view.getNextView().equals(binding1.getRoot())) {
+            binding1.setExercise(exercise);
+        } else if (view.getNextView().equals(binding2.getRoot())) {
+            binding2.setExercise(exercise);
+//            view.getHeight()=((ViewGroup) view).get
+        }
         view.showNext();
-        Log.i(TAG, "setExercise: "+ binding1);
-
-//        if (binding.getRoot().equals(viewSwitcher.getNextView())) binding.setExercise(exercise);
     }
 
 //    @BindingAdapter("exercise")
@@ -74,7 +79,7 @@ public class BindingAdapters {
 //
 //    }
 
-    @BindingAdapter({"status","rest","canStart"})
+    @BindingAdapter({"status", "rest", "canStart"})
     public static void setStatusIcon(ImageView view, Status status, Rest rest, boolean canStart) {
         final int res;
         if (status == UNDONE && rest != null) {
@@ -90,10 +95,10 @@ public class BindingAdapters {
         } else {
             res = R.drawable.action_empty_icon;
         }
-        view.setImageDrawable(ContextCompat.getDrawable(view.getContext(),res));
-}
+        view.setImageDrawable(ContextCompat.getDrawable(view.getContext(), res));
+    }
 
-    @BindingAdapter({"status","rest","canStart"})
+    @BindingAdapter({"status", "rest", "canStart"})
     public static void setStatusColor(CardView view, Status status, Rest rest, boolean canStart) {
         final int res;
         if (status == UNDONE && rest != null) {
@@ -109,7 +114,7 @@ public class BindingAdapters {
         } else {
             res = R.color.state_empty_back;
         }
-        view.setCardBackgroundColor(ContextCompat.getColor(view.getContext(),res));
+        view.setCardBackgroundColor(ContextCompat.getColor(view.getContext(), res));
     }
 
     @BindingAdapter({"time", "timePlan"})
@@ -118,13 +123,14 @@ public class BindingAdapters {
         final String text;
         if (time == null) {
             color = R.color.result_digit_plan;
-            text=FormatUtils.getTimeString(timePlan);
+            text = FormatUtils.getTimeString(timePlan);
         } else {
             color = R.color.result_digit;
-            text=FormatUtils.getTimeString(time);
+            text = FormatUtils.getTimeString(time);
         }
-                        view.setText(text);
-                view.setTextColor(ContextCompat.getColor(view.getContext(), color));
+        view.setText(text);
+        view.setTextColor(ContextCompat.getColor(view.getContext(), color));
+        Log.i(TAG, "setTime: " + text);
 //
 //                view.animate().alpha(1f).setDuration(50);
 //        view.clearAnimation();
@@ -189,7 +195,6 @@ public class BindingAdapters {
 //        }
 
     }
-
 
 
 }

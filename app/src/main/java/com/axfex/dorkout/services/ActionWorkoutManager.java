@@ -28,7 +28,6 @@ public class ActionWorkoutManager {
 
     private Rest mRest;
 
-    private int mExercisePosition;
     private boolean mAutoMode;
     private boolean isWorkoutStarted = false;
     private boolean isWorkoutResumed = false;
@@ -79,11 +78,11 @@ public class ActionWorkoutManager {
     }
 
     public void startWorkout(@NonNull Workout workout, @NonNull List<Exercise> exercises) {
-        if (mWorkout == null ) onStartWorkout(workout, exercises);
+        if (mWorkout == null) onStartWorkout(workout, exercises);
     }
 
     public void stopWorkout() {
-        if (mWorkout != null) onStopWorkout();
+        if (mWorkout != null) onFinishWorkout();
     }
 
     public void startExercise() {
@@ -115,7 +114,7 @@ public class ActionWorkoutManager {
         mWorkout = workout;
         boolean result = mWorkout.start();
         if (result) isWorkoutStarted = true;
-        else isWorkoutResumed=true;
+        else isWorkoutResumed = true;
         updateWorkoutInDB(result);
         observeExercises();
     }
@@ -155,7 +154,6 @@ public class ActionWorkoutManager {
     }
 
 
-
     private boolean onStartRest() {
         if (mExercise.getRestTimePlan() != null) {
             mRest = new Rest(mExercise.getRestTimePlan());
@@ -175,12 +173,14 @@ public class ActionWorkoutManager {
         getNextExercise();
     }
 
-    private void onStopWorkout() {
+    private void onFinishWorkout() {
+        mExercise.finish();
         resetWorkoutWithExercises();
     }
 
     public void setExercise(@NonNull Exercise exercise) {
         if (mExercise == null || (!mExercise.getRunning() && !mExercise.getPaused())) {
+            if (exercise.is(mExercise)) return;
             mExercise = exercise;
             onExerciseChanges();
         }
@@ -192,7 +192,7 @@ public class ActionWorkoutManager {
         boolean findPastCurrent = false;
         if (mExercise != null)
             Log.i(TAG, "getNextExercise: " + mExercise + mExercise.getOrderNumber() + " status: " + mExercise.getStatus());
-        int pos = -1;
+        if (mExercise != null && (mExercise.getUndone() || mExercise.getRunning() || mExercise.getPaused())) return;
         for (Exercise e : mExercises) {
             if (e.is(mExercise)) {
                 findPastCurrent = true;
@@ -204,15 +204,15 @@ public class ActionWorkoutManager {
             }
         }
 
-        if (mExercise == null || !mExercise.getRunning() && !mExercise.getPaused()) {
-                if (awaitingExercisePastCurrent != null) {
+//        if (mExercise == null || !mExercise.getRunning() && !mExercise.getPaused()) {
+            if (awaitingExercisePastCurrent != null) {
                 mExercise = awaitingExercisePastCurrent;
                 onExerciseChanges();
             } else if (anyAwaitingExercise != null) {
                 mExercise = anyAwaitingExercise;
                 onExerciseChanges();
             }
-        }
+//        }
 
     }
 
@@ -244,10 +244,8 @@ public class ActionWorkoutManager {
         mExercisesLD.removeObserver(mObserver);
         mWorkout = null;
         mExercises = null;
-        mExercise = null;
         mRest = null;
         mActiveWorkoutLD.postValue(null);
-        mActiveExerciseLD.postValue(null);
         mRestLD.postValue(null);
         timerHandler.removeCallbacks(timerRunnable);
         timerHandler.removeCallbacks(restRunnable);
@@ -271,7 +269,7 @@ public class ActionWorkoutManager {
     }
 
     private void prepareExercises() {
-        boolean hasChanges=false;
+        boolean hasChanges = false;
         int pos = -1;
         for (Exercise e : mExercises) {
             pos++;
@@ -279,15 +277,15 @@ public class ActionWorkoutManager {
                 e = mExercise;
                 mExercises.set(pos, e);
             }
-            if (isWorkoutStarted||(isWorkoutResumed && (e.getRunning() || e.getPaused()))) {
+            if (isWorkoutStarted || (isWorkoutResumed && (e.getRunning() || e.getPaused()))) {
                 e.reset();
             }
-            if (e.setUndone()) hasChanges=true;
+            if (e.setUndone()) hasChanges = true;
         }
         if (hasChanges) updateExercisesInDB();
         if (isWorkoutStarted || isWorkoutResumed) getNextExercise();
         isWorkoutStarted = false;
-        isWorkoutResumed=false;
+        isWorkoutResumed = false;
     }
 
 
@@ -303,7 +301,6 @@ public class ActionWorkoutManager {
 
     private void updateExerciseInDB(Exercise exercise) {
         mWorkoutsRepository.updateExercise(exercise);
-        onExerciseChanges();
     }
 
     private void updateExercisesInDB() {

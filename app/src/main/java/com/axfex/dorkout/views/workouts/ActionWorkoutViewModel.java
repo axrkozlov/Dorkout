@@ -50,8 +50,9 @@ public class ActionWorkoutViewModel extends ViewModel {
     public void setActiveExercise(Exercise exercise) {
         mActionWorkoutManager.setExercise(exercise);
     }
-    public void startWorkout(Workout workout,List<Exercise> exercises) {
-        mActionWorkoutManager.startWorkout(workout,exercises);
+
+    public void startWorkout(Workout workout, List<Exercise> exercises) {
+        mActionWorkoutManager.startWorkout(workout, exercises);
     }
 
     public void finishWorkout() {
@@ -84,18 +85,21 @@ public class ActionWorkoutViewModel extends ViewModel {
         mActionWorkoutManager.finishRest();
     }
 
-    public void onMasterClick(){
-        Exercise exercise=getExercise().getValue();
-        Rest rest=getRest().getValue();
-        if (rest!=null) {
+    public void onMasterClick() {
+        Exercise exercise = getExercise().getValue();
+        Rest rest = getRest().getValue();
+        if (rest != null) {
             mActionWorkoutManager.finishRest();
         } else if (exercise != null) {
-            if (exercise.canStart()) mActionWorkoutManager.startExercise();
-            else mActionWorkoutManager.finishExercise();
+            if (exercise.canStart() && !exercise.getRunning()) {
+                mActionWorkoutManager.startExercise();
+            } else {
+                mActionWorkoutManager.finishExercise();
+            }
+
+
         }
-
     }
-
 
 
 //    public LiveData<Long> getWorkoutTime() {
@@ -113,5 +117,4 @@ public class ActionWorkoutViewModel extends ViewModel {
 //    }
 
 
-
-}
+    }
