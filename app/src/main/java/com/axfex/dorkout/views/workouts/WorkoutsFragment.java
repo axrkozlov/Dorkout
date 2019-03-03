@@ -54,6 +54,7 @@ public class WorkoutsFragment extends Fragment implements WorkoutsNavigator {
     private boolean isWorkoutMenuShown;
     private boolean doNotUpdateActionBar;
 
+
     public static WorkoutsFragment newInstance() {
         return new WorkoutsFragment();
     }

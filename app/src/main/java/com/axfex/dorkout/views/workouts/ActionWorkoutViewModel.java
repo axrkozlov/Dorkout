@@ -39,7 +39,7 @@ public class ActionWorkoutViewModel extends ViewModel {
         return mActionWorkoutManager.getActiveWorkoutLD();
     }
 
-    public LiveData<Exercise> getExercise() {
+    public LiveData<Exercise> getActiveExercise() {
         return mActionWorkoutManager.getActiveExerciseLD();
     }
 
@@ -86,7 +86,7 @@ public class ActionWorkoutViewModel extends ViewModel {
     }
 
     public void onMasterClick() {
-        Exercise exercise = getExercise().getValue();
+        Exercise exercise = getActiveExercise().getValue();
         Rest rest = getRest().getValue();
         if (rest != null) {
             mActionWorkoutManager.finishRest();

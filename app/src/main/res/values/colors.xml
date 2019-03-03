@@ -6,7 +6,7 @@
     <color name="colorAccent">#FDB92E</color>
     <color name="colorToolbarElements">#F8F8F8</color>
     <color name="TextColor">#EEEE55</color>
-    <color name="background">#2D3135</color>
+    <color name="background">#3A4144</color>
     <color name="menu_buttons">#FC9120</color>
 
     <color name="status_digit">#E5DE6E</color>
@@ -69,6 +69,7 @@
     <color name="exercise_status_done">#4378A0</color>
     <color name="exercise_status_skipped">#696767</color>
     <color name="exercise_status_forecolor">#FFFFFF</color>
+    <color name="exercise_item_undone">#4895FCDE</color>
 
 
     <color name="exercise_info_digit">#FFF19A</color>

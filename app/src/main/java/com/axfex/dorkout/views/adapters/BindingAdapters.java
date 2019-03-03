@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
@@ -16,12 +17,18 @@ import com.axfex.dorkout.R;
 import com.axfex.dorkout.data.Exercise;
 import com.axfex.dorkout.data.Rest;
 import com.axfex.dorkout.data.Status;
-import com.axfex.dorkout.databinding.ActionWorkoutPanelBinding;
 import com.axfex.dorkout.util.FormatUtils;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.BindingAdapter;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.ChangeBounds;
+import androidx.transition.Fade;
+import androidx.transition.Transition;
+import androidx.transition.TransitionListenerAdapter;
+import androidx.transition.TransitionManager;
 
 import static com.axfex.dorkout.data.Status.DONE;
 import static com.axfex.dorkout.data.Status.PAUSED;
@@ -32,17 +39,57 @@ import static com.axfex.dorkout.data.Status.RUNNING;
 public class BindingAdapters {
     public static final String TAG = "BINDING_ADAPTERS";
 
+    @BindingAdapter({"lock_view", "active_exercise"})
+    public static void setActiveExercise(RecyclerView recyclerView, View lockView, Exercise exercise) {
+        if (exercise != null) {
+            Transition transition = new ChangeBounds();
+            transition.setInterpolator(new LinearInterpolator());
+            transition.setDuration(500L);
+            transition.addListener(new TransitionListenerAdapter() {
+                @Override
+                public void onTransitionStart(@NonNull Transition transition) {
+                    if (lockView != null) lockView.setVisibility(View.VISIBLE);
+                }
 
-    @BindingAdapter({"exercise1", "binding1", "binding2"})
-    public static void setExercise1(ViewSwitcher view, Exercise exercise, ActionWorkoutPanelBinding binding1, ActionWorkoutPanelBinding binding2) {
-        if (view.getNextView().equals(binding1.getRoot())) {
-            binding1.setExercise(exercise);
-        } else if (view.getNextView().equals(binding2.getRoot())) {
-            binding2.setExercise(exercise);
-//            view.getHeight()=((ViewGroup) view).get
+                @Override
+                public void onTransitionEnd(@NonNull Transition transition) {
+                    if (lockView != null) lockView.setVisibility(View.GONE);
+                    recyclerView.smoothScrollToPosition(exercise.getOrderNumber() - 1);
+                }
+            });
+            TransitionManager.beginDelayedTransition(recyclerView, transition);
         }
-        view.showNext();
+
     }
+
+
+    @BindingAdapter({"active"})
+    public static void setActive(View view, Boolean isActive) {
+        Transition transition = new Fade();
+        transition.setDuration(750L);
+        TransitionManager.beginDelayedTransition((ViewGroup) view, transition);
+        if (isActive == null) {
+            view.setVisibility(View.GONE);
+            view.setEnabled(true);
+        } else {
+            view.setVisibility(isActive ? View.VISIBLE : View.GONE);
+            view.setEnabled(!isActive);
+        }
+
+
+    }
+
+
+//    @BindingAdapter({"exercise1", "binding1", "binding2"})
+//    public static void setExercise1(ViewSwitcher view, Exercise exercise, ActionWorkoutPanelBinding binding1, ActionWorkoutPanelBinding binding2) {
+//        if (view.getNextView().equals(binding1.getRoot())) {
+//            binding1.setExercise(exercise);
+//        } else if (view.getNextView().equals(binding2.getRoot())) {
+//            binding2.setExercise(exercise);
+////            view.getHeight()=((ViewGroup) view).get
+//        }
+//        view.showNext();
+//    }
 
 //    @BindingAdapter("exercise")
 //    public static void setExercise(CardView view, Exercise exercise) {

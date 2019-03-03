@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".views.workouts.ActionWorkoutFragment">
-
     <data>
 
         <variable
@@ -32,16 +31,18 @@
     <!--&gt;-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:active="@{exercise.activeLD}">
 
-        <ImageView
-            android:id="@+id/line"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/gray_borders" />
+        <!--<ImageView-->
+            <!--android:id="@+id/line"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--app:layout_constraintTop_toTopOf="parent"-->
+            <!--app:srcCompat="@drawable/gray_borders" />-->
 
         <!--<androidx.constraintlayout.widget.ConstraintLayout-->
             <!--android:id="@+id/name_widget"-->
@@ -139,34 +140,25 @@
             android:id="@+id/result_widget"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="2dp"
             app:layout_constraintTop_toTopOf="parent"
             app:alignContent="stretch"
             app:alignItems="stretch"
             app:flexDirection="row"
             app:flexWrap="wrap"
-            app:justifyContent="space_around">
+            app:justifyContent="space_around"
+            >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/set_widget"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
-                android:layout_marginTop="8dp"
                 android:visibility="visible"
                 app:layout_flexGrow="2"
-                app:layout_minWidth="40dp">
+                app:layout_minWidth="40dp"
+                android:background="@drawable/card_result">
 
-                <ImageView
-                    android:id="@+id/set_widget_back"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginBottom="2dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/card_result" />
+
 
                 <ImageView
                     android:id="@+id/set_widget_icon"
@@ -189,7 +181,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toEndOf="@+id/set_widget_icon"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
                     android:id="@+id/set"
@@ -223,18 +215,9 @@
                 android:layout_margin="2dp"
                 android:visibility="visible"
                 app:layout_flexGrow="4"
-                app:layout_minWidth="80dp">
+                app:layout_minWidth="80dp"
+                android:background="@drawable/card_result">
 
-                <ImageView
-                    android:id="@+id/reps_widget_back"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginBottom="2dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/card_result" />
 
                 <TextView
                     android:id="@+id/reps_widget_label"
@@ -291,18 +274,10 @@
                 android:layout_margin="2dp"
                 android:visibility="visible"
                 app:layout_flexGrow="4"
-                app:layout_minWidth="110dp">
+                app:layout_minWidth="110dp"
+                android:background="@drawable/card_result">
 
-                <ImageView
-                    android:id="@+id/weight_widget_back"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginBottom="2dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/card_result" />
+
 
                 <ImageView
                     android:id="@+id/weight_widget_icon"
@@ -346,7 +321,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1"  />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -358,18 +334,9 @@
                 android:layout_margin="2dp"
                 android:visibility="visible"
                 app:layout_flexGrow="3"
-                app:layout_minWidth="110dp">
+                app:layout_minWidth="110dp"
+                android:background="@drawable/card_result">
 
-                <ImageView
-                    android:id="@+id/distance_widget_iv"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginBottom="2dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/card_result" />
 
                 <ImageView
                     android:id="@+id/distance_widget_icon"
@@ -398,7 +365,7 @@
                 <TextView
                     android:id="@+id/distance"
                     android:layout_width="wrap_content"
-                    android:layout_height="86dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:fontFamily="sans-serif-smallcaps"
                     android:gravity="center"
@@ -414,7 +381,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1" />
+                    app:layout_constraintVertical_bias="1"  />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -426,18 +393,8 @@
                 android:layout_margin="2dp"
                 android:visibility="@{exercise.timePlan!=null?View.VISIBLE:View.GONE}"
                 app:layout_flexGrow="4"
-                app:layout_minWidth="200dp">
-
-                <ImageView
-                    android:id="@+id/time_widget_back"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginBottom="2dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/card_result" />
+                app:layout_minWidth="200dp"
+                android:background="@drawable/card_result">
 
                 <ImageView
                     android:id="@+id/time_widget_icon"
@@ -493,9 +450,9 @@
                     android:layout_margin="4dp"
 
                     android:indeterminateOnly="false"
-                    android:max="@{FormatUtils.unwrap(viewModel.exercise.MAX_PROGRESS)}"
+                    android:max="@{FormatUtils.unwrap(exercise.MAX_PROGRESS)}"
                     android:minHeight="13dp"
-                    android:progress="@{FormatUtils.unwrap(viewModel.exercise.progressLD)}"
+                    android:progress="@{FormatUtils.unwrap(exercise.progressLD)}"
                     android:progressDrawable="@drawable/progress_bar_horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -510,8 +467,8 @@
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             app:layout_constraintTop_toBottomOf="@+id/result_widget"
-            android:layout_marginBottom="8dp"
             android:orientation="horizontal">
 
 
@@ -519,7 +476,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="12dp"
+                android:layout_margin="8dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
@@ -558,11 +515,13 @@
                 android:minHeight="64dp"
                 android:onClick="@{() -> viewModel.onMasterClick()}"
                 android:visibility="visible"
-                app:canStart="@{viewModel.exercise.canStart}"
+                app:canStart="@{exercise.canStart}"
                 app:cardBackgroundColor="@color/state_done_back"
                 app:cardElevation="3dp"
                 app:rest="@{viewModel.rest}"
-                app:status="@{exercise.statusLD}">
+                app:status="@{exercise.statusLD}"
+
+                >
 
                 <TextView
                     android:id="@+id/status_text"
@@ -580,8 +539,8 @@
                     android:textStyle="bold"
                     app:autoSizeStepGranularity="2sp"
                     app:autoSizeTextType="uniform"
-                    app:statusText="@{viewModel.exercise.statusLD}"
-                    tools:text="RUNNING" />
+                    app:statusText="@{exercise.statusLD}"
+                    tools:text="RUNNING"/>
 
                 <ProgressBar
                     android:id="@+id/pb_total_time"
@@ -589,7 +548,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:layout_margin="2dp"
+                    android:layout_margin="4dp"
                     android:max="@{FormatUtils.unwrap(viewModel.rest.MAX_PROGRESS)}"
                     android:minHeight="60dp"
                     android:progress="@{FormatUtils.unwrap(viewModel.rest.progressLD)}"
@@ -622,7 +581,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="12dp"
+                android:layout_margin="8dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"

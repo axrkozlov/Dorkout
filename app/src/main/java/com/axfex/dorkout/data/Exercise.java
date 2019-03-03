@@ -70,9 +70,11 @@ public class Exercise {
     @Ignore
     private MutableLiveData<Status> statusLD = new MutableLiveData<>();
 
-
     @Ignore
     public static final Long MAX_PROGRESS = 10000L;
+
+    @Ignore
+    private MutableLiveData<Boolean> activeLD = new MutableLiveData<>();
 
     public Exercise() {
     }
@@ -227,7 +229,7 @@ public class Exercise {
     }
 
     public boolean setUndone() {
-        if (status  == null)  {
+        if (status == null) {
             setStatus(UNDONE);
             return true;
         }
@@ -245,8 +247,8 @@ public class Exercise {
     }
 
     public boolean redo() {
-        if (status == RUNNING || status == PAUSED || status == DONE || status == SKIPPED ) {
-            time=null;
+        if (status == RUNNING || status == PAUSED || status == DONE || status == SKIPPED) {
+            time = null;
             startTime = now();
             updateTime();
             if (status == DONE || status == SKIPPED) setStatus(UNDONE);
@@ -264,7 +266,7 @@ public class Exercise {
     }
 
     public boolean skip() {
-        if (status!=SKIPPED){
+        if (status != SKIPPED) {
             setStatus(SKIPPED);
             return true;
         }
@@ -272,7 +274,7 @@ public class Exercise {
     }
 
     public boolean finish() {
-        if (status!=DONE && status!=SKIPPED){
+        if (status != DONE && status != SKIPPED) {
             setStatus(DONE);
             return true;
         }
@@ -324,12 +326,20 @@ public class Exercise {
         return status == UNDONE;
     }
 
-    public boolean canStart(){
-        return timePlan!=null;
+    public boolean canStart() {
+        return timePlan != null;
     }
 
     public boolean is(Exercise exercise) {
         if (exercise == null) return false;
         return this.id.equals(exercise.id);
+    }
+
+    public MutableLiveData<Boolean> getActiveLD() {
+        return activeLD;
+    }
+
+    public void setActive(boolean isActive) {
+        activeLD.setValue(isActive);
     }
 }

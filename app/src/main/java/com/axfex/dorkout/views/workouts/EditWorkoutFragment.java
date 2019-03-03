@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -92,8 +91,6 @@ public class EditWorkoutFragment extends Fragment {
         if (mWorkoutId == null)
             if (getArguments() != null) {
                 mWorkoutId = getArguments().getLong(WORKOUT_ID);
-            } else {
-                throw new IllegalArgumentException("Not have a workout id for edit");
             }
         ((WorkoutApplication) Objects.requireNonNull(getActivity()).getApplication())
                 .getAppComponent()
@@ -334,7 +331,7 @@ public class EditWorkoutFragment extends Fragment {
             super(itemView);
             mName = itemView.findViewById(R.id.name);
             mDesc = itemView.findViewById(R.id.desc);
-            mInfoBar = itemView.findViewById(R.id.exercise_info_bar);
+            mInfoBar = itemView.findViewById(R.id.info_panel);
             mNormTime = mInfoBar.findViewById(R.id.time);
             mOrderNumber = itemView.findViewById(R.id.order);
             mOrderButton = itemView.findViewById(R.id.change_order);
@@ -369,9 +366,9 @@ public class EditWorkoutFragment extends Fragment {
             if (mExercise.getTimePlan() != null) {
                 mNormTime.setText(String.format(Locale.getDefault(), "%d", mExercise.getTimePlan()));
             }
-            if (mExercise.getRestTimePlan() != null) {
-                mRestTime.setText(String.format(Locale.getDefault(), "%d", mExercise.getRestTimePlan()));
-            }
+//            if (mExercise.getRestTimePlan() != null) {
+//                mRestTime.setText(String.format(Locale.getDefault(), "%d", mExercise.getRestTimePlan()));
+//            }
             mOrderNumber.setText(String.format(Locale.getDefault(), "%d", mPosition + 1));
 //            mOrderNumber.setVisibility(View.GONE);
             itemView.setTag(mExercise.getId());

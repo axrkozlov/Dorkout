@@ -181,7 +181,9 @@ public class ActionWorkoutManager {
     public void setExercise(@NonNull Exercise exercise) {
         if (mExercise == null || (!mExercise.getRunning() && !mExercise.getPaused())) {
             if (exercise.is(mExercise)) return;
+            if (mExercise!=null) mExercise.setActive(false);
             mExercise = exercise;
+            mExercise.setActive(true);
             onExerciseChanges();
         }
     }
@@ -194,6 +196,7 @@ public class ActionWorkoutManager {
             Log.i(TAG, "getNextExercise: " + mExercise + mExercise.getOrderNumber() + " status: " + mExercise.getStatus());
         if (mExercise != null && (mExercise.getUndone() || mExercise.getRunning() || mExercise.getPaused())) return;
         for (Exercise e : mExercises) {
+            e.setActive(false);
             if (e.is(mExercise)) {
                 findPastCurrent = true;
             }
@@ -207,9 +210,11 @@ public class ActionWorkoutManager {
 //        if (mExercise == null || !mExercise.getRunning() && !mExercise.getPaused()) {
             if (awaitingExercisePastCurrent != null) {
                 mExercise = awaitingExercisePastCurrent;
+                mExercise.setActive(true);
                 onExerciseChanges();
             } else if (anyAwaitingExercise != null) {
                 mExercise = anyAwaitingExercise;
+                mExercise.setActive(true);
                 onExerciseChanges();
             }
 //        }
