@@ -24,7 +24,7 @@ public interface WorkoutsDao {
     LiveData<Workout> getWorkoutLD(Long id);
 
 //    @Query("SELECT * FROM Workout WHERE running")
-//    LiveData<Workout> getActiveWorkoutLD();
+//    LiveData<Workout> getActiveWorkout();
 
     @Query("SELECT * FROM Workout ORDER BY startTime DESC")
     LiveData<List<Workout>> getWorkoutsLD();

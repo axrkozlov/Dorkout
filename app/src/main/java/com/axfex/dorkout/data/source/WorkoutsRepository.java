@@ -50,13 +50,13 @@ public class WorkoutsRepository {
         return workoutsDao.getWorkoutLD(id);
     }
 
-//    public LiveData<Workout> getActiveWorkoutLD() {
-//        return workoutsDao.getActiveWorkoutLD();
+//    public LiveData<Workout> getActiveWorkout() {
+//        return workoutsDao.getActiveWorkout();
 //    }
 
 //    public LiveData<List<Exercise>> getActiveWorkoutExercisesLD() {
 //
-//        return Transformations.switchMap(getActiveWorkoutLD(), (workout) ->
+//        return Transformations.switchMap(getActiveWorkout(), (workout) ->
 //                {
 //                    if (workout != null) {
 //                        return getExercisesLD(workout.getId());

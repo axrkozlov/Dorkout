@@ -9,9 +9,11 @@
         <variable
             name="exercise"
             type="com.axfex.dorkout.data.Exercise" />
+
         <variable
-            name="isLast"
+            name="isLastExercise"
             type="boolean"/>
+
         <variable
             name="rest"
             type="com.axfex.dorkout.data.Rest" />
@@ -51,8 +53,8 @@
             android:orientation="vertical"
             app:cardBackgroundColor="@color/exercise_item"
             android:onClick="@{clicklistener}"
-            android:clickable="@{!exercise.activeLD}"
-            android:focusable="@{!exercise.activeLD}"
+            android:clickable="@{!exercise.is(viewModel.activeExercise)}"
+            android:focusable="@{!exercise.is(viewModel.activeExercise)}"
             >
 
             <LinearLayout
@@ -211,7 +213,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="@{isLast?View.VISIBLE:View.GONE,default=gone}">
+            android:visibility="@{isLastExercise?View.VISIBLE:View.GONE,default=gone}">
 
             <androidx.cardview.widget.CardView
 

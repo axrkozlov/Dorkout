@@ -6,13 +6,11 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import androidx.transition.AutoTransition;
 import androidx.transition.ChangeBounds;
-import androidx.transition.Fade;
 import androidx.transition.Transition;
 import androidx.transition.TransitionListenerAdapter;
 import androidx.transition.TransitionManager;
@@ -24,13 +22,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnticipateInterpolator;
 import android.view.animation.LinearInterpolator;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.ViewSwitcher;
 
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
@@ -66,17 +58,19 @@ public class ActionWorkoutFragment extends Fragment {
     private ActionWorkoutViewModel mActionWorkoutViewModel;
     private Long mWorkoutId;
     private Workout mWorkout;
+
+    private LiveData<List<Exercise>> mExercisesLD;
+    private LiveData<Exercise> mActiveExerciseLD;
+    private LiveData<Workout> mWorkoutLD;
+
     private List<Exercise> mExercises;
-    View emptyView;
     private FloatingActionButton mStartWorkout;
     private FloatingActionButton mStopWorkout;
 
-    private ImageView mGreenLamp;
-
-    private Button mButton;
-    private ViewSwitcher mViewSwitcher;
 
     ActionWorkoutFragmentBinding mBinding;
+    private boolean isRecyclerViewLocked=false;
+    private boolean notificationAdapterPending;
     private View lockView;
 
     public static ActionWorkoutFragment newInstance() {
@@ -95,8 +89,6 @@ public class ActionWorkoutFragment extends Fragment {
         ((WorkoutApplication) Objects.requireNonNull(getActivity()).getApplication())
                 .getAppComponent()
                 .inject(this);
-
-        emptyView = new View(getActivity());
     }
 
     public void setWorkoutId(Long id) {
@@ -139,23 +131,81 @@ public class ActionWorkoutFragment extends Fragment {
 
     private void setupActionWidgets(View v) {
         mStartWorkout = v.findViewById(R.id.fab_start_workout);
-        mStartWorkout.setOnClickListener(view -> mActionWorkoutViewModel.startWorkout(mWorkout, mExercises));
+        mStartWorkout.setOnClickListener(view -> {
+            mActionWorkoutViewModel.startWorkout(mWorkout, mExercises);
+            startObserve();
+        });
         mStopWorkout = v.findViewById(R.id.fab_stop_workout);
         mStopWorkout.setOnClickListener(view -> {
             mActionWorkoutViewModel.finishWorkout();
+            startObserve();
             ActionWorkoutService.stopWorkout(getContext());
         });
-
-        lockView = v.findViewById(R.id.lock_view);
+        lockView=v.findViewById(R.id.lock_view);
     }
 
 
     @Override
     public void onStart() {
         super.onStart();
-        mActionWorkoutViewModel.getWorkout(mWorkoutId).observe(this, this::onWorkoutLoaded);
-        mActionWorkoutViewModel.getExercises(mWorkoutId).observe(this, this::onExerciseListLoaded);
+//        mActionWorkoutViewModel.getWorkout(mWorkoutId).observe(this, this::onWorkoutLoaded);
+//        mActionWorkoutViewModel.getExercises(mWorkoutId).observe(this, this::onExerciseListLoaded);
+        startObserve();
+    }
 
+    private void startObserve() {
+        if (mExercisesLD != null) mExercisesLD.removeObservers(this);
+        if (mWorkoutLD != null) mWorkoutLD.removeObservers(this);
+
+        mActionWorkoutViewModel.getWorkout(mWorkoutId).observe(this, this::onWorkoutLoaded);
+        mActiveExerciseLD = mActionWorkoutViewModel.getActiveExercise();
+
+        Workout activeWorkout = mActionWorkoutViewModel.getActiveWorkout();
+
+
+        if (activeWorkout != null && activeWorkout.getId().equals(mWorkoutId)) {
+            mExercisesLD = mActionWorkoutViewModel.getActiveExercises();
+        } else {
+            mExercisesLD = mActionWorkoutViewModel.getExercises(mWorkoutId);
+        }
+
+        mExercisesLD.observe(this, this::onExerciseListLoaded);
+        mActiveExerciseLD.observe(this, this::onActiveExerciseLoaded);
+    }
+
+    private void onActiveExerciseLoaded(Exercise exercise) {
+            Transition transition = new ChangeBounds();
+            transition.setInterpolator(new LinearInterpolator());
+            transition.setDuration(750L);
+            transition.addListener(new TransitionListenerAdapter() {
+                @Override
+                public void onTransitionStart(@NonNull Transition transition) {
+                    setRecyclerViewLocked();
+                }
+
+                @Override
+                public void onTransitionEnd(@NonNull Transition transition) {
+                    setRecyclerViewUnlocked();
+                    scrollToActiveExercise(exercise);
+                    if (notificationAdapterPending) mAdapter.notifyDataSetChanged();
+                }
+            });
+            TransitionManager.beginDelayedTransition(mRecyclerView, transition);
+
+    }
+
+    private void setRecyclerViewLocked(){
+        lockView.setVisibility(View.VISIBLE);
+        isRecyclerViewLocked=true;
+    }
+
+    private void setRecyclerViewUnlocked(){
+        lockView.setVisibility(View.GONE);
+        isRecyclerViewLocked=false;
+    }
+
+    private void scrollToActiveExercise(Exercise exercise){
+        if (exercise != null) mRecyclerView.smoothScrollToPosition(exercise.getOrderNumber() - 1);
     }
 
 
@@ -178,8 +228,6 @@ public class ActionWorkoutFragment extends Fragment {
     private void onWorkoutLoaded(Workout workout) {
         if (workout != null) {
             mWorkout = workout;
-//            if (mWorkout.getStatus() == RUNNING) mWorkoutTime.post(mWorkoutTimeUpdateAction);
-//            else mWorkoutTime.removeCallbacks(mWorkoutTimeUpdateAction);
         }
         Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
     }
@@ -188,7 +236,6 @@ public class ActionWorkoutFragment extends Fragment {
         this.mExercises = exercises;
         if (mAdapter == null) setupAdapter();
         else notifyAdapter();
-        Log.i(TAG, "onExerciseListLoaded: ");
     }
 
     private void setupAdapter() {
@@ -197,22 +244,11 @@ public class ActionWorkoutFragment extends Fragment {
     }
 
     private void notifyAdapter() {
-        mAdapter.notifyDataSetChanged();
+        if (!isRecyclerViewLocked) mAdapter.notifyDataSetChanged();
+        else notificationAdapterPending =true;
     }
-
-
-    private void lockRecyclerView() {
-        lockView.setVisibility(View.VISIBLE);
-    }
-
-
-    private void unlockRecyclerView() {
-        lockView.setVisibility(View.GONE);
-    }
-
 
     private class ExercisesAdapter extends RecyclerView.Adapter<ExerciseViewHolder> {
-
 
         private ExercisesAdapter() {
             setHasStableIds(true);
@@ -238,9 +274,7 @@ public class ActionWorkoutFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull ExerciseViewHolder holder, int position) {
             Exercise mExercise = mExercises.get(position);
-            holder.bind(mExercise,position);
-//            if (position < mExercises.size())
-//                holder.setExercise(mExercises.get(position), position);
+            holder.bind(mExercise, position == getItemCount() - 1);
         }
 
 
@@ -253,73 +287,61 @@ public class ActionWorkoutFragment extends Fragment {
         public long getItemId(int position) {
             return mExercises.get(position).getId();
         }
+
     }
 
-
-    private int mExpandPosition = -1;
-    private View viewToCollapse;
-    Exercise prevExercise;
     private class ExerciseViewHolder extends RecyclerView.ViewHolder {
 
+        private final ActionWorkoutExerciseItemBinding binding;
 
-        TextView mName;
-        TextView mDesc;
-
-        TextView mNormTime;
-        TextView mRestTime;
-        TextView mOrderNumber;
-        ImageButton mOrderButton;
-        Exercise mExercise;
-        View exerciseView = itemView.findViewById(R.id.exercise_view);
-        ViewGroup infoBar = itemView.findViewById(R.id.info_panel);
-        View actionPanel = itemView.findViewById(R.id.action_panel);
-        View infoPanel = itemView.findViewById(R.id.info_panel);
-
-
-        int mPosition;
-        TextView setsView;
-//
-private final ActionWorkoutExerciseItemBinding binding;
-
-        public ExerciseViewHolder(ActionWorkoutExerciseItemBinding binding)
-
-        {
+        public ExerciseViewHolder(ActionWorkoutExerciseItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
 
-        public void bind(Exercise exercise, int position){
-            if (exercise==null) return;
-            mPosition=position;
-//            if (exercise.getOrderNumber()==10) exercise.active=true;
+        public void bind(Exercise exercise, boolean isLast) {
+            if (exercise == null) return;
             binding.setClicklistener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    animateRecyclerView(mRecyclerView);
-//                    if (prevExercise!=null) prevExercise.setActiveLD(false);
                     mActionWorkoutViewModel.setActiveExercise(exercise);
-
-                    //Exercise exercise=binding.getActiveExercise();
-//                    exercise.setActive(true);
-//                    if (exercise.getTime()==null) exercise.setTime(0L);
-//                    exercise.setTime(exercise.getTime()+1000);
-//                    prevExercise=exercise;
-//                    mAdapter.notifyItemChanged(mPosition);
                 }
             });
             binding.setExercise(exercise);
+            binding.setViewModel(mActionWorkoutViewModel);
             binding.actionPanel.setExercise(exercise);
-            binding.setIsLast(position==mAdapter.getItemCount()-1);
+            binding.actionPanel.setViewModel(mActionWorkoutViewModel);
+            binding.setIsLastExercise(isLast);
             binding.executePendingBindings();
-
-//            exercise.getTimeLD().observe(ActionWorkoutFragment.this,this::updateTime);
-
+//            Log.i(TAG, "bind: " + exercise.getOrderNumber());
         }
+    }
+}
 
-        private void updateTime(Long aLong) {
-            if (aLong==null) return;
-            ((TextView)itemView.findViewById(R.id.time)).setText(aLong.toString());
-        }
+//
+//
+//        TextView mName;
+//        TextView mDesc;
+//
+//        TextView mNormTime;
+//        TextView mRestTime;
+//        TextView mOrderNumber;
+//        ImageButton mOrderButton;
+//        Exercise mExercise;
+//        View exerciseView = itemView.findViewById(R.id.exercise_view);
+//        ViewGroup infoBar = itemView.findViewById(R.id.info_panel);
+//        View actionPanel = itemView.findViewById(R.id.action_panel);
+//        View infoPanel = itemView.findViewById(R.id.info_panel);
+
+
+//        int mPosition;
+//        TextView setsView;
+//
+
+//        private void updateTime(Long aLong) {
+//            if (aLong==null) return;
+//            ((TextView)itemView.findViewById(R.id.time)).setText(aLong.toString());
+//        }
 
 //        public ExerciseViewHolder(@NonNull View itemView) {
 //            super(itemView);
@@ -332,119 +354,114 @@ private final ActionWorkoutExerciseItemBinding binding;
 //            setsView = itemView.findViewById(R.id.set);
 //            exerciseView.setOnClickListener(v -> changeActive());
 //        }
-
-        private void changeActive(){
-            mExpandPosition = mPosition;
-            collapse();
-            expand();
-        }
-
-        private void animateRecyclerView(RecyclerView mRecyclerView){
-
-            Transition transition = new ChangeBounds();
-            transition.setInterpolator(new LinearInterpolator());
-            transition.setDuration(500L);
-            transition.addListener(new TransitionListenerAdapter() {
-                @Override
-                public void onTransitionStart(@NonNull Transition transition) {
-                    lockRecyclerView();
-                }
-
-                @Override
-                public void onTransitionEnd(@NonNull Transition transition) {
-                    unlockRecyclerView();
-                    mRecyclerView.smoothScrollToPosition(mPosition);
-                }
-            });
-            TransitionManager.beginDelayedTransition(mRecyclerView, transition);
-
-
-        }
-
-        private void expand() {
-
-            Transition transition = new Fade();
-            transition.setDuration(750L);
-            TransitionManager.beginDelayedTransition((ViewGroup) itemView, transition);
-            actionPanel.setVisibility(View.VISIBLE);
-            infoPanel.setVisibility(View.GONE);
-            exerciseView.setEnabled(false);
-            viewToCollapse = itemView;
-
-
-
-            animateRecyclerView((RecyclerView) itemView.getParent());
-        }
-
-        private void collapse() {
-            if (viewToCollapse != null) {
-                View collapseActionPanel = viewToCollapse.findViewById(R.id.action_panel);
-                View collapseInfoPanel = viewToCollapse.findViewById(R.id.info_panel);
-                View collapseExerciseView = viewToCollapse.findViewById(R.id.exercise_view);
-
-                Transition transition = new Fade();
-                transition.setDuration(750L);
-                TransitionManager.beginDelayedTransition((ViewGroup) viewToCollapse, transition);
-
-                collapseActionPanel.setVisibility(View.GONE);
-                collapseInfoPanel.setVisibility(View.VISIBLE);
-                collapseExerciseView.setEnabled(true);
-            }
-
-        }
-
-
-
-        public void setExercise(Exercise exercise, int position) {
-            mExercise = exercise;
-            mPosition = position;
-            bindData();
-        }
+//
+//        private void changeActive(){
+//            mExpandPosition = mPosition;
+//            collapse();
+//            expand();
+//        }
+//
+//        private void animateRecyclerView(RecyclerView mRecyclerView){
+//
+//            Transition transition = new ChangeBounds();
+//            transition.setInterpolator(new LinearInterpolator());
+//            transition.setDuration(500L);
+//            transition.addListener(new TransitionListenerAdapter() {
+//                @Override
+//                public void onTransitionStart(@NonNull Transition transition) {
+//                    lockRecyclerView();
+//                }
+//
+//                @Override
+//                public void onTransitionEnd(@NonNull Transition transition) {
+//                    unlockRecyclerView();
+//                    mRecyclerView.smoothScrollToPosition(mPosition);
+//                }
+//            });
+//            TransitionManager.beginDelayedTransition(mRecyclerView, transition);
+//
+//
+//        }
+//
+//        private void expand() {
+//
+//            Transition transition = new Fade();
+//            transition.setDuration(750L);
+//            TransitionManager.beginDelayedTransition((ViewGroup) itemView, transition);
+//            actionPanel.setVisibility(View.VISIBLE);
+//            infoPanel.setVisibility(View.GONE);
+//            exerciseView.setEnabled(false);
+//            viewToCollapse = itemView;
+//
+//
+//
+//            animateRecyclerView((RecyclerView) itemView.getParent());
+//        }
+//
+//        private void collapse() {
+//            if (viewToCollapse != null) {
+//                View collapseActionPanel = viewToCollapse.findViewById(R.id.action_panel);
+//                View collapseInfoPanel = viewToCollapse.findViewById(R.id.info_panel);
+//                View collapseExerciseView = viewToCollapse.findViewById(R.id.exercise_view);
+//
+//                Transition transition = new Fade();
+//                transition.setDuration(750L);
+//                TransitionManager.beginDelayedTransition((ViewGroup) viewToCollapse, transition);
+//
+//                collapseActionPanel.setVisibility(View.GONE);
+//                collapseInfoPanel.setVisibility(View.VISIBLE);
+//                collapseExerciseView.setEnabled(true);
+//            }
+//
+//        }
+//
 
 
-
-        void bindData() {
-
-            exerciseView.setEnabled(mExpandPosition != mPosition);
-            ViewGroup.LayoutParams lp = itemView.getLayoutParams();
-            if (mPosition == mAdapter.getItemCount() - 1) {
-                lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
-                itemView.findViewById(R.id.finish_widget).setVisibility(View.VISIBLE);
-            } else {
-                lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                itemView.findViewById(R.id.finish_widget).setVisibility(View.GONE);
-            }
-            itemView.setLayoutParams(lp);
+//        public void setExercise(Exercise exercise, int position) {
+//            mExercise = exercise;
+//            mPosition = position;
+//            bindData();
+//        }
 
 
+//        void bindData() {
+//
+//            exerciseView.setEnabled(mExpandPosition != mPosition);
+//            ViewGroup.LayoutParams lp = itemView.getLayoutParams();
+//            if (mPosition == mAdapter.getItemCount() - 1) {
+//                lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
+//                itemView.findViewById(R.id.finish_widget).setVisibility(View.VISIBLE);
+//            } else {
+//                lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+//                itemView.findViewById(R.id.finish_widget).setVisibility(View.GONE);
+//            }
+//            itemView.setLayoutParams(lp);
+//
+//
+//
+//            if (mPosition == mExpandPosition) {
+//                actionPanel.setVisibility(View.VISIBLE);
+//                viewToCollapse = itemView;
+//                infoBar.setVisibility(View.GONE);
+//            } else {
+//                actionPanel.setVisibility(View.GONE);
+//                infoBar.setVisibility(View.VISIBLE);
+//            }
+//
+//
+//            mName.setText(mExercise.getName());
+//            if (mExercise.getNote() != null) mDesc.setText(mExercise.getNote());
+//            else mDesc.setVisibility(View.GONE);
+//
+//            if (mExercise.getTimePlan() != null) {
+////                mNormTime.setText(String.format(Locale.getDefault(), "%d", mExercise.getTimePlan()));
+//            }
+//
+////            mOrderNumber.setText(String.format(Locale.getDefault(), "%d", mPosition + 1));
+////            mOrderNumber.setVisibility(View.GONE);
+//            itemView.setTag(mExercise.getId());
+//        }
 
-            if (mPosition == mExpandPosition) {
-                actionPanel.setVisibility(View.VISIBLE);
-                viewToCollapse = itemView;
-                infoBar.setVisibility(View.GONE);
-            } else {
-                actionPanel.setVisibility(View.GONE);
-                infoBar.setVisibility(View.VISIBLE);
-            }
-
-
-            mName.setText(mExercise.getName());
-            if (mExercise.getNote() != null) mDesc.setText(mExercise.getNote());
-            else mDesc.setVisibility(View.GONE);
-
-            if (mExercise.getTimePlan() != null) {
-//                mNormTime.setText(String.format(Locale.getDefault(), "%d", mExercise.getTimePlan()));
-            }
-
-//            mOrderNumber.setText(String.format(Locale.getDefault(), "%d", mPosition + 1));
-//            mOrderNumber.setVisibility(View.GONE);
-            itemView.setTag(mExercise.getId());
-        }
-
-
-    }
-
-}
 //    ValueAnimator anim = ValueAnimator.ofInt(0, 200);
 //                anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 //                    @Override
@@ -528,7 +545,6 @@ private final ActionWorkoutExerciseItemBinding binding;
 //                    }
 //                };
 //                mRecyclerView.addOnScrollListener(listener);
-
 
 
 //            if (mPosition==mAdapter.getItemCount()-1) {

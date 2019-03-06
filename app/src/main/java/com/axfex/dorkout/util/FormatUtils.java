@@ -59,7 +59,7 @@ public final class FormatUtils {
     }
 
     public static String getTimeString(Long time_ms) {
-            if (time_ms == null || time_ms <= 0){
+            if (time_ms == null || time_ms < 0){
             return
                     WorkoutApplication.getContext().getString(R.string.empty_time);
         }

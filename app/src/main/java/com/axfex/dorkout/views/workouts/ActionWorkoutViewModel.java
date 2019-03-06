@@ -35,12 +35,13 @@ public class ActionWorkoutViewModel extends ViewModel {
         return mWorkoutsRepository.getExercisesLD(workoutId);
     }
 
-    public LiveData<Workout> getActiveWorkoutLD() {
-        return mActionWorkoutManager.getActiveWorkoutLD();
-    }
 
     public LiveData<Exercise> getActiveExercise() {
         return mActionWorkoutManager.getActiveExerciseLD();
+    }
+
+    public LiveData<List<Exercise>> getActiveExercises() {
+        return mActionWorkoutManager.getActiveExercisesLD();
     }
 
     public LiveData<Rest> getRest() {
@@ -101,6 +102,9 @@ public class ActionWorkoutViewModel extends ViewModel {
         }
     }
 
+    public Workout getActiveWorkout() {
+        return mActionWorkoutManager.getActiveWorkout();
+    }
 
 //    public LiveData<Long> getWorkoutTime() {
 //        return mActionWorkoutManager.getWorkoutTime();

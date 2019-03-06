@@ -3,7 +3,7 @@ package com.axfex.dorkout.data;
 import androidx.room.TypeConverter;
 
 public enum Status {
-    UNDONE(0),
+    AWAITING(0),
     RUNNING(1),
     PAUSED(2),
     DONE(3),

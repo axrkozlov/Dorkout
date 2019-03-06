@@ -11,7 +11,7 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import static androidx.room.ForeignKey.CASCADE;
-import static com.axfex.dorkout.data.Status.UNDONE;
+import static com.axfex.dorkout.data.Status.AWAITING;
 import static com.axfex.dorkout.data.Status.DONE;
 import static com.axfex.dorkout.data.Status.RUNNING;
 import static com.axfex.dorkout.data.Status.SKIPPED;
@@ -54,8 +54,6 @@ public class Exercise {
 
     @Nullable
     private Status status;
-
-    @Ignore
     private long startTime;
 
     @Ignore
@@ -216,6 +214,14 @@ public class Exercise {
         statusLD.postValue(status);
     }
 
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
+    }
+
     public MutableLiveData<Long> getTimeLD() {
         return timeLD;
     }
@@ -228,16 +234,16 @@ public class Exercise {
         return statusLD;
     }
 
-    public boolean setUndone() {
+    public boolean await() {
         if (status == null) {
-            setStatus(UNDONE);
+            setStatus(AWAITING);
             return true;
         }
         return false;
     }
 
     public boolean start() {
-        if (canStart() && (status == UNDONE)) {
+        if (canStart() && (status == AWAITING)) {
             startTime = now();
             accumulatedTime = time == null ? 0L : time;
             setStatus(status = RUNNING);
@@ -251,7 +257,7 @@ public class Exercise {
             time = null;
             startTime = now();
             updateTime();
-            if (status == DONE || status == SKIPPED) setStatus(UNDONE);
+            if (status == DONE || status == SKIPPED) setStatus(AWAITING);
             return true;
         }
         return false;
@@ -300,10 +306,13 @@ public class Exercise {
     }
 
     private void updateProgress() {
+        Long progressLong;
         if (time != null && timePlan != null && timePlan > 0) {
-            Long progressLong = time * MAX_PROGRESS / timePlan;
-            progressLD.postValue(progressLong);
+            progressLong = time * MAX_PROGRESS / timePlan;
+        } else {
+            progressLong=0L;
         }
+        progressLD.postValue(progressLong);
     }
 
     public boolean getRunning() {
@@ -323,7 +332,7 @@ public class Exercise {
     }
 
     public boolean getUndone() {
-        return status == UNDONE;
+        return status == AWAITING;
     }
 
     public boolean canStart() {

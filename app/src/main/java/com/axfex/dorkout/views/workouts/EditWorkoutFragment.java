@@ -369,7 +369,7 @@ public class EditWorkoutFragment extends Fragment {
 //            if (mExercise.getRestTimePlan() != null) {
 //                mRestTime.setText(String.format(Locale.getDefault(), "%d", mExercise.getRestTimePlan()));
 //            }
-            mOrderNumber.setText(String.format(Locale.getDefault(), "%d", mPosition + 1));
+//            mOrderNumber.setText(String.format(Locale.getDefault(), "%d", mPosition + 1));
 //            mOrderNumber.setVisibility(View.GONE);
             itemView.setTag(mExercise.getId());
         }

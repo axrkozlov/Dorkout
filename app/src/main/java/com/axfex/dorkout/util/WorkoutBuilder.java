@@ -3,7 +3,7 @@ package com.axfex.dorkout.util;
 public class WorkoutBuilder {
 
 
-//    public static ActiveWorkout getActiveWorkoutLD(Workout workout){
+//    public static ActiveWorkout getActiveWorkout(Workout workout){
 //
 //        ActiveWorkout activeWorkout=new ActiveWorkout(workout.getId());
 //        activeWorkout.setName(workout.getName());

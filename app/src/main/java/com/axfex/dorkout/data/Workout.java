@@ -160,6 +160,11 @@ public class Workout {
     public  boolean getRunning(){
         return status==RUNNING;
     }
+
+    public boolean is(Workout workout) {
+        if (workout == null) return false;
+        return this.id.equals(workout.id);
+    }
 }
 
 

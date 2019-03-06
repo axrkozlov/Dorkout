@@ -1,23 +1,19 @@
 package com.axfex.dorkout.views.adapters;
 
-import android.animation.Animator;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.ViewSwitcher;
 
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.data.Exercise;
 import com.axfex.dorkout.data.Rest;
 import com.axfex.dorkout.data.Status;
 import com.axfex.dorkout.util.FormatUtils;
+
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -33,7 +29,7 @@ import androidx.transition.TransitionManager;
 import static com.axfex.dorkout.data.Status.DONE;
 import static com.axfex.dorkout.data.Status.PAUSED;
 import static com.axfex.dorkout.data.Status.SKIPPED;
-import static com.axfex.dorkout.data.Status.UNDONE;
+import static com.axfex.dorkout.data.Status.AWAITING;
 import static com.axfex.dorkout.data.Status.RUNNING;
 
 public class BindingAdapters {
@@ -41,24 +37,25 @@ public class BindingAdapters {
 
     @BindingAdapter({"lock_view", "active_exercise"})
     public static void setActiveExercise(RecyclerView recyclerView, View lockView, Exercise exercise) {
-        if (exercise != null) {
-            Transition transition = new ChangeBounds();
-            transition.setInterpolator(new LinearInterpolator());
-            transition.setDuration(500L);
-            transition.addListener(new TransitionListenerAdapter() {
-                @Override
-                public void onTransitionStart(@NonNull Transition transition) {
-                    if (lockView != null) lockView.setVisibility(View.VISIBLE);
-                }
-
-                @Override
-                public void onTransitionEnd(@NonNull Transition transition) {
-                    if (lockView != null) lockView.setVisibility(View.GONE);
-                    recyclerView.smoothScrollToPosition(exercise.getOrderNumber() - 1);
-                }
-            });
-            TransitionManager.beginDelayedTransition(recyclerView, transition);
-        }
+//        if (exercise != null) {
+//            Transition transition = new ChangeBounds();
+//            transition.setInterpolator(new LinearInterpolator());
+//            transition.setDuration(750L);
+//            transition.addListener(new TransitionListenerAdapter() {
+//                @Override
+//                public void onTransitionStart(@NonNull Transition transition) {
+//                    if (lockView != null) lockView.setVisibility(View.VISIBLE);
+//                }
+//
+//                @Override
+//                public void onTransitionEnd(@NonNull Transition transition) {
+//                    if (lockView != null) lockView.setVisibility(View.GONE);
+//                    recyclerView.smoothScrollToPosition(exercise.getOrderNumber() - 1);
+//                    Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
+//                }
+//            });
+//            TransitionManager.beginDelayedTransition(recyclerView, transition);
+//        }
 
     }
 
@@ -72,7 +69,7 @@ public class BindingAdapters {
             view.setVisibility(View.GONE);
             view.setEnabled(true);
         } else {
-            view.setVisibility(isActive ? View.VISIBLE : View.GONE);
+            view.setVisibility( isActive ? View.VISIBLE : View.GONE);
             view.setEnabled(!isActive);
         }
 
@@ -129,11 +126,11 @@ public class BindingAdapters {
     @BindingAdapter({"status", "rest", "canStart"})
     public static void setStatusIcon(ImageView view, Status status, Rest rest, boolean canStart) {
         final int res;
-        if (status == UNDONE && rest != null) {
+        if (status == AWAITING && rest != null) {
             res = R.drawable.action_rest_await_icon;
-        } else if (status == UNDONE && canStart || status == PAUSED) {
+        } else if (status == AWAITING && canStart || status == PAUSED) {
             res = R.drawable.action_start_icon;
-        } else if (status == UNDONE || status == RUNNING) {
+        } else if (status == AWAITING || status == RUNNING) {
             res = R.drawable.action_finish_icon;
         } else if (status == DONE) {
             res = R.drawable.action_done_icon;
@@ -148,11 +145,11 @@ public class BindingAdapters {
     @BindingAdapter({"status", "rest", "canStart"})
     public static void setStatusColor(CardView view, Status status, Rest rest, boolean canStart) {
         final int res;
-        if (status == UNDONE && rest != null) {
+        if (status == AWAITING && rest != null) {
             res = R.color.state_rest_await_back;
-        } else if (status == UNDONE && canStart || status == PAUSED) {
+        } else if (status == AWAITING && canStart || status == PAUSED) {
             res = R.color.state_start_back;
-        } else if (status == UNDONE || status == RUNNING) {
+        } else if (status == AWAITING || status == RUNNING) {
             res = R.color.state_finish_back;
         } else if (status == DONE) {
             res = R.color.state_done_back;
@@ -177,7 +174,7 @@ public class BindingAdapters {
         }
         view.setText(text);
         view.setTextColor(ContextCompat.getColor(view.getContext(), color));
-        Log.i(TAG, "setTime: " + text);
+//        Log.i(TAG, "setTime: " + text);
 //
 //                view.animate().alpha(1f).setDuration(50);
 //        view.clearAnimation();
@@ -220,7 +217,7 @@ public class BindingAdapters {
         }
 
 //            switch (status) {
-//                case UNDONE:
+//                case AWAITING:
 //                    res = R.string.value_one;
 //                    break;
 //                case NEXT:
