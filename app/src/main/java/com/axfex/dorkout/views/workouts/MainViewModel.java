@@ -3,15 +3,13 @@ package com.axfex.dorkout.views.workouts;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.annotation.NonNull;
 
-import com.axfex.dorkout.data.Exercise;
-import com.axfex.dorkout.data.Workout;
-import com.axfex.dorkout.data.source.WorkoutsRepository;
+import com.axfex.dorkout.navigation.NavigationEvent;
 import com.axfex.dorkout.util.FreshMutableLiveData;
-import com.axfex.dorkout.util.ShowEvent;
 
-import java.util.List;
+import static com.axfex.dorkout.navigation.NavigationEvent.EventType.EDIT_WORKOUT;
+import static com.axfex.dorkout.navigation.NavigationEvent.EventType.WORKOUT;
+import static com.axfex.dorkout.navigation.NavigationEvent.EventType.WORKOUTS;
 
 /**
  * Created by alexanderkozlov on 1/7/18.
@@ -20,22 +18,45 @@ import java.util.List;
 public class MainViewModel extends ViewModel {
     private static final String TAG = "MAIN_VIEW_MODEL";
 
-    private final MutableLiveData<ShowEvent> mShowEventSource = new FreshMutableLiveData<>();
+    private final MutableLiveData<NavigationEvent> mNavigationEvent = new FreshMutableLiveData<>();
+    private final MutableLiveData<Long> mStartingWorkoutEvent = new FreshMutableLiveData<>();
+    private final MutableLiveData<Long> mStoppingWorkoutEvent = new FreshMutableLiveData<>();
 
-    LiveData<ShowEvent> getShowEvent() {
-        return mShowEventSource;
+
+    LiveData<NavigationEvent> getNavigationEvent() {
+        return mNavigationEvent;
     }
 
-    private void setShow(String tag, Long id){
-        mShowEventSource.setValue(new ShowEvent(tag,id));
+    private void setShow(NavigationEvent.EventType eventType, Long id){
+        NavigationEvent navigationEvent=new NavigationEvent(eventType,id);
+        mNavigationEvent.setValue(navigationEvent);
     }
 
     void openEditWorkout(Long id) {
-        setShow(EditWorkoutFragment.TAG,id);
+        setShow(EDIT_WORKOUT,id);
     }
 
-    void openActionWorkout(Long id) {
-        setShow(ActionWorkoutFragment.TAG,id);
+    void openWorkout(Long id) {
+        setShow(WORKOUT,id);
     }
 
+    MutableLiveData<Long> getStartingWorkoutEvent() {
+        return mStartingWorkoutEvent;
+    }
+
+    MutableLiveData<Long> getStoppingWorkoutEvent() {
+        return mStoppingWorkoutEvent;
+    }
+
+    void startWorkout(Long id){
+        mStartingWorkoutEvent.setValue(id);
+    }
+
+    void openWorkouts(){
+        setShow(WORKOUTS,null);
+    }
+
+    public void stopWorkout(Long id) {
+        mStoppingWorkoutEvent.setValue(id);
+    }
 }

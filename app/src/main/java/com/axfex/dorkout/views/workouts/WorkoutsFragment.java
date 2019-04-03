@@ -184,14 +184,14 @@ public class WorkoutsFragment extends Fragment implements WorkoutsNavigator {
 
     @Override
     public void onOpenActionWorkout(Workout workout) {
-        mMainViewModel.openActionWorkout(workout.getId());
+        mMainViewModel.openWorkout(workout.getId());
         doNotUpdateActionBar=true;
         mWorkoutsViewModel.pickWorkout(null);
     }
 
     @Override
     public void onDeleteWorkout(Workout workout) {
-        new AlertDialog.Builder(Objects.requireNonNull(getContext()))
+        new AlertDialog.Builder(requireContext())
                 //TODO:make resource
                 .setTitle("Delete " + workout.getName() + "?")
                 .setPositiveButton(R.string.bt_ok, (d, i) -> onDeleteDialogOk(workout))
@@ -333,10 +333,10 @@ public class WorkoutsFragment extends Fragment implements WorkoutsNavigator {
         @Override
         public void onClick(View v) {
             if (!isAnyWorkoutPicked) {
-                mMainViewModel.openActionWorkout(mWorkout.getId());
+                mMainViewModel.openWorkout(mWorkout.getId());
                 return;
             }
-            mWorkoutsViewModel.pickWorkout(mWorkout);
+//            mWorkoutsViewModel.pickWorkout(mWorkout);
             //For Tests
 //            onOpenEditWorkout(mWorkout);
         }

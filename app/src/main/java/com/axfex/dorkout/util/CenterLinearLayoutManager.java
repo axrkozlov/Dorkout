@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CenterLinearLayoutManager extends LinearLayoutManager {
-    private static final float MILLISECONDS_PER_INCH = 360f;
+    private static final float MILLISECONDS_PER_INCH = 360;
     private Context mContext;
     private boolean scrollable = true;
 
@@ -33,6 +33,8 @@ public class CenterLinearLayoutManager extends LinearLayoutManager {
         smoothScroller.setTargetPosition(position);
         startSmoothScroll(smoothScroller);
     }
+
+
 
 
 

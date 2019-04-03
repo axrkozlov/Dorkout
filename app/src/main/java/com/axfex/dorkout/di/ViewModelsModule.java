@@ -1,19 +1,14 @@
 package com.axfex.dorkout.di;
 
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
-
 
 import com.axfex.dorkout.data.source.WorkoutsRepository;
-import com.axfex.dorkout.services.ActionWorkoutManager;
-import com.axfex.dorkout.views.workouts.ActionWorkoutViewModel;
+import com.axfex.dorkout.services.WorkoutPerformingManager;
+import com.axfex.dorkout.views.workouts.WorkoutViewModel;
 import com.axfex.dorkout.views.workouts.EditWorkoutViewModel;
 import com.axfex.dorkout.views.workouts.MainViewModel;
 import com.axfex.dorkout.views.workouts.WorkoutsViewModel;
 import com.axfex.dorkout.vm.ViewModelFactory;
 
-
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -52,19 +47,18 @@ class ViewModelsModule {
     }
 
     @Provides
-    ViewModelFactory<ActionWorkoutViewModel> provideActionWorkoutViewModelFactory(ActionWorkoutViewModel actionWorkoutViewModel){
-        return new ViewModelFactory<>(actionWorkoutViewModel);
+    ViewModelFactory<WorkoutViewModel> provideActionWorkoutViewModelFactory(WorkoutViewModel workoutViewModel){
+        return new ViewModelFactory<>(workoutViewModel);
     }
 
     @Provides
-    @Singleton
-    ActionWorkoutManager providesActionWorkoutManager(WorkoutsRepository workoutsRepository){
-        return new ActionWorkoutManager(workoutsRepository);
+    WorkoutPerformingManager providesActionWorkoutManager(WorkoutsRepository workoutsRepository){
+        return new WorkoutPerformingManager(workoutsRepository);
     }
 
     @Provides
-    ActionWorkoutViewModel providesActionWorkoutViewModel(WorkoutsRepository workoutsRepository,ActionWorkoutManager actionWorkoutManager){
-        return new ActionWorkoutViewModel(workoutsRepository,actionWorkoutManager);
+    WorkoutViewModel providesActionWorkoutViewModel(WorkoutsRepository workoutsRepository, WorkoutPerformingManager workoutPerformingManager){
+        return new WorkoutViewModel(workoutsRepository, workoutPerformingManager);
     }
 
 

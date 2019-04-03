@@ -1,5 +1,7 @@
 package com.axfex.dorkout.data;
 
+import android.os.Handler;
+
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 import androidx.room.ColumnInfo;
@@ -13,6 +15,7 @@ import androidx.room.TypeConverters;
 import static androidx.room.ForeignKey.CASCADE;
 import static com.axfex.dorkout.data.Status.AWAITING;
 import static com.axfex.dorkout.data.Status.DONE;
+import static com.axfex.dorkout.data.Status.REST;
 import static com.axfex.dorkout.data.Status.RUNNING;
 import static com.axfex.dorkout.data.Status.SKIPPED;
 import static com.axfex.dorkout.data.Status.PAUSED;
@@ -31,6 +34,8 @@ import static com.axfex.dorkout.util.FormatUtils.now;
 )
 
 public class Exercise {
+    @Ignore
+    private static final String TAG = "EXERCISE";
 
     @PrimaryKey(autoGenerate = true)
     private Long id;
@@ -54,6 +59,7 @@ public class Exercise {
 
     @Nullable
     private Status status;
+
     private long startTime;
 
     @Ignore
@@ -63,16 +69,40 @@ public class Exercise {
     private MutableLiveData<Long> timeLD = new MutableLiveData<>();
 
     @Ignore
-    private MutableLiveData<Long> progressLD = new MutableLiveData<>();
+    private MutableLiveData<Long> timeProgressLD = new MutableLiveData<>();
 
     @Ignore
     private MutableLiveData<Status> statusLD = new MutableLiveData<>();
 
     @Ignore
-    public static final Long MAX_PROGRESS = 10000L;
+    private Handler timerHandler;
+
+    @Ignore
+    private Long restTime;
+
+    @Ignore
+    private MutableLiveData<Long> restProgressLD = new MutableLiveData<>();
+
+
+
+    @Ignore
+    private static final int UPDATE_PERIOD = 40;
+
+    @Ignore
+    public static final Long MAX_TIME_PROGRESS = 10000L;
 
     @Ignore
     private MutableLiveData<Boolean> activeLD = new MutableLiveData<>();
+
+    @Ignore
+    private MutableLiveData<Boolean> finishEventLD = new MutableLiveData<>();
+
+    @Ignore
+    private Long startRestTime;
+    @Ignore
+    private Runnable timerRunnable = new TimeUpdate();
+    @Ignore
+    private Runnable restRunnable= new RestUpdate();
 
     public Exercise() {
     }
@@ -226,8 +256,12 @@ public class Exercise {
         return timeLD;
     }
 
-    public MutableLiveData<Long> getProgressLD() {
-        return progressLD;
+    public MutableLiveData<Long> getTimeProgressLD() {
+        return timeProgressLD;
+    }
+
+    public MutableLiveData<Long> getRestProgressLD() {
+        return restProgressLD;
     }
 
     public MutableLiveData<Status> getStatusLD() {
@@ -243,10 +277,9 @@ public class Exercise {
     }
 
     public boolean start() {
-        if (canStart() && (status == AWAITING)) {
-            startTime = now();
-            accumulatedTime = time == null ? 0L : time;
+        if (status == AWAITING ) {
             setStatus(status = RUNNING);
+            startTimer();
             return true;
         }
         return false;
@@ -279,9 +312,21 @@ public class Exercise {
         return false;
     }
 
+    public boolean stop() {
+        if (status == RUNNING || status == PAUSED ) {
+            setStatus(status = REST);
+            startRestTimer();
+            return true;
+        }
+        return false;
+    }
+
+
     public boolean finish() {
         if (status != DONE && status != SKIPPED) {
             setStatus(DONE);
+            finishEventLD.postValue(true);
+//            finishEventLD.postValue(null);
             return true;
         }
         return false;
@@ -296,6 +341,19 @@ public class Exercise {
         accumulatedTime = 0;
     }
 
+    private void startTimer(){
+        timerHandler = new Handler();
+        startTime = now();
+        accumulatedTime = time == null ? 0L : time;
+        timerHandler.post(timerRunnable);
+    }
+
+    private void startRestTimer(){
+        timerHandler = new Handler();
+        startRestTime = now();
+        timerHandler.post(restRunnable);
+    }
+
     public void updateTime() {
         if (status == RUNNING) {
             final long timeSinceStart = now() - startTime;
@@ -305,14 +363,32 @@ public class Exercise {
         updateProgress();
     }
 
+    public void updateRestTime() {
+        final long timeSinceStart = now() - startRestTime;
+        restTime = Math.max(0, timeSinceStart);
+        if (restTime > restTimePlan) {
+            finish();
+        }
+        updateRestProgress();
+    }
+
     private void updateProgress() {
         Long progressLong;
         if (time != null && timePlan != null && timePlan > 0) {
-            progressLong = time * MAX_PROGRESS / timePlan;
+            progressLong = time * MAX_TIME_PROGRESS / timePlan;
         } else {
             progressLong=0L;
         }
-        progressLD.postValue(progressLong);
+        timeProgressLD.postValue(progressLong);
+    }
+
+    private void updateRestProgress() {
+        if (restTime != null && restTimePlan != null && restTimePlan > 0) {
+            Long progress = restTime * MAX_TIME_PROGRESS / restTimePlan;
+            restProgressLD.postValue(progress);
+        } else {
+            restProgressLD.postValue(null);
+        }
     }
 
     public boolean getRunning() {
@@ -331,7 +407,7 @@ public class Exercise {
         return status == SKIPPED;
     }
 
-    public boolean getUndone() {
+    public boolean getAwaiting() {
         return status == AWAITING;
     }
 
@@ -344,11 +420,37 @@ public class Exercise {
         return this.id.equals(exercise.id);
     }
 
+
     public MutableLiveData<Boolean> getActiveLD() {
         return activeLD;
+    }
+
+    public MutableLiveData<Boolean> getFinishEventLD() {
+        return finishEventLD;
     }
 
     public void setActive(boolean isActive) {
         activeLD.setValue(isActive);
     }
+
+    private final class TimeUpdate implements Runnable {
+        @Override
+        public void run() {
+            if (status==RUNNING) {
+                updateTime();
+                timerHandler.postDelayed(this, UPDATE_PERIOD);
+            }
+        }
+    }
+
+    private final class RestUpdate implements Runnable {
+        @Override
+        public void run() {
+            if (status==REST) {
+                updateRestTime();
+                timerHandler.postDelayed(this, UPDATE_PERIOD);
+            }
+        }
+    }
+
 }

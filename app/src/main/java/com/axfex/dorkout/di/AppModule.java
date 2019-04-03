@@ -3,7 +3,6 @@ package com.axfex.dorkout.di;
 import android.app.Application;
 import androidx.annotation.NonNull;
 
-import com.axfex.dorkout.Navigator;
 import com.axfex.dorkout.WorkoutApplication;
 import com.axfex.dorkout.util.AppExecutors;
 
@@ -41,10 +40,6 @@ public class AppModule {
     AppExecutors providesAppExecutors(){
         return new AppExecutors();
     }
-
-    @Provides
-    @Singleton
-    Navigator providesNavigator(WorkoutApplication workoutApplication){return new Navigator(workoutApplication);}
 
 
 }

@@ -1,23 +1,30 @@
 package com.axfex.dorkout.views.workouts;
 
-import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import androidx.fragment.app.Fragment;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
 
+import android.os.IBinder;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.axfex.dorkout.R;
 import com.axfex.dorkout.WorkoutApplication;
+import com.axfex.dorkout.navigation.NavigationEvent;
+import com.axfex.dorkout.services.WorkoutPerformingManager;
+import com.axfex.dorkout.services.WorkoutPerformingService;
 import com.axfex.dorkout.util.BaseActivity;
-import com.axfex.dorkout.util.ShowEvent;
 import com.axfex.dorkout.views.settings.SettingsActivity;
 import com.axfex.dorkout.vm.ViewModelFactory;
 
@@ -25,17 +32,22 @@ import javax.inject.Inject;
 
 public class MainActivity extends BaseActivity implements MainNavigator {
     private static final String TAG = "MAIN_ACTIVITY";
-    private static final String WORKOUT_ID = "workout_id";
+    private static final String ROOT = "ROOT";
+
+    private static final String WORKOUT_ID = "WORKOUT_ID";
+    private static final String PERFORMING_WORKOUT_ID = "PERFORMING_WORKOUT_ID";
+
     private static final int CONTENT_FRAME = R.id.contentFrame;
+
     @Inject
     public ViewModelFactory<MainViewModel> mViewModelFactory;
 
     public MainViewModel mMainViewModel;
 
-    private boolean mIsMainMenuShown = false;
-    public static Intent newIntent(Context context) {
-        return new Intent(context, MainActivity.class);
-    }
+    private boolean mMainMenuShown = false;
+
+    private Long mPerformingWorkoutId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,22 +56,182 @@ public class MainActivity extends BaseActivity implements MainNavigator {
         ((WorkoutApplication) getApplication())
                 .getAppComponent()
                 .inject(this);
+
         setupToolbar();
-        attachRootShowIfEmpty();
-        showMainMenuIfRoot();
+//        showMainMenu();
         getSupportFragmentManager().addOnBackStackChangedListener(this::onBackStackChanged);
+
+
         mMainViewModel = ViewModelProviders.of(this, mViewModelFactory).get(MainViewModel.class);
-        mMainViewModel.getShowEvent().observe(this, this::onShowEvent);
+
+        mPerformingWorkoutId = getPreferences(MODE_PRIVATE).getLong(PERFORMING_WORKOUT_ID, 0);
+
+        showMainFragment();
+
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        mMainViewModel.getNavigationEvent().observe(this, this::onNewNavigationEvent);
+        mMainViewModel.getStartingWorkoutEvent().observe(this, this::onStartWorkout);
+        mMainViewModel.getStoppingWorkoutEvent().observe(this, id->showStopWorkoutDialog());
+    }
+
+    private void onStartWorkout(Long id) {
+        mPerformingWorkoutId = id;
+        startPerformingService(id);
+    }
+
+    private void onStopWorkout(Long id) {
+        stopPerformingService();
+
+        onBackPressed();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mPerformingWorkoutId!=0) showStopWorkoutDialog();
+        else super.onBackPressed();
+    }
+
+    private void showStopWorkoutDialog() {
+        new AlertDialog.Builder(this)
+                //TODO:make resource
+                .setTitle("Exit workout?")
+                .setPositiveButton(R.string.bt_ok, (d, i) -> onStopWorkoutDialogOk())
+                .setNegativeButton(R.string.bt_cancel, (d, i) -> {
+                })
+                .create()
+                .show();
+    }
+
+    private void onStopWorkoutDialogOk() {
+        onStopWorkout(mPerformingWorkoutId);
+    }
+
+
+    private void startPerformingService(Long workoutId) {
+        WorkoutPerformingService.startActionWorkoutService(this, workoutId);
+        savePerformingWorkoutId(workoutId);
+    }
+
+    private void stopPerformingService() {
+        WorkoutPerformingService.stopActionWorkoutService(this);
+        clearPerformingWorkoutId();
+    }
+
+    private void savePerformingWorkoutId(Long performingWorkoutId){
+        getPreferences(MODE_PRIVATE).edit().putLong(PERFORMING_WORKOUT_ID,performingWorkoutId).apply();
+    }
+
+    private void clearPerformingWorkoutId(){
+        mPerformingWorkoutId=0L;
+        getPreferences(MODE_PRIVATE).edit().remove(PERFORMING_WORKOUT_ID).apply();
+    }
+
+    private void showPerformingWorkout() {
+        String tag = WorkoutFragment.TAG;
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        Fragment fragment = fragmentManager.findFragmentByTag(tag);
+        if (fragment == null)
+            fragment = WorkoutFragment.newInstance();
+
+        addFragmentToActivity(getSupportFragmentManager(),
+                fragment,
+                CONTENT_FRAME,
+                tag,
+                false);
+    }
+
+    private void showWorkout(Long workoutId) {
+        Log.i(TAG, "showWorkout: ");
+        String tag = WorkoutFragment.TAG;
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag(tag);
+        if (fragment == null)
+            fragment = WorkoutFragment.newInstance();
+        ((WorkoutFragment) fragment).setWorkoutId(workoutId);
+        addFragmentToActivity(getSupportFragmentManager(),
+                fragment,
+                CONTENT_FRAME,
+                tag,
+                false);
+    }
+
+    private void showEditWorkout(Long workoutId) {
+        String tag = EditWorkoutFragment.TAG;
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
+        if (fragment == null)
+            fragment = EditWorkoutFragment.newInstance();
+        ((EditWorkoutFragment) fragment).setWorkoutId(workoutId);
+        addFragmentToActivity(getSupportFragmentManager(),
+                fragment,
+                CONTENT_FRAME,
+                tag,
+                false);
+    }
+
+    private void showWorkouts() {
+        Log.i(TAG, "showWorkouts: ");
+        String tag = WorkoutsFragment.TAG;
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag(tag);
+        if (fragment == null)
+            fragment = WorkoutsFragment.newInstance();
+
+
+        addFragmentToActivity(getSupportFragmentManager(),
+                fragment,
+                CONTENT_FRAME,
+                tag,
+                true);
+    }
+
+//    private void onWorkoutStart(Long workoutId) {
+//        startPerformingService(workoutId);
+//        bindPerformingService();
+//    }
 
     private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
 
-    private void onShowEvent(ShowEvent showEvent) {
-        attachShow(showEvent.getTag(), showEvent.getId());
+
+//    private void onNewNavigationEvent(ShowEvent showEvent) {
+//        attachShow(showEvent.getTag(), showEvent.getId());
+//    }
+
+    private void onNewNavigationEvent(NavigationEvent navigationEvent) {
+        NavigationEvent.EventType eventType = navigationEvent.getEventType();
+        switch (eventType) {
+            case WORKOUTS: {
+                showWorkouts();
+                break;
+            }
+            case WORKOUT: {
+                showWorkout(navigationEvent.getId());
+                break;
+            }
+            case EDIT_WORKOUT: {
+                showEditWorkout(navigationEvent.getId());
+                break;
+            }
+//            case WORKOUT_PERFORMING: {
+//                showPerformingWorkout(navigationEvent.getId());
+//                break;
+//            }
+            default: {
+
+            }
+        }
+
     }
+
 
     @Override
     public MainViewModel getViewModel() {
@@ -68,61 +240,38 @@ public class MainActivity extends BaseActivity implements MainNavigator {
 
 
     private void onBackStackChanged() {
-         showMainMenuIfRoot();
+        showMainMenu();
     }
 
-    private void attachRootShowIfEmpty() {
+    private void showMainFragment() {
         if (getCurrentShow() == null) {
-            attachShow(WorkoutsFragment.TAG, null);
-            mIsMainMenuShown=true;
+            showWorkouts();
+            if (mPerformingWorkoutId != 0) showPerformingWorkout();
         }
+
     }
 
-    private void showMainMenuIfRoot(){
-        if (getCurrentShow()!=null) mIsMainMenuShown = WorkoutsFragment.TAG.equals(getCurrentShow().getTag());
+    private void showMainMenu() {
+        if (getCurrentShow() != null)
+            mMainMenuShown = WorkoutsFragment.TAG.equals(getCurrentShow().getTag());
     }
 
     private Fragment getCurrentShow() {
         return getSupportFragmentManager().findFragmentById(CONTENT_FRAME);
     }
 
-    private void attachShow(String tag, @Nullable Long id) {
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
-        boolean isRootFragment = false;
-        switch (tag) {
-            case WorkoutsFragment.TAG: {
-                if (fragment == null)
-                    fragment = WorkoutsFragment.newInstance();
-                isRootFragment = true;
-                break;
-            }
-            case EditWorkoutFragment.TAG: {
-                if (fragment == null)
-                    fragment = EditWorkoutFragment.newInstance();
-                ((EditWorkoutFragment) fragment).setWorkoutId(id);
-                break;
-            }
-            case ActionWorkoutFragment.TAG: {
-                if (fragment == null)
-                    fragment = ActionWorkoutFragment.newInstance();
-                ((ActionWorkoutFragment) fragment).setWorkoutId(id);
-                break;
-            }
-            default:
-                throw new IllegalArgumentException("Not valid Show Tag");
-        }
-//                if (fragment.isAdded()) return;
-        addFragmentToActivity(getSupportFragmentManager(),
-                fragment,
-                CONTENT_FRAME,
-                tag,
-                isRootFragment);
+    private boolean isShow(String tag){
+        if (getCurrentShow()==null) return false;
+        return tag.equals(getCurrentShow().getTag());
     }
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
-        menu.setGroupVisible(R.id.main_menu, mIsMainMenuShown);
+        menu.setGroupVisible(R.id.main_menu, mMainMenuShown);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -159,7 +308,44 @@ public class MainActivity extends BaseActivity implements MainNavigator {
     public void onOpenDonate() {
 
     }
+
 }
+
+
+//    private void attachShow(String tag, @Nullable Long id) {
+//        Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
+//        boolean isRootFragment = false;
+//        switch (tag) {
+//            case WorkoutsFragment.TAG: {
+//                if (fragment == null)
+//                    fragment = WorkoutsFragment.newInstance();
+//                isRootFragment = true;
+//                break;
+//            }
+//            case EditWorkoutFragment.TAG: {
+//                if (fragment == null)
+//                    fragment = EditWorkoutFragment.newInstance();
+//                ((EditWorkoutFragment) fragment).setWorkoutId(id);
+//                break;
+//            }
+//            case WorkoutFragment.TAG: {
+//                if (fragment == null)
+//                    fragment = WorkoutFragment.newInstance();
+//                ((WorkoutFragment) fragment).setWorkoutId(id);
+//                break;
+//            }
+//
+//            default:
+//                throw new IllegalArgumentException("Not valid Show Tag");
+//        }
+////                if (fragment.isAdded()) return;
+//        addFragmentToActivity(getSupportFragmentManager(),
+//                fragment,
+//                CONTENT_FRAME,
+//                tag,
+//                isRootFragment);
+//    }
+
 
 //    @Override
 //    public void onBackPressed() {

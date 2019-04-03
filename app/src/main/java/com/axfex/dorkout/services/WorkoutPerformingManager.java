@@ -1,12 +1,12 @@
 package com.axfex.dorkout.services;
 
-import android.os.Handler;
 import android.util.Log;
 
 import com.axfex.dorkout.data.Exercise;
 import com.axfex.dorkout.data.Rest;
 import com.axfex.dorkout.data.Workout;
 import com.axfex.dorkout.data.source.WorkoutsRepository;
+import com.axfex.dorkout.util.FreshMutableLiveData;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
-public class ActionWorkoutManager {
+public class WorkoutPerformingManager {
     private static final String TAG = "ACTION_WORKOUT_MANAGER";
 
     private static final int UPDATE_PERIOD = 40;
@@ -32,53 +32,57 @@ public class ActionWorkoutManager {
     private boolean isWorkoutStarted = false;
     private boolean isWorkoutResumed = false;
     private WorkoutsRepository mWorkoutsRepository;
-    private MutableLiveData<Exercise> mActiveExerciseLD = new MutableLiveData<>();
+    private MutableLiveData<Exercise> mActiveExerciseLD = new FreshMutableLiveData<>();
     private MutableLiveData<Rest> mRestLD = new MutableLiveData<>();
     private MutableLiveData<Workout> mActiveWorkoutLD = new MutableLiveData<>();
     private MutableLiveData<List<Exercise>> mActiveExercisesLD = new MutableLiveData<>();
 
     Long mWorkoutId;
-    private final Observer<List<Exercise>> mObserver = this::onExercisesLoaded;
+    private final Observer<Workout> mWorkoutObserver = this::onWorkoutLoaded;
+    private final Observer<List<Exercise>> mExercisesObserver = this::onExercisesLoaded;
     private LiveData<List<Exercise>> mExercisesLD;
+    private LiveData<Workout> mWorkoutLD;
 
-    private Handler timerHandler = new Handler();
-    private Runnable timerRunnable = new TimeUpdate();
-    private Runnable restRunnable;
+//    private Handler timerHandler = new Handler();
+//    private Runnable timerRunnable = new TimeUpdate();
+//    private Runnable restRunnable;
+//
+//    private final class TimeUpdate implements Runnable {
+//        @Override
+//        public void run() {
+//            mExercise.updateTime();
+//            timerHandler.postDelayed(this, UPDATE_PERIOD);
+//        }
+//    }
+//
+//    private final class RestUpdate implements Runnable {
+//
+//        Rest mRest;
+//
+//        public RestUpdate(Rest rest) {
+//            mRest = rest;
+//        }
+//
+//        @Override
+//        public void run() {
+//            if (mRest == null) return;
+//            mRest.updateTime();
+//            if (mRest.hasExpired()) {
+//                onFinishRest();
+//            } else {
+//                timerHandler.postDelayed(this, UPDATE_PERIOD);
+//            }
+//        }
+//    }
 
-    private final class TimeUpdate implements Runnable {
-        @Override
-        public void run() {
-            mExercise.updateTime();
-            timerHandler.postDelayed(this, UPDATE_PERIOD);
-        }
-    }
-
-    private final class RestUpdate implements Runnable {
-
-        Rest mRest;
-
-        public RestUpdate(Rest rest) {
-            mRest = rest;
-        }
-
-        @Override
-        public void run() {
-            if (mRest == null) return;
-            mRest.updateTime();
-            if (mRest.hasExpired()) {
-                onFinishRest();
-            } else {
-                timerHandler.postDelayed(this, UPDATE_PERIOD);
-            }
-        }
-    }
-
-    public ActionWorkoutManager(WorkoutsRepository workoutsRepository) {
+    public WorkoutPerformingManager(WorkoutsRepository workoutsRepository) {
         mWorkoutsRepository = workoutsRepository;
     }
 
-    public void startWorkout(@NonNull Workout workout, @NonNull List<Exercise> exercises) {
-        if (mWorkout == null) onStartWorkout(workout, exercises);
+    public void startWorkout(@NonNull Long workoutId) {
+        Log.i(TAG, "startWorkout: " + workoutId);
+        mWorkoutsRepository.setActiveWorkoutId(workoutId);
+        if (mWorkout == null) init(workoutId);
     }
 
     public void stopWorkout() {
@@ -105,28 +109,28 @@ public class ActionWorkoutManager {
         if (mWorkout != null) onFinishExercise();
     }
 
-    public void finishRest() {
-        if (mWorkout != null) onFinishRest();
-    }
+//    public void finishRest() {
+//        if (mWorkout != null) onFinishRest();
+//    }
 
     public void setExercise(@NonNull Exercise exercise) {
         onSetExercise(exercise);
     }
 
 
-    private void onStartWorkout(Workout workout, List<Exercise> exercises) {
-        mWorkout = workout;
-        boolean result = mWorkout.start();
-        if (result) isWorkoutStarted = true;
-        else isWorkoutResumed = true;
-        updateWorkoutInDB(result);
+    private void init(Long workoutId) {
+        mWorkoutId = workoutId;
+//        boolean result = mWorkout.start();
+//        if (result) isWorkoutStarted = true;
+//        else isWorkoutResumed = true;
+//        updateWorkoutInDB(result);
         observeExercises();
     }
 
     private void onStartExercise() {
         if (mExercise.start()) {
             updateExerciseInDB(mExercise);
-            timerHandler.post(timerRunnable);
+//            timerHandler.post(timerRunnable);
         }
         Log.i(TAG, "onStartExercise: ");
     }
@@ -144,41 +148,41 @@ public class ActionWorkoutManager {
     private void onSkipExercise() {
         if (mExercise.skip()) {
             updateExerciseInDB(mExercise);
-            timerHandler.removeCallbacks(timerRunnable);
-            onFinishRest();
+//            timerHandler.removeCallbacks(timerRunnable);
+//            onFinishRest();
         }
     }
 
     private void onFinishExercise() {
         if (mExercise.finish()) {
             updateExerciseInDB(mExercise);
-            timerHandler.removeCallbacks(timerRunnable);
-            if (!onStartRest()) getNextExercise();
+//            timerHandler.removeCallbacks(timerRunnable);
+//            if (!onStartRest()) getNextExercise();
         }
     }
 
-
-    private boolean onStartRest() {
-        if (mExercise.getRestTimePlan() != null) {
-            mRest = new Rest(mExercise.getRestTimePlan());
-            mRestLD.postValue(mRest);
-            restRunnable = new RestUpdate(mRest);
-            timerHandler.post(restRunnable);
-            return true;
-        }
-        return false;
-    }
-
-    private void onFinishRest() {
-        timerHandler.removeCallbacks(restRunnable);
-        mRest = null;
-        mRestLD.postValue(null);
-        Log.i(TAG, "onFinishRest: ");
-        getNextExercise();
-    }
+//
+//    private boolean onStartRest() {
+//        if (mExercise.getRestTimePlan() != null) {
+//            mRest = new Rest(mExercise.getRestTimePlan());
+//            mRestLD.postValue(mRest);
+//            restRunnable = new RestUpdate(mRest);
+//            timerHandler.post(restRunnable);
+//            return true;
+//        }
+//        return false;
+//    }
+//
+//    private void onFinishRest() {
+//        timerHandler.removeCallbacks(restRunnable);
+//        mRest = null;
+//        mRestLD.postValue(null);
+//        Log.i(TAG, "onFinishRest: ");
+//        getNextExercise();
+//    }
 
     private void onFinishWorkout() {
-        resetWorkoutWithExercises();
+//        resetWorkoutWithExercises();
     }
 
     private void onSetExercise(Exercise exercise) {
@@ -201,15 +205,15 @@ public class ActionWorkoutManager {
         Exercise awaitingExercisePastCurrent = null;
         boolean findPastCurrent = false;
 
-        if (mExercise != null && (mExercise.getUndone() || mExercise.getRunning() || mExercise.getPaused()))
+        if (mExercise != null && (mExercise.getAwaiting() || mExercise.getRunning() || mExercise.getPaused()))
             return;
         for (Exercise e : mExercises) {
             if (e.is(mExercise)) {
                 findPastCurrent = true;
             }
-            if (findPastCurrent && e.getUndone() && awaitingExercisePastCurrent == null) {
+            if (findPastCurrent && e.getAwaiting() && awaitingExercisePastCurrent == null) {
                 awaitingExercisePastCurrent = e;
-            } else if (e.getUndone() && anyAwaitingExercise == null) {
+            } else if (e.getAwaiting() && anyAwaitingExercise == null) {
                 anyAwaitingExercise = e;
             }
         }
@@ -222,10 +226,9 @@ public class ActionWorkoutManager {
 
     }
 
-    public Workout getActiveWorkout() {
-        return mWorkout;
+    public LiveData<Workout> getActiveWorkoutLD() {
+        return mActiveWorkoutLD;
     }
-
 
     public LiveData<Exercise> getActiveExerciseLD() {
         return mActiveExerciseLD;
@@ -239,26 +242,30 @@ public class ActionWorkoutManager {
         return mRestLD;
     }
 
-    private void resetWorkoutWithExercises() {
-        mWorkout.finish();
-        mWorkoutsRepository.updateWorkout(mWorkout);
-        for (Exercise exercise : mExercises) exercise.reset();
-        mWorkoutsRepository.updateExercises(mExercises);
-        mExercisesLD.removeObserver(mObserver);
-        mWorkout = null;
-        mExercise = null;
-        mExercises = null;
-        mRest = null;
-        mActiveWorkoutLD.postValue(null);
-        mRestLD.postValue(null);
-        timerHandler.removeCallbacks(timerRunnable);
-        timerHandler.removeCallbacks(restRunnable);
-    }
+//    private void resetWorkoutWithExercises() {
+//        mWorkout.finish();
+//        mWorkoutsRepository.updateWorkout(mWorkout);
+//        for (Exercise exercise : mExercises) exercise.reset();
+//        mWorkoutsRepository.updateExercises(mExercises);
+//        mExercisesLD.removeObserver(mExercisesObserver);
+//        mWorkout = null;
+//        mExercise = null;
+//        mExercises = null;
+//        mRest = null;
+//        mActiveWorkoutLD.postValue(null);
+//        mRestLD.postValue(null);
+//    }
 
     private void observeExercises() {
-        mWorkoutId = mWorkout.getId();
+
+        mWorkoutLD = mWorkoutsRepository.getWorkoutLD(mWorkoutId);
+        mWorkoutLD.observeForever(mWorkoutObserver);
         mExercisesLD = mWorkoutsRepository.getExercisesLD(mWorkoutId);
-        mExercisesLD.observeForever(mObserver);
+        mExercisesLD.observeForever(mExercisesObserver);
+    }
+
+    private void onWorkoutLoaded(Workout workout) {
+        mWorkout = workout;
     }
 
     private void onExercisesLoaded(List<Exercise> exercises) {
@@ -267,9 +274,14 @@ public class ActionWorkoutManager {
         onExercisesChanges();
         for (Exercise e : exercises
         ) {
-            Log.i(TAG, "onExercisesLoaded: " + e.getStatus());
+            e.getFinishEventLD().observeForever(this::finished);
+            Log.i(TAG, "onExercisesLoaded: " + e);
         }
         Log.i(TAG, "onExercisesLoaded: -----------------");
+    }
+
+    private void finished(Boolean finished) {
+        if (Boolean.TRUE.equals(finished)) getNextExercise();
     }
 
     private void prepareExercises() {
@@ -278,8 +290,8 @@ public class ActionWorkoutManager {
         for (Exercise e : mExercises) {
             pos++;
             if (e.is(mExercise)) {
-                e = mExercise;
-                mExercises.set(pos, e);
+//                e = mExercise;
+//                mExercises.set(pos, e);
 //                mExercise=e;
             }
             if (isWorkoutStarted || (isWorkoutResumed && (e.getRunning() || e.getPaused()))) {

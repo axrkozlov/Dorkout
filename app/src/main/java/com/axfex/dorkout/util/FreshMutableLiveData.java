@@ -1,5 +1,7 @@
 package com.axfex.dorkout.util;
 
+import android.util.Log;
+
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -9,6 +11,8 @@ import androidx.annotation.Nullable;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * The Class provides a new data delivery only
@@ -18,7 +22,7 @@ import java.util.Map;
 public class FreshMutableLiveData<T> extends MutableLiveData<T> {
 
     private int version = -1;
-    private HashMap<Observer<? super T>, WrapperObserver> mWrappers = new HashMap<>();
+    private ConcurrentMap<Observer<? super T>, WrapperObserver> mWrappers = new ConcurrentHashMap<>();
 
     @Override
     public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super T> observer) {
@@ -48,7 +52,7 @@ public class FreshMutableLiveData<T> extends MutableLiveData<T> {
 
     @Override
     public void removeObservers(@NonNull final LifecycleOwner owner) {
-        for (Map.Entry<Observer<? super T>, WrapperObserver> entry : mWrappers.entrySet()) {
+        for (ConcurrentMap.Entry<Observer<? super T>, WrapperObserver> entry : mWrappers.entrySet()) {
             if (entry.getValue().isAttachedTo(owner))
                 removeObserver(entry.getKey());
         }

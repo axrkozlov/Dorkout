@@ -1,6 +1,10 @@
 package com.axfex.dorkout.views.workouts;
 
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +19,7 @@ import androidx.transition.Transition;
 import androidx.transition.TransitionListenerAdapter;
 import androidx.transition.TransitionManager;
 
+import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,7 +36,8 @@ import com.axfex.dorkout.data.Workout;
 
 import com.axfex.dorkout.databinding.ActionWorkoutExerciseItemBinding;
 import com.axfex.dorkout.databinding.ActionWorkoutFragmentBinding;
-import com.axfex.dorkout.services.ActionWorkoutService;
+import com.axfex.dorkout.services.WorkoutPerformingManager;
+import com.axfex.dorkout.services.WorkoutPerformingService;
 import com.axfex.dorkout.util.CenterLinearLayoutManager;
 import com.axfex.dorkout.vm.ViewModelFactory;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -41,11 +47,15 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
-public class ActionWorkoutFragment extends Fragment {
-    public static final String TAG = "ACTION_WORKOUT_FRAGMENT";
+import static android.content.Context.MODE_PRIVATE;
+
+public class WorkoutFragment extends Fragment {
+    public static final String TAG = "WORKOUT_FRAGMENT";
     private static final String WORKOUT_ID = "WORKOUT_ID";
+    private static final String PERFORMING_WORKOUT_ID = "PERFORMING_WORKOUT_ID";
+
     @Inject
-    ViewModelFactory<ActionWorkoutViewModel> mViewModelFactory;
+    ViewModelFactory<WorkoutViewModel> mViewModelFactory;
 
     private Menu mMenu;
     private RecyclerView mRecyclerView;
@@ -55,8 +65,9 @@ public class ActionWorkoutFragment extends Fragment {
 
 
     private MainViewModel mMainViewModel;
-    private ActionWorkoutViewModel mActionWorkoutViewModel;
+    private WorkoutViewModel mWorkoutViewModel;
     private Long mWorkoutId;
+    private Long mPerformingWorkoutId;
     private Workout mWorkout;
 
     private LiveData<List<Exercise>> mExercisesLD;
@@ -69,150 +80,234 @@ public class ActionWorkoutFragment extends Fragment {
 
 
     ActionWorkoutFragmentBinding mBinding;
-    private boolean isRecyclerViewLocked=false;
-    private boolean notificationAdapterPending;
+    private boolean isRecyclerViewLocked = false;
+    private boolean notifyAdapterPending;
+    private boolean scrollAfterOpenedPending;
+
     private View lockView;
 
-    public static ActionWorkoutFragment newInstance() {
-        ActionWorkoutFragment fragment = new ActionWorkoutFragment();
-        return fragment;
+    WorkoutPerformingManager mWorkoutPerformingManager;
+
+
+    public static WorkoutFragment newInstance() {
+        return new WorkoutFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        if (mWorkoutId == null)
-            if (getArguments() != null) {
-                mWorkoutId = getArguments().getLong(WORKOUT_ID);
-            }
+        Bundle savedParameters = getArguments();
+
+        if (mWorkoutId == null) {
+            if (savedParameters != null)
+                mWorkoutId = savedParameters.getLong(WORKOUT_ID);
+        }
+
         ((WorkoutApplication) Objects.requireNonNull(getActivity()).getApplication())
                 .getAppComponent()
                 .inject(this);
+
+        mPerformingWorkoutId = requireActivity().getPreferences(MODE_PRIVATE).getLong(PERFORMING_WORKOUT_ID, 0);
     }
 
     public void setWorkoutId(Long id) {
-        Log.i(TAG, "setWorkoutId: " + id);
         mWorkoutId = id;
-        Bundle args = new Bundle();
+        Bundle args = getArguments() != null ? getArguments() : new Bundle();
         args.putLong(WORKOUT_ID, id);
         setArguments(args);
     }
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //View v = inflater.inflate(R.layout.action_workout_fragment, container, false);
-        mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        mActionWorkoutViewModel = ViewModelProviders.of(this, mViewModelFactory).get(ActionWorkoutViewModel.class);
 
         mBinding = DataBindingUtil.inflate(
                 inflater, R.layout.action_workout_fragment, container, false);
-        mBinding.setViewModel(mActionWorkoutViewModel);
+        mBinding.setViewModel(mWorkoutViewModel);
 
         mBinding.setLifecycleOwner(this);
 
         View v = mBinding.getRoot();
-
-        mLayoutManager = new CenterLinearLayoutManager(getActivity());
-        mRecyclerView = v.findViewById(R.id.rv_exercises);
-//        SnapHelper snapHelper = new StartSnapHelper();
-//        snapHelper.attachToRecyclerView(mRecyclerView);
-
-
-//        ViewGroup.LayoutParams lp = mRecyclerView.getLayoutParams();
-//        lp.height = (int) (lp.height * 1.5);
-//        mRecyclerView.setLayoutParams(lp);
-        mRecyclerView.setLayoutManager(mLayoutManager);
 
         setupActionWidgets(v);
         return v;
     }
 
     private void setupActionWidgets(View v) {
+        mLayoutManager = new CenterLinearLayoutManager(getActivity());
+        mRecyclerView = v.findViewById(R.id.rv_exercises);
+//        SnapHelper snapHelper = new StartSnapHelper();
+//        snapHelper.attachToRecyclerView(mRecyclerView);
+//        ViewGroup.LayoutParams lp = mRecyclerView.getLayoutParams();
+//        lp.height = (int) (lp.height * 1.5);
+//        mRecyclerView.setLayoutParams(lp);
+        scrollAfterOpenedPending =true;
+        mAdapter = new ExercisesAdapter();
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
         mStartWorkout = v.findViewById(R.id.fab_start_workout);
-        mStartWorkout.setOnClickListener(view -> {
-            mActionWorkoutViewModel.startWorkout(mWorkout, mExercises);
-            startObserve();
-        });
+        mStartWorkout.setOnClickListener(this::startWorkout);
         mStopWorkout = v.findViewById(R.id.fab_stop_workout);
-        mStopWorkout.setOnClickListener(view -> {
-            mActionWorkoutViewModel.finishWorkout();
-            startObserve();
-            ActionWorkoutService.stopWorkout(getContext());
-        });
-        lockView=v.findViewById(R.id.lock_view);
+        mStopWorkout.setOnClickListener(this::stopWorkout);
+        lockView = v.findViewById(R.id.lock_view);
     }
 
 
     @Override
     public void onStart() {
         super.onStart();
-//        mActionWorkoutViewModel.getWorkout(mWorkoutId).observe(this, this::onWorkoutLoaded);
-//        mActionWorkoutViewModel.getExercises(mWorkoutId).observe(this, this::onExerciseListLoaded);
-        startObserve();
+        mMainViewModel = ((MainActivity) requireActivity()).getViewModel();
+        if (mPerformingWorkoutId != 0) {
+            bindPerformingService();
+        } else {
+            observeWorkout();
+        }
+        Log.i(TAG, "onStart: mPerformingWorkoutId  " + mPerformingWorkoutId);
     }
 
-    private void startObserve() {
+    @Override
+    public void onStop() {
+        super.onStop();
+        unbindPerformingService();
+    }
+
+
+    private void observeWorkout() {
+        mWorkoutViewModel = ViewModelProviders.of(this, mViewModelFactory).get(WorkoutViewModel.class);
+        if (mExercisesLD != null) mExercisesLD.removeObservers(this);
+        if (mWorkoutLD != null) mWorkoutLD.removeObservers(this);
+        mWorkoutLD = mWorkoutViewModel.getWorkout(mWorkoutId);
+        mExercisesLD = mWorkoutViewModel.getExercises(mWorkoutId);
+        mWorkoutLD.observe(this, this::onWorkoutLoaded);
+        mExercisesLD.observe(this, this::onExerciseListLoaded);
+    }
+
+    private void observePerformingWorkout() {
+        if (mActiveExerciseLD != null) mActiveExerciseLD.removeObservers(this);
         if (mExercisesLD != null) mExercisesLD.removeObservers(this);
         if (mWorkoutLD != null) mWorkoutLD.removeObservers(this);
 
-        mActionWorkoutViewModel.getWorkout(mWorkoutId).observe(this, this::onWorkoutLoaded);
-        mActiveExerciseLD = mActionWorkoutViewModel.getActiveExercise();
-
-        Workout activeWorkout = mActionWorkoutViewModel.getActiveWorkout();
-
-
-        if (activeWorkout != null && activeWorkout.getId().equals(mWorkoutId)) {
-            mExercisesLD = mActionWorkoutViewModel.getActiveExercises();
-        } else {
-            mExercisesLD = mActionWorkoutViewModel.getExercises(mWorkoutId);
-        }
-
+        mWorkoutLD = mWorkoutPerformingManager.getActiveWorkoutLD();
+        mExercisesLD = mWorkoutPerformingManager.getActiveExercisesLD();
+        mActiveExerciseLD = mWorkoutPerformingManager.getActiveExerciseLD();
+        mWorkoutLD.observe(this, this::onWorkoutLoaded);
         mExercisesLD.observe(this, this::onExerciseListLoaded);
         mActiveExerciseLD.observe(this, this::onActiveExerciseLoaded);
     }
 
+
+    private void startWorkout(View v) {
+//        setPerformingWorkoutId(mWorkoutId);
+//        mMainViewModel.startWorkout(mWorkoutId);
+//        memorizePerformingWorkoutId();
+
+        mMainViewModel.startWorkout(mWorkoutId);
+
+        Log.i(TAG, "startWorkout: ");
+//        startPerformingService();
+        bindPerformingService();
+
+    }
+
+    private void stopWorkout(View v) {
+        mMainViewModel.stopWorkout(0L);
+    }
+
+    private void bindPerformingService() {
+        Context context = requireContext();
+        Intent intent = new Intent(context, WorkoutPerformingService.class);
+        context.bindService(intent, mServiceConnection, 0);
+        mServiceBound = true;
+    }
+
+    private void unbindPerformingService() {
+        if (mServiceBound) {
+            requireContext().unbindService(mServiceConnection);
+            mServiceBound = false;
+        }
+    }
+
+    boolean mServiceBound = false;
+    ServiceConnection mServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mWorkoutPerformingManager = ((WorkoutPerformingService.ActionBinder) service).getActionWorkoutManager();
+            observePerformingWorkout();
+            Log.i(TAG, "onServiceConnected: " + "Manager" + name);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mWorkoutPerformingManager = null;
+            mServiceBound = false;
+            Log.i(TAG, "onServiceDisconnected: ");
+        }
+    };
+
     private void onActiveExerciseLoaded(Exercise exercise) {
-            Transition transition = new ChangeBounds();
-            transition.setInterpolator(new LinearInterpolator());
-            transition.setDuration(750L);
-            transition.addListener(new TransitionListenerAdapter() {
-                @Override
-                public void onTransitionStart(@NonNull Transition transition) {
-                    setRecyclerViewLocked();
-                }
+        Transition transition = new ChangeBounds();
+        transition.setInterpolator(new LinearInterpolator());
+        transition.setDuration(750L);
+        transition.addListener(new TransitionListenerAdapter() {
+            @Override
+            public void onTransitionStart(@NonNull Transition transition) {
+                setRecyclerViewLocked();
+            }
 
-                @Override
-                public void onTransitionEnd(@NonNull Transition transition) {
-                    setRecyclerViewUnlocked();
-                    scrollToActiveExercise(exercise);
-                    if (notificationAdapterPending) mAdapter.notifyDataSetChanged();
+            @Override
+            public void onTransitionEnd(@NonNull Transition transition) {
+                setRecyclerViewUnlocked();
+                scrollToActiveExercise();
+                if (notifyAdapterPending) {
+                    mAdapter.notifyDataSetChanged();
+                    scrollToActiveExercise();
                 }
-            });
-            TransitionManager.beginDelayedTransition(mRecyclerView, transition);
+            }
+        });
+        TransitionManager.beginDelayedTransition(mRecyclerView, transition);
 
     }
 
-    private void setRecyclerViewLocked(){
+    private void setRecyclerViewLocked() {
         lockView.setVisibility(View.VISIBLE);
-        isRecyclerViewLocked=true;
+        isRecyclerViewLocked = true;
     }
 
-    private void setRecyclerViewUnlocked(){
+    private void setRecyclerViewUnlocked() {
         lockView.setVisibility(View.GONE);
-        isRecyclerViewLocked=false;
+        isRecyclerViewLocked = false;
     }
 
-    private void scrollToActiveExercise(Exercise exercise){
-        if (exercise != null) mRecyclerView.smoothScrollToPosition(exercise.getOrderNumber() - 1);
+    private void scrollToActiveExercise() {
+        if (scrollAfterOpenedPending) {
+            mRecyclerView.scrollToPosition(findRunningPosition());
+            scrollAfterOpenedPending=false;
+            return;
+        }
+        mRecyclerView.smoothScrollToPosition(findRunningPosition());
+    }
+
+    private int findRunningPosition() {
+        if (mExercises == null) return 0;
+        int i = 0;
+        for (Exercise e : mExercises) {
+            if (Boolean.TRUE.equals(e.getActiveLD().getValue())) {
+                return i;
+            }
+            i++;
+        }
+        return 0;
     }
 
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        getActivity().getMenuInflater().inflate(R.menu.action_menu, menu);
+        requireActivity().getMenuInflater().inflate(R.menu.action_menu, menu);
     }
 
     @Override
@@ -222,30 +317,33 @@ public class ActionWorkoutFragment extends Fragment {
             }
         }
         return super.onOptionsItemSelected(item);
-
     }
 
     private void onWorkoutLoaded(Workout workout) {
         if (workout != null) {
             mWorkout = workout;
         }
-        Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
+        requireActivity().invalidateOptionsMenu();
     }
 
     private void onExerciseListLoaded(List<Exercise> exercises) {
         this.mExercises = exercises;
-        if (mAdapter == null) setupAdapter();
-        else notifyAdapter();
+        notifyAdapter();
     }
 
-    private void setupAdapter() {
-        mAdapter = new ExercisesAdapter();
-        mRecyclerView.setAdapter(mAdapter);
-    }
 
     private void notifyAdapter() {
-        if (!isRecyclerViewLocked) mAdapter.notifyDataSetChanged();
-        else notificationAdapterPending =true;
+        if (!isRecyclerViewLocked) {
+            mAdapter.notifyDataSetChanged();
+            scrollToActiveExercise();
+        }
+        else notifyAdapterPending = true;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "onDestroy: ");
     }
 
     private class ExercisesAdapter extends RecyclerView.Adapter<ExerciseViewHolder> {
@@ -265,7 +363,7 @@ public class ActionWorkoutFragment extends Fragment {
             ActionWorkoutExerciseItemBinding binding = DataBindingUtil.inflate(
                     LayoutInflater.from(parent.getContext()),
                     R.layout.action_workout_exercise_item, parent, false);
-            binding.setLifecycleOwner(ActionWorkoutFragment.this);
+            binding.setLifecycleOwner(WorkoutFragment.this);
             mHolder = new ExerciseViewHolder(binding);
 
             return mHolder;
@@ -280,6 +378,7 @@ public class ActionWorkoutFragment extends Fragment {
 
         @Override
         public int getItemCount() {
+            if (mExercises == null) return 0;
             return mExercises.size();
         }
 
@@ -304,19 +403,46 @@ public class ActionWorkoutFragment extends Fragment {
             binding.setClicklistener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mActionWorkoutViewModel.setActiveExercise(exercise);
+                    if (mWorkoutPerformingManager != null)
+                        mWorkoutPerformingManager.setExercise(exercise);
                 }
             });
             binding.setExercise(exercise);
-            binding.setViewModel(mActionWorkoutViewModel);
+            binding.setViewModel(mWorkoutViewModel);
             binding.actionPanel.setExercise(exercise);
-            binding.actionPanel.setViewModel(mActionWorkoutViewModel);
+            binding.actionPanel.setViewModel(mWorkoutViewModel);
             binding.setIsLastExercise(isLast);
             binding.executePendingBindings();
 //            Log.i(TAG, "bind: " + exercise.getOrderNumber());
         }
     }
 }
+
+//    private void memorizePerformingWorkoutId(){
+//        Activity activity = requireActivity();
+//        activity.getPreferences(Context.MODE_PRIVATE).edit().putLong(PERFORMING_WORKOUT_ID,mWorkoutId).apply();
+//    }
+//
+//    private void clearPerformingWorkoutId(){
+//        Activity activity = requireActivity();
+//        activity.getPreferences(Context.MODE_PRIVATE).edit().remove(PERFORMING_WORKOUT_ID).apply();
+//    }
+//
+//    private void startPerformingService() {
+//        Context context = requireContext();
+//        Intent intent = new Intent(context, WorkoutPerformingService.class);
+//        WorkoutPerformingService.startActionWorkoutService(context, mWorkoutId);
+//        context.bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
+//    }
+//
+
+//
+//
+//    private void stopService() {
+//        Context context = requireContext();
+//        WorkoutPerformingService.stopActionWorkoutService(context);
+//    }
+
 
 //
 //

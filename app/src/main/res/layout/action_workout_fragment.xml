@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".views.workouts.ActionWorkoutFragment">
+    tools:context=".views.workouts.WorkoutFragment">
 
     <data>
 
@@ -16,7 +16,7 @@
 
         <variable
             name="viewModel"
-            type="com.axfex.dorkout.views.workouts.ActionWorkoutViewModel" />
+            type="com.axfex.dorkout.views.workouts.WorkoutViewModel" />
 
         <import type="android.view.View" />
 

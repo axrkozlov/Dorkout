@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".views.workouts.ActionWorkoutFragment">
+    tools:context=".views.workouts.WorkoutFragment">
     <data>
 
         <variable
@@ -15,7 +15,7 @@
 
         <variable
             name="viewModel"
-            type="com.axfex.dorkout.views.workouts.ActionWorkoutViewModel" />
+            type="com.axfex.dorkout.views.workouts.WorkoutViewModel" />
 
         <import type="android.view.View" />
 
@@ -450,9 +450,9 @@
                     android:layout_margin="4dp"
 
                     android:indeterminateOnly="false"
-                    android:max="@{FormatUtils.unwrap(exercise.MAX_PROGRESS)}"
+                    android:max="@{FormatUtils.unwrap(exercise.MAX_TIME_PROGRESS)}"
                     android:minHeight="13dp"
-                    android:progress="@{FormatUtils.unwrap(exercise.progressLD)}"
+                    android:progress="@{FormatUtils.unwrap(exercise.timeProgressLD)}"
                     android:progressDrawable="@drawable/progress_bar_horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -513,7 +513,7 @@
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:minHeight="64dp"
-                android:onClick="@{() -> viewModel.onMasterClick()}"
+                android:onClick="@{() -> viewModel.onMasterClick(exercise)}"
                 android:visibility="visible"
                 app:canStart="@{exercise.canStart}"
                 app:cardBackgroundColor="@color/state_done_back"

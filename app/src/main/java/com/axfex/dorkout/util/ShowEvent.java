@@ -1,12 +1,7 @@
 package com.axfex.dorkout.util;
 
 public class ShowEvent {
-//    public enum String {
-//        WORKOUTS_SHOW,
-//        WORKOUT_PICK_SHOW,
-//        WORKOUT_EDIT_SHOW,
-//        WORKOUT_ACTION_SHOW
-//    }
+
 
     private String mTag;
     private Long mId;
@@ -20,8 +15,10 @@ public class ShowEvent {
         this.mId=id;
     }
 
+
+
     public boolean is(String tag){
-        return mTag == tag;
+        return mTag.equals(tag);
     }
 
     public String getTag() {

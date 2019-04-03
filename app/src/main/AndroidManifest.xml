@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.axfex.dorkout">
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <application
         android:name=".WorkoutApplication"
         android:allowBackup="true"
@@ -35,7 +35,7 @@
             android:name=".views.settings.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme"/>
-        <service android:name=".services.ActionWorkoutService"
+        <service android:name=".services.WorkoutPerformingService"
             android:exported="false"/>
     </application>
 
